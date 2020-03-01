@@ -45,7 +45,8 @@ public class InMemoryRepository<ID, T extends BaseEntity<ID>> implements Reposit
         try {
             validator.validate(entity);
         } catch (ValidatorException e) {
-            System.out.println("Student attributes are not valid, can not add it"); }
+            System.out.println("Student attributes are not valid, can not add it");
+            throw e; }
         return Optional.ofNullable(entities.putIfAbsent(entity.getId(), entity));
     }
 
