@@ -11,6 +11,7 @@ import java.util.stream.StreamSupport;
 
 /**
  * @author Marius
+ * Service class for the Student entity
  */
 public class StudentService {
     private Repository<Long, Student> repository;
@@ -19,10 +20,19 @@ public class StudentService {
         this.repository = repository;
     }
 
+    /**
+     *
+     * @param student a student to be added in the repository
+     * @throws ValidatorException if the student is invalid
+     */
     public void addStudent(Student student) throws ValidatorException {
         repository.save(student);
     }
 
+    /**
+     * Method that collects all students in a Set
+     * @return a Set containing all students in the repository
+     */
     public Set<Student> getAllStudents() {
         Iterable<Student> students = repository.findAll();
         return StreamSupport.stream(students.spliterator(), false).collect(Collectors.toSet());

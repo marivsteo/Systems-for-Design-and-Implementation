@@ -8,6 +8,7 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * @author Marius
+ * This class contains all the tests related to the Student entity
  */
 public class StudentTest {
     private static final Long ID = 1L;

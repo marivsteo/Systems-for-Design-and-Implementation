@@ -12,7 +12,7 @@ import labproblems.ui.Console;
  * Created by Marius
  * <p>
  * <p>
- * Catalog App
+ * Lab Problems App
  * </p>
  * <p>
  * <p>

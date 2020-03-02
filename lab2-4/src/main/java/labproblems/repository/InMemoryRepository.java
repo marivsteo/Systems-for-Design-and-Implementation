@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 /**
  * @author Marius
+ * class that implements the Repository interface
  */
 public class InMemoryRepository<ID, T extends BaseEntity<ID>> implements Repository<ID, T> {
 
@@ -23,6 +24,11 @@ public class InMemoryRepository<ID, T extends BaseEntity<ID>> implements Reposit
         entities = new HashMap<>();
     }
 
+    /**
+     * Finds the entity with the specified id
+     * @param id must be not null.
+     * @return an Optional, the Student if exists, null if not
+     */
     @Override
     public Optional<T> findOne(ID id) {
         if (id == null) {
@@ -31,12 +37,22 @@ public class InMemoryRepository<ID, T extends BaseEntity<ID>> implements Reposit
         return Optional.ofNullable(entities.get(id));
     }
 
+    /**
+     * Returns all students
+     * @return a Set containing all the students
+     */
     @Override
     public Iterable<T> findAll() {
         Set<T> allEntities = entities.entrySet().stream().map(entry -> entry.getValue()).collect(Collectors.toSet());
         return allEntities;
     }
 
+    /**
+     * Saves an student
+     * @param entity must not be null.
+     * @return Optional, the student that was added, null otherwise
+     * @throws ValidatorException if the student is not valid
+     */
     @Override
     public Optional<T> save(T entity) throws ValidatorException {
         if (entity == null) {
@@ -50,6 +66,11 @@ public class InMemoryRepository<ID, T extends BaseEntity<ID>> implements Reposit
         return Optional.ofNullable(entities.putIfAbsent(entity.getId(), entity));
     }
 
+    /**
+     * Deletes a student
+     * @param id must not be null.
+     * @return Optional, the student that was removed, null otherwise
+     */
     @Override
     public Optional<T> delete(ID id) {
         if (id == null) {
@@ -58,6 +79,12 @@ public class InMemoryRepository<ID, T extends BaseEntity<ID>> implements Reposit
         return Optional.ofNullable(entities.remove(id));
     }
 
+    /**
+     * Updates a student
+     * @param entity must not be null.
+     * @return Optional, the student that was updated, null otherwise
+     * @throws ValidatorException if the student is not valid
+     */
     @Override
     public Optional<T> update(T entity) throws ValidatorException {
         if (entity == null) {

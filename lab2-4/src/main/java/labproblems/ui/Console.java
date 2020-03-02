@@ -12,6 +12,7 @@ import java.util.Set;
 
 /**
  * @author Marius
+ * Console class, part of the UI
  */
 public class Console {
     private StudentService studentService;
@@ -20,12 +21,19 @@ public class Console {
         this.studentService = studentService;
     }
 
+    /**
+     * <p>Method that is used for running the console</p>
+     */
     public void runConsole() {
         addStudents();
         printAllStudents();
         filterStudents();
     }
 
+    /**
+     * Method used for filtering students based on name
+     */
+    //TODO make it receive a parameter and work with it
     private void filterStudents() {
         System.out.println("filtered students (name containing 's2'):");
         Set<Student> students = studentService.filterStudentsByName("s2");
@@ -37,6 +45,9 @@ public class Console {
         students.stream().forEach(System.out::println);
     }
 
+    /**
+     * If a student is not null, it adds it
+     */
     private void addStudents() {
         while (true) {
             Student student = readStudent();
@@ -51,6 +62,10 @@ public class Console {
         }
     }
 
+    /**
+     * Function that reads a student from a BufferedReader
+     * @return student read from the BufferedReader
+     */
     private Student readStudent() {
         System.out.println("Read student {id,serialNumber, name, group}");
 

@@ -17,6 +17,7 @@ import static org.junit.Assert.fail;
 
 /**
  * @author Marius
+ * This class contains all the tests related to the InMemoryRepository
  */
 public class InMemoryRepositoryTest {
 

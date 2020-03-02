@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"labproblems"},{"l":"labproblems.domain"},{"l":"labproblems.domain.validators"},{"l":"labproblems.repository"},{"l":"labproblems.service"},{"l":"labproblems.ui"}]

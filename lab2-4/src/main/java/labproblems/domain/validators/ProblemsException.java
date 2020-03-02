@@ -2,6 +2,7 @@ package labproblems.domain.validators;
 
 /**
  * @author Marius
+ * Main Exception class in the project, extending RuntimeException, later used for the ValidatorException class
  */
 public class ProblemsException extends RuntimeException{
 

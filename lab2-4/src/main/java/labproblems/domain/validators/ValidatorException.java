@@ -2,6 +2,7 @@ package labproblems.domain.validators;
 
 /**
  * @author Marius
+ * Exception class related to validating entities
  */
 
 public class ValidatorException extends ProblemsException {
