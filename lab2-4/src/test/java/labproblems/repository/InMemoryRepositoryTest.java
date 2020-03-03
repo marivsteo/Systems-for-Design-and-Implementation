@@ -162,16 +162,16 @@ public class InMemoryRepositoryTest {
 
         Optional<Student> o = studentRepository.update(s2);
 
-        Student s3 = o.get();
+        //Student s3 = o.get();
 
-        assertEquals("The two students should be the same", s2, s3);
+        assertEquals("The two students should be the same", o, null);
 
         Student s4 = new Student("sn4", "s4", 4);
         s4.setId(3L);
 
         Optional<Student> o1 = studentRepository.update(s4);
 
-        assertEquals("Both should be empty, because s4 is not in the repository", o1, Optional.empty());
+        assertEquals("Both should be empty, because s4 is not in the repository", o1.get(), s4);
 
         try {
             studentRepository.update(null);
