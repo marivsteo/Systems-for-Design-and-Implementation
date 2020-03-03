@@ -10,11 +10,11 @@ import labproblems.ui.Console;
 
 /**
  * Created by Marius
- * <p>
+ *
  * <p>
  * Lab Problems App
  * </p>
- * <p>
+ *
  * <p>
  * I1:
  * </p>
@@ -23,7 +23,7 @@ import labproblems.ui.Console;
  * <li>F2: print all students</li>
  * <li>in memory repo</li>
  * </ul>
- * <p>
+ *
  * <p>
  * I2:
  * </p>
