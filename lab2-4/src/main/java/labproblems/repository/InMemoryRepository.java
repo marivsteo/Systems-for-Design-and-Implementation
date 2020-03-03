@@ -30,9 +30,13 @@ public class InMemoryRepository<ID, T extends BaseEntity<ID>> implements Reposit
      * @return an Optional, the Student if exists, null if not
      */
     @Override
-    public Optional<T> findOne(ID id) {
-        if (id == null) {
-            throw new IllegalArgumentException("id must not be null");
+    public Optional<T> findOne(ID id) throws ValidatorException{
+
+        try{
+            assert(id!=null);
+        }
+        catch (AssertionError error){
+            throw new IllegalArgumentException("InMemoryRepository > findOne : ID must not be null.");
         }
         return Optional.ofNullable(entities.get(id));
     }
@@ -55,8 +59,10 @@ public class InMemoryRepository<ID, T extends BaseEntity<ID>> implements Reposit
      */
     @Override
     public Optional<T> save(T entity) throws ValidatorException {
-        if (entity == null) {
-            throw new IllegalArgumentException("id must not be null");
+        try{
+            assert (entity!=null);
+        } catch(AssertionError error) {
+            throw new IllegalArgumentException("InMemoryRepository > save: ID must not be null.");
         }
         try {
             validator.validate(entity);
@@ -73,8 +79,10 @@ public class InMemoryRepository<ID, T extends BaseEntity<ID>> implements Reposit
      */
     @Override
     public Optional<T> delete(ID id) {
-        if (id == null) {
-            throw new IllegalArgumentException("id must not be null");
+        try{
+            assert(id!=null);
+        } catch (AssertionError error){
+            throw new IllegalArgumentException("InMemoryRepository > delete : id must not be null.");
         }
         return Optional.ofNullable(entities.remove(id));
     }
@@ -88,9 +96,13 @@ public class InMemoryRepository<ID, T extends BaseEntity<ID>> implements Reposit
      */
     @Override
     public Optional<T> update(T entity) throws ValidatorException, IllegalArgumentException {
-        if (entity == null) {
-            throw new IllegalArgumentException("entity must not be null");
+
+        try{
+            assert(entity!=null);
+        }catch (AssertionError error){
+            throw new IllegalArgumentException("InMemoryRepository > update : Entity must not be null.");
         }
+
         validator.validate(entity);
         if(entities.containsKey(entity.getId()))
         {
