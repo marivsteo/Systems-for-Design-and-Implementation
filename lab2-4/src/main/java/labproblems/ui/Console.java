@@ -1,7 +1,9 @@
 package labproblems.ui;
 
+import labproblems.domain.Problem;
 import labproblems.domain.Student;
 import labproblems.domain.validators.ValidatorException;
+import labproblems.service.ProblemService;
 import labproblems.service.StudentService;
 import org.apache.commons.lang3.math.NumberUtils;
 import java.util.Scanner;
@@ -17,9 +19,11 @@ import java.util.Set;
  */
 public class Console {
     private StudentService studentService;
+    private ProblemService problemService;
 
-    public Console(StudentService studentService) {
-        this.studentService = studentService;
+    public Console(StudentService _studentService, ProblemService _problemService) {
+        this.studentService = _studentService;
+        this.problemService = _problemService;
     }
 
     /**
@@ -28,7 +32,7 @@ public class Console {
     public void runConsole() {
         while(true) {
             Scanner keyboard = new Scanner(System.in);
-            System.out.println("Enter a choice:\n0.Exit\n1.Add student\n2.Show all students\n3.Show filtered students");
+            System.out.println("Enter a choice:\n0.Exit\n1.Add student\n2.Show all students\n3.Show filtered students\n4.Add problem\n5.Show all problems\n6.Show filtered problems ");
             String choice = keyboard.nextLine();
             switch(choice) {
                 case "1":
@@ -44,6 +48,20 @@ public class Console {
                     System.out.println("Enter the parameters:");
                     String parameter = keyboard.nextLine();
                     filterStudents(parameter);
+                    break;
+                case "4":
+                    System.out.println("Enter problem:");
+                    addProblems();
+                    break;
+                case "5":
+                    System.out.println("List of all problems:");
+                    printAllProblems();
+                    break;
+                case "6":
+                    System.out.println("List of filtered problems:");
+                    System.out.println("Enter the parameters:");
+                    String parameter2 = keyboard.nextLine();
+                    filterProblems(parameter2);
                     break;
                 case "0":
                     System.exit(0);
@@ -63,9 +81,20 @@ public class Console {
         students.stream().forEach(System.out::println);
     }
 
+    private void filterProblems(String parameter){
+        System.out.println("filtere problems (text containing '" + parameter + "'):");
+        Set<Problem> problems = problemService.filterProblemsByText(parameter);
+        problems.stream().forEach(System.out::println);
+    }
+
     private void printAllStudents() {
         Set<Student> students = studentService.getAllStudents();
         students.stream().forEach(System.out::println);
+    }
+
+    private void printAllProblems(){
+        Set<Problem> problems = problemService.getAllProblems();
+        problems.stream().forEach(System.out::println);
     }
 
     /**
@@ -83,6 +112,20 @@ public class Console {
                     e.printStackTrace();
                 }
             }
+    }
+
+    private void addProblems(){
+        Problem problem = readProblem();
+        if( problem == null || problem.getId() < 0 ){
+            System.out.println("Invalid field.");
+        }
+        else{
+            try{
+                problemService.addProblem(problem);
+            } catch (ValidatorException e){
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -107,6 +150,27 @@ public class Console {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+        return null;
+    }
+
+    private Problem readProblem(){
+        System.out.println("Read problem {id,number,text}");
+
+        BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
+
+        try{
+            Long id = NumberUtils.toLong(bufferRead.readLine(),0L);
+            int number = NumberUtils.toInt(bufferRead.readLine(),0);
+            String text = bufferRead.readLine();
+
+            Problem problem = new Problem(number,text);
+            problem.setId(id);
+
+            return problem;
+        } catch (IOException exception){
+            exception.printStackTrace();
+        }
+
         return null;
     }
 }

@@ -1,10 +1,13 @@
 package labproblems;
 
+import labproblems.domain.Problem;
 import labproblems.domain.Student;
+import labproblems.domain.validators.ProblemValidator;
 import labproblems.domain.validators.StudentValidator;
 import labproblems.domain.validators.Validator;
 import labproblems.repository.InMemoryRepository;
 import labproblems.repository.Repository;
+import labproblems.service.ProblemService;
 import labproblems.service.StudentService;
 import labproblems.ui.Console;
 
@@ -37,9 +40,12 @@ public class Main {
     public static void main(String args[]) {
         //in-memory repo
          Validator<Student> studentValidator = new StudentValidator();
+         Validator<Problem> problemValidator = new ProblemValidator();
          Repository<Long, Student> studentRepository = new InMemoryRepository<>(studentValidator);
+         Repository<Long, Problem> problemRepository = new InMemoryRepository<>(problemValidator);
          StudentService studentService = new StudentService(studentRepository);
-         Console console = new Console(studentService);
+         ProblemService problemService = new ProblemService(problemRepository);
+         Console console = new Console(studentService,problemService);
          console.runConsole();
 
         //file repo
