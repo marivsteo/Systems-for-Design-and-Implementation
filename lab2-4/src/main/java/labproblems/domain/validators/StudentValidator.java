@@ -23,9 +23,12 @@ public class StudentValidator implements Validator<Student> {
 //        entity.serialNoIsNull(e -> {throw new ValidatorException("Serial Number is null");});
 //
 //        entity.groupIsNull(e -> {throw new ValidatorException("Group is null");});
-
-        if(entity.getName() == null || entity.getSerialNumber() == null)
+        try {
+            assert (entity.getName() != null);
+            assert (entity.getSerialNumber() != null);
+        } catch (AssertionError ignored) {
             throw new ValidatorException("One of the fields is null");
+        }
 
     }
 }
