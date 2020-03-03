@@ -67,18 +67,4 @@ public class Student extends BaseEntity<Long> {
                 ", group=" + group +
                 '}' + super.toString();
     }
-
-//    public boolean nameIsNull(Consumer<Element> consumer) {
-//        return name.equals("");
-//    }
-//
-//    public boolean serialNoIsNull(Consumer<Element> consumer) {
-//        return serialNumber.equals("");
-//    }
-//
-//    public boolean groupIsNull(Consumer<Element> consumer) {
-//        return group == 0;
-//    }
-
-
 }
