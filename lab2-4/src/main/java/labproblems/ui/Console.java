@@ -4,6 +4,7 @@ import labproblems.domain.Student;
 import labproblems.domain.validators.ValidatorException;
 import labproblems.service.StudentService;
 import org.apache.commons.lang3.math.NumberUtils;
+import java.util.Scanner;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,18 +26,40 @@ public class Console {
      * <p>Method that is used for running the console</p>
      */
     public void runConsole() {
-        addStudents();
-        printAllStudents();
-        filterStudents();
+        while(true) {
+            Scanner keyboard = new Scanner(System.in);
+            System.out.println("Enter a choice:\n0.Exit\n1.Add student\n2.Show all students\n3.Show filtered students");
+            String choice = keyboard.nextLine();
+            switch(choice) {
+                case "1":
+                    System.out.println("Enter a student:");
+                    addStudents();
+                    break;
+                case "2":
+                    System.out.println("List of all students:");
+                    printAllStudents();
+                    break;
+                case "3":
+                    System.out.println("List of filtered students:");
+                    System.out.println("Enter the parameters:");
+                    String parameter = keyboard.nextLine();
+                    filterStudents(parameter);
+                    break;
+                case "0":
+                    System.exit(0);
+            }
+        }
     }
 
-    /**
+    /** <p>
      * Method used for filtering students based on name
+     * @param parameter
+     *          given input from keyboard to search all students with name containing it
+     *          </p>
      */
-    //TODO make it receive a parameter and work with it
-    private void filterStudents() {
-        System.out.println("filtered students (name containing 's2'):");
-        Set<Student> students = studentService.filterStudentsByName("s2");
+    private void filterStudents(String parameter) {
+        System.out.println("filtered students (name containing '" + parameter +"):");
+        Set<Student> students = studentService.filterStudentsByName(parameter);
         students.stream().forEach(System.out::println);
     }
 
@@ -49,17 +72,17 @@ public class Console {
      * If a student is not null, it adds it
      */
     private void addStudents() {
-        while (true) {
             Student student = readStudent();
             if (student == null || student.getId() < 0) {
-                break;
+                System.out.println("Invalid field.");
             }
-            try {
-                studentService.addStudent(student);
-            } catch (ValidatorException e) {
-                e.printStackTrace();
+            else {
+                try {
+                    studentService.addStudent(student);
+                } catch (ValidatorException e) {
+                    e.printStackTrace();
+                }
             }
-        }
     }
 
     /**
