@@ -47,18 +47,5 @@ public class Main {
          ProblemService problemService = new ProblemService(problemRepository);
          Console console = new Console(studentService,problemService);
          console.runConsole();
-
-        //file repo
-//        try {
-//            System.out.println(new File(".").getCanonicalPath());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        //in file repo
-//        Validator<Student> studentValidator = new StudentValidator();
-//        Repository<Long, Student> studentRepository = new StudentFileRepository(studentValidator, "./data/students");
-//        StudentService studentService = new StudentService(studentRepository);
-//        Console console = new Console(studentService);
-//        console.runConsole();
     }
 }

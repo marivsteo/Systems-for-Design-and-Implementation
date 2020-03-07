@@ -32,34 +32,32 @@ public class Console {
     public void runConsole() {
         while(true) {
             Scanner keyboard = new Scanner(System.in);
-            System.out.println("Enter a choice:\n0.Exit\n1.Add student\n2.Show all students\n3.Show filtered students\n4.Add problem\n5.Show all problems\n6.Show filtered problems ");
+            System.out.println("Enter a choice:\n0.Exit\n1.Add student\n2.Show all students\n3.Show filtered students by name\n4.Add problem\n5.Show all problems\n6.Show filtered problems by text");
             String choice = keyboard.nextLine();
             switch(choice) {
                 case "1":
-                    System.out.println("Enter a student:");
+                    System.out.println("Reading a student:");
                     addStudents();
                     break;
                 case "2":
-                    System.out.println("List of all students:");
+                    System.out.println("Listing all the students:");
                     printAllStudents();
                     break;
                 case "3":
-                    System.out.println("List of filtered students:");
-                    System.out.println("Enter the parameters:");
+                    System.out.println("Enter the substring for the name:");
                     String parameter = keyboard.nextLine();
                     filterStudents(parameter);
                     break;
                 case "4":
-                    System.out.println("Enter problem:");
+                    System.out.println("Reading a problem:");
                     addProblems();
                     break;
                 case "5":
-                    System.out.println("List of all problems:");
+                    System.out.println("Listing all the problems:");
                     printAllProblems();
                     break;
                 case "6":
-                    System.out.println("List of filtered problems:");
-                    System.out.println("Enter the parameters:");
+                    System.out.println("Enter the substring for the text:");
                     String parameter2 = keyboard.nextLine();
                     filterProblems(parameter2);
                     break;
@@ -76,13 +74,13 @@ public class Console {
      *          </p>
      */
     private void filterStudents(String parameter) {
-        System.out.println("filtered students (name containing '" + parameter +"):");
+        System.out.println("Listing the students with the name containing '" + parameter +"':");
         Set<Student> students = studentService.filterStudentsByName(parameter);
         students.stream().forEach(System.out::println);
     }
 
     private void filterProblems(String parameter){
-        System.out.println("filtere problems (text containing '" + parameter + "'):");
+        System.out.println("Listing the problems with the text containing '" + parameter + "':");
         Set<Problem> problems = problemService.filterProblemsByText(parameter);
         problems.stream().forEach(System.out::println);
     }
@@ -101,76 +99,53 @@ public class Console {
      * If a student is not null, it adds it
      */
     private void addStudents() {
-            Student student = readStudent();
-            if (student == null || student.getId() < 0) {
-                System.out.println("Invalid field.");
-            }
-            else {
-                try {
-                    studentService.addStudent(student);
-                } catch (ValidatorException e) {
-                    e.printStackTrace();
-                }
-            }
-    }
-
-    private void addProblems(){
-        Problem problem = readProblem();
-        if( problem == null || problem.getId() < 0 ){
-            System.out.println("Invalid field.");
-        }
-        else{
-            try{
-                problemService.addProblem(problem);
-            } catch (ValidatorException e){
-                e.printStackTrace();
-            }
-        }
-    }
-
-    /**
-     * Function that reads a student from a BufferedReader
-     * @return student read from the BufferedReader
-     */
-    private Student readStudent() {
-        System.out.println("Read student {id,serialNumber, name, group}");
-
         BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
+        // Declare and initialize the parameters for the service
+        long id = 0L;
+        String serialNumber = "";
+        String name = "";
+        int group = 0;
+        // Read the parameters
         try {
-            //Long id = Long.parseLong(Optional.ofNullable(bufferRead.readLine()).orElseGet(() -> "-1"));// ...
-            Long id = NumberUtils.toLong(bufferRead.readLine(), 0L);
-            String serialNumber = bufferRead.readLine();
-            String name = bufferRead.readLine();
-            int group = NumberUtils.toInt(bufferRead.readLine());// ...
-
-            Student student = new Student(serialNumber, name, group);
-            student.setId(id);
-
-            return student;
+            System.out.println("Enter the id (Long) >>");
+            id = NumberUtils.toLong(bufferRead.readLine(), 0L);
+            System.out.println("Enter the serial number (String) >>");
+            serialNumber = bufferRead.readLine();
+            System.out.println("Enter the name (String) >>");
+            name = bufferRead.readLine();
+            System.out.println("Enter the group (integer) >>");
+            group = NumberUtils.toInt(bufferRead.readLine());
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        return null;
+        try {
+            studentService.addStudent(id, serialNumber, name, group);
+        } catch (ValidatorException e) {
+            System.out.println(e.toString());
+        }
     }
 
-    private Problem readProblem(){
-        System.out.println("Read problem {id,number,text}");
-
+    private void addProblems(){
         BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
-
+        // Declare and initialize the parameters for the service
+        Long id = 0L;
+        int number = 0;
+        String text = "default";
+        // Read the parameters
         try{
-            Long id = NumberUtils.toLong(bufferRead.readLine(),0L);
-            int number = NumberUtils.toInt(bufferRead.readLine(),0);
-            String text = bufferRead.readLine();
-
-            Problem problem = new Problem(number,text);
-            problem.setId(id);
-
-            return problem;
+            System.out.println("Enter the id (Long) >>");
+            id = NumberUtils.toLong(bufferRead.readLine(),0L);
+            System.out.println("Enter the number (integer) >>");
+            number = NumberUtils.toInt(bufferRead.readLine(),0);
+            System.out.println("Enter the text (String) >>");
+            text = bufferRead.readLine();
         } catch (IOException exception){
             exception.printStackTrace();
         }
-
-        return null;
+        try{
+            problemService.addProblem(id,number,text);
+        } catch (ValidatorException e){
+            System.out.println(e.toString());
+        }
     }
 }

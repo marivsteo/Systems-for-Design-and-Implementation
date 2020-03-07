@@ -7,9 +7,7 @@ import java.util.Optional;
 
 /**
  * Interface for generic CRUD operations on a repository for a specific type.
- *
  * @author Marius
- *
  */
 public interface Repository<ID, T extends BaseEntity<ID>> {
     /**

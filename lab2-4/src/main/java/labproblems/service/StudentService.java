@@ -1,6 +1,7 @@
 package labproblems.service;
 
 import labproblems.domain.Student;
+import labproblems.domain.validators.StudentValidator;
 import labproblems.domain.validators.ValidatorException;
 import labproblems.repository.Repository;
 
@@ -11,7 +12,7 @@ import java.util.stream.StreamSupport;
 
 /**
  * @author Marius
- * Service class for the Student entity
+ * Service class for the Student entity.
  */
 public class StudentService {
     private Repository<Long, Student> repository;
@@ -21,16 +22,30 @@ public class StudentService {
     }
 
     /**
-     *
-     * @param student a student to be added in the repository
-     * @throws ValidatorException if the student is invalid
+     * The method adds a student with the given attributes.
+     * @param _id the id of the student which is to be added
+     * @param _serialNumber the serial number of the student which is to be added
+     * @param _name the name of the student which is to be added
+     * @param _group the group of the student which is to be added
+     * @throws ValidatorException if the given attributes are invalid
      */
-    public void addStudent(Student student) throws ValidatorException {
-        repository.save(student);
+    public void addStudent(Long _id, String _serialNumber, String _name, int _group) throws ValidatorException {
+        try {
+            // Create a student
+            Student student = new Student(_serialNumber, _name, _group);
+            student.setId(_id);
+            // Validate the student
+            StudentValidator validator = new StudentValidator();
+            validator.validate(student);
+            // If it is valid, save it
+            repository.save(student);
+        } catch(ValidatorException exception){
+            throw exception;
+        }
     }
 
     /**
-     * Method that collects all students in a Set
+     * The method collects all the students in a Set.
      * @return a Set containing all students in the repository
      */
     public Set<Student> getAllStudents() {
@@ -39,18 +54,16 @@ public class StudentService {
     }
 
     /**
-     * Returns all students whose name contain the given string.
-     * 
-     * @param s the string we look for in the names
-     * @return a list of students whose names contain the string s
+     * The method returns all students whose name contain the given string.
+     * @param _substring the string we look for in the names
+     * @return a Set of students whose names contain the string _substring
      */
-    public Set<Student> filterStudentsByName(String s) {
+    public Set<Student> filterStudentsByName(String _substring) {
         Iterable<Student> students = repository.findAll();
-
         Set<Student> filteredStudents= new HashSet<>();
         students.forEach(filteredStudents::add);
-        filteredStudents.removeIf(student -> !student.getName().contains(s));
-
+        // Remove the students that do not have the given substring in their name
+        filteredStudents.removeIf(student -> !student.getName().contains(_substring));
         return filteredStudents;
     }
 }

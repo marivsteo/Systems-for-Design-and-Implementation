@@ -7,20 +7,15 @@ import labproblems.domain.Student;
  * A Validator class for the student class, implementing the Validator interface
  */
 public class StudentValidator implements Validator<Student> {
-
     /**
-     * Checks if the name and serial number of a student are valid
-     * @param entity an object of type T
-     * @throws ValidatorException if the students name or serial number is null
+     * Checks if the attributes of a student are valid
+     * @param entity an object of type Student
+     * @throws ValidatorException if the attributes are no valid
      */
     @Override
     public void validate(Student entity) throws ValidatorException {
-        try {
-            assert (entity.getName() != null);
-            assert (entity.getSerialNumber() != null);
-        } catch (AssertionError ignored) {
-            throw new ValidatorException("One of the fields is null");
-        }
-
+        if( entity.getName() == null || entity.getSerialNumber() == null || entity.getId() < 0 || entity.getGroup() < 0
+                || entity.getName().equals("") || entity.getSerialNumber().equals("") )
+            throw new ValidatorException("StudentValidator > validate: Not all of the fields are valid.");
     }
 }
