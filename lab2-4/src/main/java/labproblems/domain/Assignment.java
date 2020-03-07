@@ -7,13 +7,22 @@ public class Assignment extends BaseEntity<Long> {
     private String name;
     private Student student;
     private Problem problem;
+    private int grade;
 
     public Assignment() {}
+
+    public Assignment(String name, Student student, Problem problem, int grade) {
+        this.name = name;
+        this.student = student;
+        this.problem = problem;
+        this.grade = grade;
+    }
 
     public Assignment(String name, Student student, Problem problem) {
         this.name = name;
         this.student = student;
         this.problem = problem;
+        this.grade = 0;
     }
 
     public String getName() {
@@ -40,19 +49,28 @@ public class Assignment extends BaseEntity<Long> {
         this.problem = problem;
     }
 
+    public int getGrade() {
+        return grade;
+    }
+
+    public void setGrade(int grade) {
+        this.grade = grade;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Assignment that = (Assignment) o;
-        return name.equals(that.name) &&
+        return grade == that.grade &&
+                name.equals(that.name) &&
                 student.equals(that.student) &&
                 problem.equals(that.problem);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, student, problem);
+        return Objects.hash(name, student, problem, grade);
     }
 
     @Override
@@ -61,6 +79,7 @@ public class Assignment extends BaseEntity<Long> {
                 "name='" + name + '\'' +
                 ", student=" + student +
                 ", problem=" + problem +
+                ", grade=" + grade +
                 '}';
     }
 }
