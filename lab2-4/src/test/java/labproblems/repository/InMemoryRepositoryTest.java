@@ -138,6 +138,8 @@ public class InMemoryRepositoryTest {
 
         assertEquals("The two students should be the same", s2, s3);
 
+        System.out.println(studentRepository.findOne(2L));
+
         try {
             studentRepository.delete(null);
             fail("Deleting a null entity should have thrown a IllegalArgumentException");

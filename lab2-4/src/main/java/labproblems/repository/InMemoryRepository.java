@@ -47,7 +47,7 @@ public class InMemoryRepository<ID, T extends BaseEntity<ID>> implements Reposit
      */
     @Override
     public Iterable<T> findAll() {
-        Set<T> allEntities = entities.entrySet().stream().map(entry -> entry.getValue()).collect(Collectors.toSet());
+        Set<T> allEntities = entities.values().stream().collect(Collectors.toSet());
         return allEntities;
     }
 

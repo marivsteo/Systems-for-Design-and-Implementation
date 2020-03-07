@@ -37,7 +37,6 @@ public class Console {
             System.out.println("Enter a choice:\n0.Exit\n1.Add student\n2.Show all students\n3.Show filtered students by name\n" +
                     "4.Add problem\n5.Show all problems\n6.Show filtered problems by text\n7.Delete student");
             String choice = keyboard.nextLine();
-            studentService.addStudent(1L,"sn1","n1",1);
             switch(choice) {
                 case "1":
                     System.out.println("Reading a student:");

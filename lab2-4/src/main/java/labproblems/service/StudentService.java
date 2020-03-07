@@ -73,7 +73,7 @@ public class StudentService {
         Optional<Student> student = repository.findOne(_id);
         try {
             Student student1 = student.get();
-            System.out.println(repository.delete(_id));
+            repository.delete(_id);
         } catch (NoSuchElementException exception){
             throw new NoSuchElementException("StudentService > removeStudent: There is no student with given id = " + _id.toString());
         }

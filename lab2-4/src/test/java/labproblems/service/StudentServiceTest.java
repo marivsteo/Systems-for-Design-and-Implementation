@@ -8,8 +8,10 @@ import labproblems.domain.validators.Validator;
 import labproblems.domain.validators.ValidatorException;
 import labproblems.repository.InMemoryRepository;
 import labproblems.repository.Repository;
+import org.junit.Ignore;
 import org.junit.Test;
 
+import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.Assert.*;
@@ -87,5 +89,25 @@ public class StudentServiceTest {
 
         assertTrue("The set should contain s", students.contains(s));
         assertFalse("The set should not contain s2", students.contains(s2));
+    }
+
+    @Test
+    public void testDeleteStudent() throws Exception {
+        Validator<Student> studentValidator = new StudentValidator();
+        Repository<Long, Student> studentRepository = new InMemoryRepository<>(studentValidator);
+        StudentService studentService = new StudentService(studentRepository);
+
+        Student s = new Student("sn1", "s1", 1);
+        s.setId(1L);
+        Student s2 = new Student("sn2", "s2", 2);
+        s2.setId(2L);
+
+        studentService.addStudent(1L, "sn1", "s1", 1);
+        studentService.addStudent(2L,"sn2","s2", 2);
+
+        studentService.removeStudent(1L);
+
+        assertEquals("The repo should not contain a student with the ID 1L", Optional.empty(), studentRepository.findOne(1L));
+        //assertFalse("The set should not contain s2", students.contains(s2));
     }
 }
