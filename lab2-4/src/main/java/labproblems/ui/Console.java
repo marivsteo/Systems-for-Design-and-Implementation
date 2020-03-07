@@ -35,7 +35,7 @@ public class Console {
         while(true) {
             Scanner keyboard = new Scanner(System.in);
             System.out.println("Enter a choice:\n0.Exit\n1.Add student\n2.Show all students\n3.Show filtered students by name\n" +
-                    "4.Add problem\n5.Show all problems\n6.Show filtered problems by text\n7.Delete student");
+                    "4.Add problem\n5.Show all problems\n6.Show filtered problems by text\n7.Delete student\n8.Update student");
             String choice = keyboard.nextLine();
             switch(choice) {
                 case "1":
@@ -68,6 +68,9 @@ public class Console {
                     System.out.println("Enter the id of the student you want to delete:");
                     deleteStudent();
                     break;
+                case "8":
+                    updateStudent();
+                    break;
                 case "0":
                     System.exit(0);
             }
@@ -90,6 +93,31 @@ public class Console {
         System.out.println("Listing the problems with the text containing '" + parameter + "':");
         Set<Problem> problems = problemService.filterProblemsByText(parameter);
         problems.stream().forEach(System.out::println);
+    }
+
+    private void updateStudent(){
+        BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
+        Long id = 0L;
+        String serialNumber = "";
+        String name = "";
+        int group = 0;
+        try {
+            System.out.println("Enter the id of the student you want to update:");
+            id = NumberUtils.toLong(bufferRead.readLine(), 0L);
+            System.out.println("Enter the new serial number (String) >>");
+            serialNumber = bufferRead.readLine();
+            System.out.println("Enter the new name (String) >>");
+            name = bufferRead.readLine();
+            System.out.println("Enter the new group (integer) >>");
+            group = NumberUtils.toInt(bufferRead.readLine());
+        }catch(IOException exception){
+            System.out.println(exception.toString());
+        }
+        try{
+            studentService.updateStudent(id,serialNumber,name,group);
+        } catch(IllegalArgumentException ex){
+            System.out.println(ex.toString());
+        }
     }
 
     private void deleteStudent(){

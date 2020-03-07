@@ -69,6 +69,11 @@ public class StudentService {
         return filteredStudents;
     }
 
+    /**
+     * The method deletes a student with the given id.
+     * @param _id the id of the student that will be deleted
+     * @throws NoSuchElementException if the given id does not correspond to any student
+     */
     public void removeStudent(Long _id) throws NoSuchElementException {
         Optional<Student> student = repository.findOne(_id);
         try {
@@ -76,6 +81,25 @@ public class StudentService {
             repository.delete(_id);
         } catch (NoSuchElementException exception){
             throw new NoSuchElementException("StudentService > removeStudent: There is no student with given id = " + _id.toString());
+        }
+    }
+
+    /**
+     * The method updates a student with the given id.
+     * @param _id the id of the student what will be updated
+     * @param _newSerialNumber the new serial number of the updated student
+     * @param _newName the new name of the updated student
+     * @param _newGroup the new group of the updated student
+     */
+    public void updateStudent(Long _id, String _newSerialNumber, String _newName, int _newGroup){
+        Student student = new Student(_newSerialNumber,_newName,_newGroup);
+        student.setId(_id);
+        StudentValidator studentValidator = new StudentValidator();
+        studentValidator.validate(student);
+        try{
+            repository.update(student);
+        } catch( IllegalArgumentException exception){
+            throw exception;
         }
     }
 }
