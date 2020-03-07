@@ -6,6 +6,8 @@ import labproblems.domain.validators.ValidatorException;
 import labproblems.repository.Repository;
 
 import java.util.HashSet;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -65,5 +67,15 @@ public class StudentService {
         // Remove the students that do not have the given substring in their name
         filteredStudents.removeIf(student -> !student.getName().contains(_substring));
         return filteredStudents;
+    }
+
+    public void removeStudent(Long _id) throws NoSuchElementException {
+        Optional<Student> student = repository.findOne(_id);
+        try {
+            Student student1 = student.get();
+            System.out.println(repository.delete(_id));
+        } catch (NoSuchElementException exception){
+            throw new NoSuchElementException("StudentService > removeStudent: There is no student with given id = " + _id.toString());
+        }
     }
 }

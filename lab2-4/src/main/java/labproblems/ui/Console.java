@@ -6,6 +6,8 @@ import labproblems.domain.validators.ValidatorException;
 import labproblems.service.ProblemService;
 import labproblems.service.StudentService;
 import org.apache.commons.lang3.math.NumberUtils;
+
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import java.io.BufferedReader;
@@ -32,8 +34,10 @@ public class Console {
     public void runConsole() {
         while(true) {
             Scanner keyboard = new Scanner(System.in);
-            System.out.println("Enter a choice:\n0.Exit\n1.Add student\n2.Show all students\n3.Show filtered students by name\n4.Add problem\n5.Show all problems\n6.Show filtered problems by text");
+            System.out.println("Enter a choice:\n0.Exit\n1.Add student\n2.Show all students\n3.Show filtered students by name\n" +
+                    "4.Add problem\n5.Show all problems\n6.Show filtered problems by text\n7.Delete student");
             String choice = keyboard.nextLine();
+            studentService.addStudent(1L,"sn1","n1",1);
             switch(choice) {
                 case "1":
                     System.out.println("Reading a student:");
@@ -61,6 +65,10 @@ public class Console {
                     String parameter2 = keyboard.nextLine();
                     filterProblems(parameter2);
                     break;
+                case "7":
+                    System.out.println("Enter the id of the student you want to delete:");
+                    deleteStudent();
+                    break;
                 case "0":
                     System.exit(0);
             }
@@ -83,6 +91,22 @@ public class Console {
         System.out.println("Listing the problems with the text containing '" + parameter + "':");
         Set<Problem> problems = problemService.filterProblemsByText(parameter);
         problems.stream().forEach(System.out::println);
+    }
+
+    private void deleteStudent(){
+        BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
+        Long id = 0L;
+        try {
+            System.out.println("Enter the id (Long) >>");
+            id = NumberUtils.toLong(bufferRead.readLine(), 0L);
+        }catch(IOException exception){
+            System.out.println(exception.toString());
+        }
+        try{
+            studentService.removeStudent(id);
+        }catch (NoSuchElementException exception){
+            System.out.println(exception.toString());
+        }
     }
 
     private void printAllStudents() {

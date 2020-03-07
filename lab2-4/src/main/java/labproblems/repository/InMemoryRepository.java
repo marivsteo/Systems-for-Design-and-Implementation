@@ -75,7 +75,7 @@ public class InMemoryRepository<ID, T extends BaseEntity<ID>> implements Reposit
     /**
      * Deletes a student
      * @param id must not be null.
-     * @return Optional, the student that was removed, null otherwise
+     * @return Optional if the student that was removed, null otherwise
      */
     @Override
     public Optional<T> delete(ID id) {
