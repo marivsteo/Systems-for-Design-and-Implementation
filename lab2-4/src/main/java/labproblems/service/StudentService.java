@@ -95,11 +95,20 @@ public class StudentService {
         Student student = new Student(_newSerialNumber,_newName,_newGroup);
         student.setId(_id);
         StudentValidator studentValidator = new StudentValidator();
-        studentValidator.validate(student);
+
+        try {
+            studentValidator.validate(student);
+        } catch (ValidatorException e) {
+            System.out.println("Service -> update : student is invalid");
+        }
+
         try{
-            repository.update(student);
+            assert(repository.update(student) == null);
         } catch( IllegalArgumentException exception){
             throw exception;
+        }
+        catch (AssertionError e) {
+            throw new IllegalArgumentException("Service -> update : Id is not in the repo");
         }
     }
 }

@@ -97,13 +97,10 @@ public class InMemoryRepository<ID, T extends BaseEntity<ID>> implements Reposit
     @Override
     public Optional<T> update(T entity) throws ValidatorException, IllegalArgumentException {
 
-        try{
-            assert(entity!=null);
-        }catch (AssertionError error){
-            throw new IllegalArgumentException("InMemoryRepository > update : Entity must not be null.");
+        if (entity == null) {
+            throw new IllegalArgumentException("entity must not be null");
         }
 
-        validator.validate(entity);
         if(entities.containsKey(entity.getId()))
         {
             entities.computeIfPresent(entity.getId(), (k, v) -> entity);
