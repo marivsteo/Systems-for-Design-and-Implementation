@@ -90,25 +90,25 @@ public class StudentService {
      * @param _newSerialNumber the new serial number of the updated student
      * @param _newName the new name of the updated student
      * @param _newGroup the new group of the updated student
+     * @throws Exception if either the student with the given id does not exist
      */
-    public void updateStudent(Long _id, String _newSerialNumber, String _newName, int _newGroup){
+    public void updateStudent(Long _id, String _newSerialNumber, String _newName, int _newGroup) throws Exception {
         Student student = new Student(_newSerialNumber,_newName,_newGroup);
         student.setId(_id);
         StudentValidator studentValidator = new StudentValidator();
 
         try {
             studentValidator.validate(student);
-        } catch (ValidatorException e) {
-            System.out.println("Service -> update : student is invalid");
-        }
-
-        try{
-            assert(repository.update(student) == null);
-        } catch( IllegalArgumentException exception){
+        } catch (ValidatorException exception) {
             throw exception;
         }
-        catch (AssertionError e) {
-            throw new IllegalArgumentException("Service -> update : Id is not in the repo");
+
+        try {
+            if (repository.update(student) != null ) {
+                throw new Exception("StudentService > updateStudent: There is no student with the given id = " + student.getId().toString());
+            }
+        } catch( Exception exception){
+            throw exception;
         }
     }
 }

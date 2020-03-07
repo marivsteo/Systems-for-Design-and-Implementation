@@ -95,18 +95,16 @@ public class InMemoryRepository<ID, T extends BaseEntity<ID>> implements Reposit
      * @throws IllegalArgumentException if the entity is null
      */
     @Override
-    public Optional<T> update(T entity) throws ValidatorException, IllegalArgumentException {
+    public Optional<T> update(T entity) throws IllegalArgumentException {
 
         if (entity == null) {
-            throw new IllegalArgumentException("entity must not be null");
+            throw new IllegalArgumentException("InMemoryRepository > update: The entity must not be null.");
         }
 
-        if(entities.containsKey(entity.getId()))
-        {
+        if(entities.containsKey(entity.getId())) {
             entities.computeIfPresent(entity.getId(), (k, v) -> entity);
             return null;
         }
         return Optional.ofNullable(entity);
-        //return Optional.ofNullable(entities.computeIfPresent(entity.getId(), (k, v) -> entity));
     }
 }

@@ -71,6 +71,9 @@ public class Console {
                 case "8":
                     updateStudent();
                     break;
+                case "99":
+                    studentService.addStudent(1L,"sn1","n1",1);
+                    break;
                 case "0":
                     System.exit(0);
             }
@@ -115,8 +118,8 @@ public class Console {
         }
         try{
             studentService.updateStudent(id,serialNumber,name,group);
-        } catch(IllegalArgumentException ex){
-            System.out.println(ex.toString());
+        } catch( Exception exception){
+            System.out.println(exception.toString());
         }
     }
 

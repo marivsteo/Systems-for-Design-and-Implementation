@@ -14,7 +14,7 @@ public class StudentValidator implements Validator<Student> {
      */
     @Override
     public void validate(Student entity) throws ValidatorException {
-        if( entity.getName() == null || entity.getSerialNumber() == null || entity.getId() < 0 || entity.getGroup() < 0
+        if( entity.getName() == null || entity.getSerialNumber() == null || entity.getId() <= 0 || entity.getGroup() <= 0
                 || entity.getName().equals("") || entity.getSerialNumber().equals("") )
             throw new ValidatorException("StudentValidator > validate: Not all of the fields are valid.");
     }
