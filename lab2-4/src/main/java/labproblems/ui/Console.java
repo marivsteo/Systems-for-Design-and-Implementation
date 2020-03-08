@@ -36,7 +36,7 @@ public class Console {
             Scanner keyboard = new Scanner(System.in);
             System.out.println("Enter a choice:\n0.Exit\n1.Add student\n2.Show all students\n3.Show filtered students by name\n" +
                     "4.Add problem\n5.Show all problems\n6.Show filtered problems by text\n7.Delete student\n8.Update student" +
-                    "\n9.Delete problem\n10.Update problem");
+                    "\n9.Delete problem\n10.Update problem\n11.Show filtered student my serial number");
             String choice = keyboard.nextLine();
             switch(choice) {
                 case "1":
@@ -46,7 +46,7 @@ public class Console {
                     printAllStudents();
                     break;
                 case "3":
-                    filterStudents();
+                    filterStudentsByName();
                     break;
                 case "4":
                     addProblem();
@@ -64,9 +64,13 @@ public class Console {
                     updateStudent();
                     break;
                 case "9":
-
+                    deleteProblem();
+                    break;
                 case "10":
                     updateProblem();
+                    break;
+                case "11":
+                    filterStudentBySerialNumber();
                     break;
                 case "99":
                     studentService.addStudent(1L,"sn1","n1",1);
@@ -82,7 +86,7 @@ public class Console {
      * Method used for filtering students based on name
      *  </p>
      */
-    private void filterStudents() {
+    private void filterStudentsByName() {
         BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
         String substring = "";
         try {
@@ -93,6 +97,20 @@ public class Console {
         }
         System.out.println("Listing the students with the name containing '" + substring +"':");
         Set<Student> students = studentService.filterStudentsByName(substring);
+        students.stream().forEach(System.out::println);
+    }
+
+    private void filterStudentBySerialNumber(){
+        BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
+        String substring = "";
+        try {
+            System.out.println("Enter the substring for the serial number:");
+            substring = bufferRead.readLine();
+        } catch( IOException exception ){
+            System.out.println(exception.toString());
+        }
+        System.out.println("Listing the students with the serial number containing '" + substring +"':");
+        Set<Student> students = studentService.filterStudentsBySerialNumber(substring);
         students.stream().forEach(System.out::println);
     }
 
@@ -172,6 +190,22 @@ public class Console {
         }
         try{
             studentService.removeStudent(id);
+        }catch (NoSuchElementException exception){
+            System.out.println(exception.toString());
+        }
+    }
+
+    private void deleteProblem(){
+        BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
+        Long id = 0L;
+        try {
+            System.out.println("Enter the id (Long) >>");
+            id = NumberUtils.toLong(bufferRead.readLine(), 0L);
+        }catch(IOException exception){
+            System.out.println(exception.toString());
+        }
+        try{
+            problemService.removeProblem(id);
         }catch (NoSuchElementException exception){
             System.out.println(exception.toString());
         }

@@ -57,12 +57,12 @@ public class StudentService {
 
     /**
      * The method returns all students whose name contain the given string.
-     * @param _substring the string we look for in the names
+     * @param _substring the string that it is looked for in the names
      * @return a Set of students whose names contain the string _substring
      */
     public Set<Student> filterStudentsByName(String _substring) {
         Iterable<Student> students = repository.findAll();
-        Set<Student> filteredStudents= new HashSet<>();
+        Set<Student> filteredStudents = new HashSet<>();
         students.forEach(filteredStudents::add);
         // Remove the students that do not have the given substring in their name
         filteredStudents.removeIf(student -> !student.getName().contains(_substring));
@@ -70,7 +70,21 @@ public class StudentService {
     }
 
     /**
-     * The method deletes a student with the given id.
+     * The method returns all students whose serial number contain the given string.
+     * @param _substring the string it is looked for in the serial numbers
+     * @return a Set of students whose serial numbers contain the string _substring
+     */
+    public Set<Student> filterStudentsBySerialNumber(String _substring){
+        Iterable<Student> students = repository.findAll();
+        Set<Student> filteredStudents = new HashSet<>();
+        students.forEach(filteredStudents::add);
+        // Remove the students that do not have the given substring in their serial number
+        filteredStudents.removeIf(student -> !student.getSerialNumber().contains(_substring));
+        return filteredStudents;
+    }
+
+    /**
+     * The method deletes the student with the given id.
      * @param _id the id of the student that will be deleted
      * @throws NoSuchElementException if the given id does not correspond to any student
      */

@@ -49,6 +49,6 @@ public class Problem extends BaseEntity<Long> {
         return "Problem{" +
                 "number=" + number +
                 ", text='" + text + '\'' +
-                '}';
+                '}' + super.toString();
     }
 }

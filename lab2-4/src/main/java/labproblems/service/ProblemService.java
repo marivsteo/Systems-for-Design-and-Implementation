@@ -6,6 +6,8 @@ import labproblems.domain.validators.ValidatorException;
 import labproblems.repository.Repository;
 
 import java.util.HashSet;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -60,6 +62,21 @@ public class ProblemService {
         // Remove the problems that do not have the given substring in their text
         filteredProblems.removeIf(problem -> !problem.getText().contains(_substring));
         return filteredProblems;
+    }
+
+    /**
+     * The method deletes the problem with the given id.
+     * @param _id the id of the problem that will be deleted
+     * @throws NoSuchElementException if the given id does not correspond to any problem
+     */
+    public void removeProblem(Long _id) throws NoSuchElementException{
+        Optional<Problem> problem = repository.findOne(_id);
+        try{
+            Problem problem1 = problem.get();
+            repository.delete(_id);
+        } catch (NoSuchElementException exception){
+            throw new NoSuchElementException("ProblemService > removeProblem: There is no problem with given id = " + _id.toString());
+        }
     }
 
     /**
