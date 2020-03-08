@@ -35,44 +35,42 @@ public class Console {
         while(true) {
             Scanner keyboard = new Scanner(System.in);
             System.out.println("Enter a choice:\n0.Exit\n1.Add student\n2.Show all students\n3.Show filtered students by name\n" +
-                    "4.Add problem\n5.Show all problems\n6.Show filtered problems by text\n7.Delete student\n8.Update student");
+                    "4.Add problem\n5.Show all problems\n6.Show filtered problems by text\n7.Delete student\n8.Update student" +
+                    "\n9.Delete problem\n10.Update problem");
             String choice = keyboard.nextLine();
             switch(choice) {
                 case "1":
-                    System.out.println("Reading a student:");
-                    addStudents();
+                    addStudent();
                     break;
                 case "2":
-                    System.out.println("Listing all the students:");
                     printAllStudents();
                     break;
                 case "3":
-                    System.out.println("Enter the substring for the name:");
-                    String parameter = keyboard.nextLine();
-                    filterStudents(parameter);
+                    filterStudents();
                     break;
                 case "4":
-                    System.out.println("Reading a problem:");
-                    addProblems();
+                    addProblem();
                     break;
                 case "5":
-                    System.out.println("Listing all the problems:");
                     printAllProblems();
                     break;
                 case "6":
-                    System.out.println("Enter the substring for the text:");
-                    String parameter2 = keyboard.nextLine();
-                    filterProblems(parameter2);
+                    filterProblems();
                     break;
                 case "7":
-                    System.out.println("Enter the id of the student you want to delete:");
                     deleteStudent();
                     break;
                 case "8":
                     updateStudent();
                     break;
+                case "9":
+
+                case "10":
+                    updateProblem();
+                    break;
                 case "99":
                     studentService.addStudent(1L,"sn1","n1",1);
+                    problemService.addProblem(1L,1,"pb1");
                     break;
                 case "0":
                     System.exit(0);
@@ -82,19 +80,37 @@ public class Console {
 
     /** <p>
      * Method used for filtering students based on name
-     * @param parameter
-     *          given input from keyboard to search all students with name containing it
-     *          </p>
+     *  </p>
      */
-    private void filterStudents(String parameter) {
-        System.out.println("Listing the students with the name containing '" + parameter +"':");
-        Set<Student> students = studentService.filterStudentsByName(parameter);
+    private void filterStudents() {
+        BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
+        String substring = "";
+        try {
+            System.out.println("Enter the substring for the name:");
+            substring = bufferRead.readLine();
+        } catch( IOException exception ){
+            System.out.println(exception.toString());
+        }
+        System.out.println("Listing the students with the name containing '" + substring +"':");
+        Set<Student> students = studentService.filterStudentsByName(substring);
         students.stream().forEach(System.out::println);
     }
 
-    private void filterProblems(String parameter){
-        System.out.println("Listing the problems with the text containing '" + parameter + "':");
-        Set<Problem> problems = problemService.filterProblemsByText(parameter);
+    /** <p>
+     * Method used for filtering students based on name
+     *  </p>
+     */
+    private void filterProblems(){
+        BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
+        String substring = "";
+        try {
+            System.out.println("Enter the substring for the text:");
+            substring = bufferRead.readLine();
+        } catch( IOException exception ){
+            System.out.println(exception.toString());
+        }
+        System.out.println("Listing the problems with the text containing '" + substring + "':");
+        Set<Problem> problems = problemService.filterProblemsByText(substring);
         problems.stream().forEach(System.out::println);
     }
 
@@ -123,6 +139,28 @@ public class Console {
         }
     }
 
+    private void updateProblem(){
+        BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
+        Long id = 0L;
+        int number = 0;
+        String text = "";
+        try {
+            System.out.println("Enter the id (Long) >>");
+            id = NumberUtils.toLong(bufferRead.readLine(), 0L);
+            System.out.println("Enter the new number (integer) >>");
+            number = NumberUtils.toInt(bufferRead.readLine(),0);
+            System.out.println("Enter the new text (String) >>");
+            text = bufferRead.readLine();
+        }catch(IOException exception){
+            System.out.println(exception.toString());
+        }
+        try {
+            problemService.updateProblem(id, number, text);
+        } catch( Exception exception ){
+            System.out.println(exception.toString());
+        }
+    }
+
     private void deleteStudent(){
         BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
         Long id = 0L;
@@ -140,11 +178,13 @@ public class Console {
     }
 
     private void printAllStudents() {
+        System.out.println("Listing all the students:");
         Set<Student> students = studentService.getAllStudents();
         students.stream().forEach(System.out::println);
     }
 
     private void printAllProblems(){
+        System.out.println("Listing all the problems:");
         Set<Problem> problems = problemService.getAllProblems();
         problems.stream().forEach(System.out::println);
     }
@@ -152,7 +192,7 @@ public class Console {
     /**
      * If a student is not null, it adds it
      */
-    private void addStudents() {
+    private void addStudent() {
         BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
         // Declare and initialize the parameters for the service
         long id = 0L;
@@ -179,7 +219,8 @@ public class Console {
         }
     }
 
-    private void addProblems(){
+    private void addProblem(){
+        System.out.println("Reading a problem:");
         BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
         // Declare and initialize the parameters for the service
         Long id = 0L;

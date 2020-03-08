@@ -16,7 +16,9 @@ import java.util.stream.StreamSupport;
  */
 public class ProblemService {
     private Repository<Long, Problem> repository;
-    public ProblemService(Repository<Long,Problem> _repository) { this.repository = _repository;};
+
+    public ProblemService(Repository<Long,Problem> _repository) {
+        this.repository = _repository;};
 
     /**
      * The method adds a problem with the given attributes.
@@ -59,4 +61,30 @@ public class ProblemService {
         filteredProblems.removeIf(problem -> !problem.getText().contains(_substring));
         return filteredProblems;
     }
+
+    /**
+     * The method updates a problem with the given id.
+     * @param _id the id of the problem what will be updated
+     * @param _number the new number of the updated problem
+     * @param _text the new text of the updated problem
+     * @throws Exception if either the problem with the given id does not exist or the new attributes are not valid
+     */
+    public void updateProblem(Long _id, int _number, String _text) throws Exception {
+        Problem problem = new Problem(_number,_text);
+        problem.setId(_id);
+        ProblemValidator problemValidator = new ProblemValidator();
+        try{
+            problemValidator.validate(problem);
+        } catch( ValidatorException exception){
+            throw exception;
+        }
+        try{
+            if( repository.update(problem) != null ){
+                throw new Exception("ProblemService > updateProblem: There is no problem with the given id = " + _id.toString());
+            }
+        } catch( Exception exception){
+            throw exception;
+        }
+    }
+
 }

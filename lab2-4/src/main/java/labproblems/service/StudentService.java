@@ -90,7 +90,7 @@ public class StudentService {
      * @param _newSerialNumber the new serial number of the updated student
      * @param _newName the new name of the updated student
      * @param _newGroup the new group of the updated student
-     * @throws Exception if either the student with the given id does not exist
+     * @throws Exception if either the student with the given id does not exist or the new attributes are not valid
      */
     public void updateStudent(Long _id, String _newSerialNumber, String _newName, int _newGroup) throws Exception {
         Student student = new Student(_newSerialNumber,_newName,_newGroup);

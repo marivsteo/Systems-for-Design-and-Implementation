@@ -14,7 +14,7 @@ public class ProblemValidator implements Validator<Problem> {
      */
     @Override
     public void validate(Problem entity) throws ValidatorException {
-        if( entity.getId() < 0 || entity.getNumber() < 0 || entity.getText() == null || entity.getText().equals(""))
+        if( entity.getId() <= 0 || entity.getNumber() <= 0 || entity.getText() == null || entity.getText().equals(""))
             throw new ValidatorException("ProblemValidator > validate:  Not all of the fields are valid.");
     }
 }
