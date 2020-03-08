@@ -12,6 +12,7 @@ import labproblems.service.StudentService;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -90,5 +91,45 @@ public class ProblemServiceTest {
 
         assertTrue("The set should contain p2", problems.contains(p2));
         assertFalse("The set should not contain p", problems.contains(p));
+    }
+
+    @Test
+    public void testDeleteProblem() throws Exception {
+        Validator<Problem> problemValidator = new ProblemValidator();
+        Repository<Long, Problem> problemRepository = new InMemoryRepository<>(problemValidator);
+        ProblemService problemService = new ProblemService(problemRepository);
+
+        Problem p = new Problem(1, "Write a C program");
+        p.setId(1L);
+        Problem p2 = new Problem(2, "Write a Python program");
+        p2.setId(2L);
+
+        problemService.addProblem(1L, 1, "Write a C program");
+        problemService.addProblem(2L,2,"Write a Python program");
+
+        problemService.removeProblem(1L);
+
+        assertEquals("The repo should not contain a problem with the ID 1L", Optional.empty(), problemRepository.findOne(1L));
+    }
+
+    @Test
+    public void testUpdateProblem() throws Exception {
+        Validator<Problem> problemValidator = new ProblemValidator();
+        Repository<Long, Problem> problemRepository = new InMemoryRepository<>(problemValidator);
+        ProblemService problemService = new ProblemService(problemRepository);
+
+        Problem p = new Problem(1, "Write a C program");
+        p.setId(1L);
+        Problem p2 = new Problem(2, "Write a Python program");
+        p2.setId(2L);
+
+        problemService.addProblem(1L, 1, "Write a C program");
+        problemService.addProblem(2L,2,"Write a Python program");
+
+        problemService.updateProblem(1L, 3, "Write a Java program");
+
+        assertEquals("The repo should have a problem with number 3", 3, problemRepository.findOne(1L).get().getNumber());
+        assertEquals("The repo should have a problem with a text containing Java", "Write a Java program", problemRepository.findOne(1L).get().getText());
+
     }
 }

@@ -72,7 +72,7 @@ public class StudentServiceTest {
     }
 
     @Test
-    public void testFilterStudentsByText() throws Exception {
+    public void testFilterStudentsByName() throws Exception {
         Validator<Student> studentValidator = new StudentValidator();
         Repository<Long, Student> studentRepository = new InMemoryRepository<>(studentValidator);
         StudentService studentService = new StudentService(studentRepository);
@@ -86,6 +86,26 @@ public class StudentServiceTest {
         studentService.addStudent(2L,"sn2","s2", 2);
 
         Set<Student> students = studentService.filterStudentsByName("s1");
+
+        assertTrue("The set should contain s", students.contains(s));
+        assertFalse("The set should not contain s2", students.contains(s2));
+    }
+
+    @Test
+    public void testFilterStudentsBySerialNumber() throws Exception {
+        Validator<Student> studentValidator = new StudentValidator();
+        Repository<Long, Student> studentRepository = new InMemoryRepository<>(studentValidator);
+        StudentService studentService = new StudentService(studentRepository);
+
+        Student s = new Student("sn1", "s1", 1);
+        s.setId(1L);
+        Student s2 = new Student("sn2", "s2", 2);
+        s2.setId(2L);
+
+        studentService.addStudent(1L, "sn1", "s1", 1);
+        studentService.addStudent(2L,"sn2","s2", 2);
+
+        Set<Student> students = studentService.filterStudentsBySerialNumber("sn1");
 
         assertTrue("The set should contain s", students.contains(s));
         assertFalse("The set should not contain s2", students.contains(s2));
@@ -108,6 +128,28 @@ public class StudentServiceTest {
         studentService.removeStudent(1L);
 
         assertEquals("The repo should not contain a student with the ID 1L", Optional.empty(), studentRepository.findOne(1L));
+        //assertFalse("The set should not contain s2", students.contains(s2));
+    }
+
+    @Test
+    public void testUpdateStudent() throws Exception {
+        Validator<Student> studentValidator = new StudentValidator();
+        Repository<Long, Student> studentRepository = new InMemoryRepository<>(studentValidator);
+        StudentService studentService = new StudentService(studentRepository);
+
+        Student s = new Student("sn1", "s1", 1);
+        s.setId(1L);
+        Student s2 = new Student("sn2", "s2", 2);
+        s2.setId(2L);
+
+        studentService.addStudent(1L, "sn1", "s1", 1);
+        studentService.addStudent(2L,"sn2","s2", 2);
+
+        studentService.updateStudent(1L, "sn3", "s3", 3);
+
+        assertEquals("The repo should have a student with name s3", "s3", studentRepository.findOne(1L).get().getName());
+        assertEquals("The repo should have a student with serial number sn3", "sn3", studentRepository.findOne(1L).get().getSerialNumber());
+
         //assertFalse("The set should not contain s2", students.contains(s2));
     }
 }
