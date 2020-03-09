@@ -31,7 +31,7 @@ public class AssignmentService {
      * @param _grade the grade received for the assignment
      * @throws ValidatorException if the given attributes are invalid
      */
-    public void addAssignment(Long _id, String _name, Student _student, Problem _problem, int _grade) throws ValidatorException {
+    public void addAssignment(Long _id, String _name, Long _student, Long _problem, float _grade) throws ValidatorException {
         try {
             // Create an assignment
             Assignment assignment = new Assignment(_name, _student, _problem, _grade);
@@ -107,7 +107,7 @@ public class AssignmentService {
      * @param _newGrade the new grade for the assignment
      * @throws Exception if either the student with the given id does not exist or the new attributes are not valid
      */
-    public void updateAssignment(Long _id, String _newName, Student _newStudent, Problem _newProblem, int _newGrade) throws Exception {
+    public void updateAssignment(Long _id, String _newName, Long _newStudent, Long _newProblem, float _newGrade) throws Exception {
         Assignment assignment = new Assignment(_newName, _newStudent, _newProblem, _newGrade);
         assignment.setId(_id);
         AssignmentValidator assignmentValidator = new AssignmentValidator();
@@ -120,7 +120,7 @@ public class AssignmentService {
 
         try {
             if (repository.update(assignment) != null ) {
-                throw new Exception("AssignmentService > updateAssignment: There is no student with the given id = " + assignment.getId().toString());
+                throw new Exception("AssignmentService > updateAssignment: There is no assignment with the given id = " + assignment.getId().toString());
             }
         } catch( Exception exception){
             throw exception;

@@ -1,12 +1,15 @@
 package labproblems;
 
+import labproblems.domain.Assignment;
 import labproblems.domain.Problem;
 import labproblems.domain.Student;
+import labproblems.domain.validators.AssignmentValidator;
 import labproblems.domain.validators.ProblemValidator;
 import labproblems.domain.validators.StudentValidator;
 import labproblems.domain.validators.Validator;
 import labproblems.repository.InMemoryRepository;
 import labproblems.repository.Repository;
+import labproblems.service.AssignmentService;
 import labproblems.service.ProblemService;
 import labproblems.service.StudentService;
 import labproblems.ui.Console;
@@ -41,11 +44,14 @@ public class Main {
         //in-memory repo
          Validator<Student> studentValidator = new StudentValidator();
          Validator<Problem> problemValidator = new ProblemValidator();
+         Validator<Assignment> assignmentValidator = new AssignmentValidator();
          Repository<Long, Student> studentRepository = new InMemoryRepository<>(studentValidator);
          Repository<Long, Problem> problemRepository = new InMemoryRepository<>(problemValidator);
+         Repository<Long, Assignment> assignmentRepository = new InMemoryRepository<>(assignmentValidator);
          StudentService studentService = new StudentService(studentRepository);
          ProblemService problemService = new ProblemService(problemRepository);
-         Console console = new Console(studentService,problemService);
+         AssignmentService assignmentService = new AssignmentService(assignmentRepository);
+         Console console = new Console(studentService,problemService,assignmentService);
          console.runConsole();
     }
 }

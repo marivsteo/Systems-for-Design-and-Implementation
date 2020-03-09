@@ -5,24 +5,24 @@ import java.util.Objects;
 public class Assignment extends BaseEntity<Long> {
 
     private String name;
-    private Student student;
-    private Problem problem;
-    private int grade;
+    private Long student;
+    private Long problem;
+    private float grade;
 
     public Assignment() {}
 
-    public Assignment(String name, Student student, Problem problem, int grade) {
+    public Assignment(String name, Long student, Long problem, float grade) {
         this.name = name;
         this.student = student;
         this.problem = problem;
         this.grade = grade;
     }
 
-    public Assignment(String name, Student student, Problem problem) {
+    public Assignment(String name, Long student, Long problem) {
         this.name = name;
         this.student = student;
         this.problem = problem;
-        this.grade = 0;
+        this.grade = (float) 0;
     }
 
     public String getName() {
@@ -33,27 +33,27 @@ public class Assignment extends BaseEntity<Long> {
         this.name = name;
     }
 
-    public Student getStudent() {
+    public Long getStudent() {
         return student;
     }
 
-    public void setStudent(Student student) {
+    public void setStudent(Long student) {
         this.student = student;
     }
 
-    public Problem getProblem() {
+    public Long getProblem() {
         return problem;
     }
 
-    public void setProblem(Problem problem) {
+    public void setProblem(Long problem) {
         this.problem = problem;
     }
 
-    public int getGrade() {
+    public float getGrade() {
         return grade;
     }
 
-    public void setGrade(int grade) {
+    public void setGrade(float grade) {
         this.grade = grade;
     }
 
@@ -80,6 +80,6 @@ public class Assignment extends BaseEntity<Long> {
                 ", student=" + student +
                 ", problem=" + problem +
                 ", grade=" + grade +
-                '}';
+                '}' + super.toString();
     }
 }

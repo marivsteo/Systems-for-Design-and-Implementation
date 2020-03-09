@@ -1,8 +1,10 @@
 package labproblems.ui;
 
+import labproblems.domain.Assignment;
 import labproblems.domain.Problem;
 import labproblems.domain.Student;
 import labproblems.domain.validators.ValidatorException;
+import labproblems.service.AssignmentService;
 import labproblems.service.ProblemService;
 import labproblems.service.StudentService;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -22,10 +24,12 @@ import java.util.Set;
 public class Console {
     private StudentService studentService;
     private ProblemService problemService;
+    private AssignmentService assignmentService;
 
-    public Console(StudentService _studentService, ProblemService _problemService) {
+    public Console(StudentService _studentService, ProblemService _problemService, AssignmentService _assignmentService) {
         this.studentService = _studentService;
         this.problemService = _problemService;
+        this.assignmentService = _assignmentService;
     }
 
     /**
@@ -36,7 +40,8 @@ public class Console {
             Scanner keyboard = new Scanner(System.in);
             System.out.println("Enter a choice:\n0.Exit\n1.Add student\n2.Show all students\n3.Show filtered students by name\n" +
                     "4.Add problem\n5.Show all problems\n6.Show filtered problems by text\n7.Delete student\n8.Update student" +
-                    "\n9.Delete problem\n10.Update problem\n11.Show filtered student my serial number");
+                    "\n9.Delete problem\n10.Update problem\n11.Show filtered student my serial number\n12.Add assignment" +
+                    "\n13.Show all assignments\n14.Update assignment\n15.Delete assignment");
             String choice = keyboard.nextLine();
             switch(choice) {
                 case "1":
@@ -72,9 +77,22 @@ public class Console {
                 case "11":
                     filterStudentBySerialNumber();
                     break;
+                case "12":
+                    addAssignment();
+                    break;
+                case "13":
+                    printAllAssignments();
+                    break;
+                case "14":
+                    updateAssignment();
+                    break;
+                case "15":
+                    deleteAssignment();
+                    break;
                 case "99":
                     studentService.addStudent(1L,"sn1","n1",1);
                     problemService.addProblem(1L,1,"pb1");
+                    assignmentService.addAssignment(1L,"asdas",1L,1L,(float)5.69);
                     break;
                 case "0":
                     System.exit(0);
@@ -82,10 +100,6 @@ public class Console {
         }
     }
 
-    /** <p>
-     * Method used for filtering students based on name
-     *  </p>
-     */
     private void filterStudentsByName() {
         BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
         String substring = "";
@@ -114,10 +128,6 @@ public class Console {
         students.stream().forEach(System.out::println);
     }
 
-    /** <p>
-     * Method used for filtering students based on name
-     *  </p>
-     */
     private void filterProblems(){
         BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
         String substring = "";
@@ -179,6 +189,35 @@ public class Console {
         }
     }
 
+    private void updateAssignment(){
+        BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
+        long id = 0L;
+        long studentId = 0L;
+        long problemId = 0L;
+        String name = "";
+        float grade = (float)0;
+        // Read the parameters
+        try {
+            System.out.println("Enter the id (Long) >>");
+            id = NumberUtils.toLong(bufferRead.readLine(), 0L);
+            System.out.println("Enter the new name (String) >>");
+            name = bufferRead.readLine();
+            System.out.println("Enter the new studentId (Long) >>");
+            studentId = NumberUtils.toLong(bufferRead.readLine(), 0L);
+            System.out.println("Enter the new problemId (Long) >>");
+            problemId = NumberUtils.toLong(bufferRead.readLine(), 0L);
+            System.out.println("Enter the new grade (float) >>");
+            grade = NumberUtils.toFloat(bufferRead.readLine(), (float)0);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        try {
+            assignmentService.updateAssignment(id,name,studentId,problemId,grade);
+        } catch( Exception exception ){
+            System.out.println(exception.toString());
+        }
+    }
+
     private void deleteStudent(){
         BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
         Long id = 0L;
@@ -211,6 +250,22 @@ public class Console {
         }
     }
 
+    private void deleteAssignment(){
+        BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
+        Long id = 0L;
+        try {
+            System.out.println("Enter the id (Long) >>");
+            id = NumberUtils.toLong(bufferRead.readLine(), 0L);
+        }catch(IOException exception){
+            System.out.println(exception.toString());
+        }
+        try{
+            assignmentService.removeAssignment(id);
+        }catch (NoSuchElementException exception){
+            System.out.println(exception.toString());
+        }
+    }
+
     private void printAllStudents() {
         System.out.println("Listing all the students:");
         Set<Student> students = studentService.getAllStudents();
@@ -223,9 +278,12 @@ public class Console {
         problems.stream().forEach(System.out::println);
     }
 
-    /**
-     * If a student is not null, it adds it
-     */
+    private void printAllAssignments(){
+        System.out.println("Listing all the assignments:");
+        Set<Assignment> assignments = assignmentService.getAllAssignments();
+        assignments.stream().forEach(System.out::println);
+    }
+
     private void addStudent() {
         BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
         // Declare and initialize the parameters for the service
@@ -274,6 +332,36 @@ public class Console {
         try{
             problemService.addProblem(id,number,text);
         } catch (ValidatorException e){
+            System.out.println(e.toString());
+        }
+    }
+
+    private void addAssignment(){
+        BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
+        // Declare and initialize the parameters for the service
+        long id = 0L;
+        long studentId = 0L;
+        long problemId = 0L;
+        String name = "";
+        float grade = (float)0;
+        // Read the parameters
+        try {
+            System.out.println("Enter the id (Long) >>");
+            id = NumberUtils.toLong(bufferRead.readLine(), 0L);
+            System.out.println("Enter the name (String) >>");
+            name = bufferRead.readLine();
+            System.out.println("Enter the studentId (Long) >>");
+            studentId = NumberUtils.toLong(bufferRead.readLine(), 0L);
+            System.out.println("Enter the problemId (Long) >>");
+            problemId = NumberUtils.toLong(bufferRead.readLine(), 0L);
+            System.out.println("Enter the grade (float) >>");
+            grade = NumberUtils.toFloat(bufferRead.readLine(), (float)0);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        try {
+            assignmentService.addAssignment(id,name,studentId,problemId,grade);
+        } catch (ValidatorException e) {
             System.out.println(e.toString());
         }
     }
