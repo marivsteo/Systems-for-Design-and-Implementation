@@ -129,7 +129,7 @@ public class AssignmentServiceTest {
         //assertFalse("The set should not contain s2", assignments.contains(s2));
     }
 
-    /*
+
     @Test
     public void testUpdateAssignment() throws Exception {
         Validator<Assignment> assignmentValidator = new AssignmentValidator();
@@ -141,6 +141,7 @@ public class AssignmentServiceTest {
         Assignment a2 = new Assignment("a2", 2L, 2L, 10);
         a2.setId(2L);
         Assignment a3 = new Assignment("a3",3L,3L,10);
+        a3.setId(3L);
 
         assignmentService.addAssignment(1L, "a1", 1L, 1L, 0);
         assignmentService.addAssignment(2L,"a2",2L,2L, 10);
@@ -149,8 +150,6 @@ public class AssignmentServiceTest {
         assignmentService.updateAssignment(1L, "a3", 3L, 3L, 9);
 
         assertEquals("The repo should have a assignment with name a3", "a3", assignmentRepository.findOne(1L).get().getName());
-        assertEquals("The repo should have a assignment with student s3", 3L, assignmentRepository.findOne(1L).get().getStudent());
     }
-*/
 
 }
