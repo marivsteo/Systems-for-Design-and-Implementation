@@ -74,7 +74,7 @@ public class AssignmentService {
      * @param _student the student for which the search is made
      * @return a Set of assignments that belong to the given student
      */
-    public Set<Assignment> filterAssignmentsByStudent(Student _student){
+    public Set<Assignment> filterAssignmentsByStudent(Long _student){
         Iterable<Assignment> assignments = repository.findAll();
         Set<Assignment> filteredAssignments = new HashSet<>();
         assignments.forEach(filteredAssignments::add);
