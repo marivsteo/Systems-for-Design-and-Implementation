@@ -1,7 +1,6 @@
 package labproblems.repository;
 
 import labproblems.domain.Student;
-import labproblems.domain.validators.Validator;
 import labproblems.domain.validators.ValidatorException;
 
 import java.io.BufferedWriter;
@@ -15,13 +14,14 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * @author Marius
+ * @author radu.
  */
 public class StudentFileRepository extends InMemoryRepository<Long, Student> {
     private String fileName;
 
-    public StudentFileRepository(Validator<Student> validator, String fileName) {
+    public StudentFileRepository( String fileName) {
         this.fileName = fileName;
+
         loadData();
     }
 
@@ -39,7 +39,7 @@ public class StudentFileRepository extends InMemoryRepository<Long, Student> {
 
                 Student student = new Student(serialNumber, name, group);
                 student.setId(id);
-
+                System.out.println(student);
                 try {
                     super.save(student);
                 } catch (ValidatorException e) {

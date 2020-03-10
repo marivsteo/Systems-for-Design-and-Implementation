@@ -76,6 +76,7 @@ public class InMemoryRepository<ID, T extends BaseEntity<ID>> implements Reposit
         } catch (AssertionError error){
             throw new IllegalArgumentException("InMemoryRepository > delete : id must not be null.");
         }
+
         return Optional.ofNullable(entities.remove(id));
     }
 

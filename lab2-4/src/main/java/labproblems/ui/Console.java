@@ -40,7 +40,7 @@ public class Console {
             Scanner keyboard = new Scanner(System.in);
             System.out.println("Enter a choice:\n0.Exit\n1.Add student\n2.Show all students\n3.Show filtered students by name\n" +
                     "4.Add problem\n5.Show all problems\n6.Show filtered problems by text\n7.Delete student\n8.Update student" +
-                    "\n9.Delete problem\n10.Update problem\n11.Show filtered student my serial number\n12.Add assignment" +
+                    "\n9.Delete problem\n10.Update problem\n11.Show filtered student by serial number\n12.Add assignment" +
                     "\n13.Show all assignments\n14.Update assignment\n15.Delete assignment");
             String choice = keyboard.nextLine();
             switch(choice) {

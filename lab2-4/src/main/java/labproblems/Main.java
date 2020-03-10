@@ -9,10 +9,14 @@ import labproblems.domain.validators.StudentValidator;
 import labproblems.domain.validators.Validator;
 import labproblems.repository.InMemoryRepository;
 import labproblems.repository.Repository;
+import labproblems.repository.StudentFileRepository;
 import labproblems.service.AssignmentService;
 import labproblems.service.ProblemService;
 import labproblems.service.StudentService;
 import labproblems.ui.Console;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Created by Marius
@@ -41,7 +45,25 @@ import labproblems.ui.Console;
 
 public class Main {
     public static void main(String args[]) {
-        //in-memory repo
+         try {
+            System.out.println(new File(".").getCanonicalPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //in file repo
+        Validator<Problem> problemValidator = new ProblemValidator();
+        AssignmentValidator assignmentValidator = new AssignmentValidator();
+        Repository<Long, Problem> problemRepository = new InMemoryRepository<>();
+        Repository<Long, Assignment> assignmentRepository = new InMemoryRepository<>();
+        ProblemService problemService = new ProblemService(problemRepository);
+        Validator<Student> studentValidator = new StudentValidator();
+        Repository<Long, Student> studentRepository = new StudentFileRepository("./data/students");
+        StudentService studentService = new StudentService(studentRepository);
+        AssignmentService assignmentService = new AssignmentService(assignmentRepository,assignmentValidator,studentService,problemService);
+        Console console = new Console(studentService,problemService,assignmentService);
+        console.runConsole();
+         /*
+         /in-memory repo
          Validator<Student> studentValidator = new StudentValidator();
          Validator<Problem> problemValidator = new ProblemValidator();
          AssignmentValidator assignmentValidator = new AssignmentValidator();
@@ -53,5 +75,6 @@ public class Main {
          AssignmentService assignmentService = new AssignmentService(assignmentRepository,assignmentValidator,studentService,problemService);
          Console console = new Console(studentService,problemService,assignmentService);
          console.runConsole();
+          */
     }
 }
