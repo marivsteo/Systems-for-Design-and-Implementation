@@ -17,10 +17,8 @@ import java.util.stream.Collectors;
 public class InMemoryRepository<ID, T extends BaseEntity<ID>> implements Repository<ID, T> {
 
     private Map<ID, T> entities;
-    private Validator<T> validator;
 
-    public InMemoryRepository(Validator<T> validator) {
-        this.validator = validator;
+    public InMemoryRepository() {
         entities = new HashMap<>();
     }
 
@@ -30,7 +28,7 @@ public class InMemoryRepository<ID, T extends BaseEntity<ID>> implements Reposit
      * @return an Optional, the Student if exists, null if not
      */
     @Override
-    public Optional<T> findOne(ID id) throws ValidatorException{
+    public Optional<T> findOne(ID id) throws IllegalArgumentException{
 
         try{
             assert(id!=null);
@@ -55,20 +53,14 @@ public class InMemoryRepository<ID, T extends BaseEntity<ID>> implements Reposit
      * Saves an student
      * @param entity must not be null.
      * @return Optional, the student that was added, null otherwise
-     * @throws ValidatorException if the student is not valid
      */
     @Override
-    public Optional<T> save(T entity) throws ValidatorException {
+    public Optional<T> save(T entity) throws IllegalArgumentException {
         try{
             assert (entity!=null);
         } catch(AssertionError error) {
             throw new IllegalArgumentException("InMemoryRepository > save: ID must not be null.");
         }
-        try {
-            validator.validate(entity);
-        } catch (ValidatorException e) {
-            System.out.println("Student attributes are not valid, can not add it");
-            throw e; }
         return Optional.ofNullable(entities.putIfAbsent(entity.getId(), entity));
     }
 

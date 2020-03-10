@@ -125,4 +125,13 @@ public class StudentService {
             throw exception;
         }
     }
-}
+
+    /**
+     * This method returns the student with the id equal to the given id.
+     * @param id the id of the student that is looked for
+     * @return an Optional, the student if it exists, null if not
+     */
+    public Optional<Student> findStudent(Long id){
+        return this.repository.findOne(id);
+    }
+ }

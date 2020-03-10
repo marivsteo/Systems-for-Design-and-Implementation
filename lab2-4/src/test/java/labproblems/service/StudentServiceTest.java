@@ -25,7 +25,7 @@ public class StudentServiceTest {
     @Test
     public void testAddStudent() throws ValidatorException{
         StudentValidator studentValidator = new StudentValidator();
-        Repository<Long, Student> repository = new InMemoryRepository<>(studentValidator);
+        Repository<Long, Student> repository = new InMemoryRepository<>();
         StudentService studentService = new StudentService(repository);
 
         Student s = new Student("sn1", "s1", 1);
@@ -45,7 +45,7 @@ public class StudentServiceTest {
     @Test(expected = ValidatorException.class)
     public void testAddException() throws Exception {
         Validator<Student> studentValidator = new StudentValidator();
-        Repository<Long, Student> studentRepository = new InMemoryRepository<>(studentValidator);
+        Repository<Long, Student> studentRepository = new InMemoryRepository<>();
         StudentService studentService = new StudentService(studentRepository);
 
         studentService.addStudent(1L, "sn1", "", 1);
@@ -54,7 +54,7 @@ public class StudentServiceTest {
     @Test
     public void testGetAll() throws Exception {
         Validator<Student> studentValidator = new StudentValidator();
-        Repository<Long, Student> studentRepository = new InMemoryRepository<>(studentValidator);
+        Repository<Long, Student> studentRepository = new InMemoryRepository<>();
         StudentService studentService = new StudentService(studentRepository);
 
         Student s = new Student("sn1", "s1", 1);
@@ -74,7 +74,7 @@ public class StudentServiceTest {
     @Test
     public void testFilterStudentsByName() throws Exception {
         Validator<Student> studentValidator = new StudentValidator();
-        Repository<Long, Student> studentRepository = new InMemoryRepository<>(studentValidator);
+        Repository<Long, Student> studentRepository = new InMemoryRepository<>();
         StudentService studentService = new StudentService(studentRepository);
 
         Student s = new Student("sn1", "s1", 1);
@@ -94,7 +94,7 @@ public class StudentServiceTest {
     @Test
     public void testFilterStudentsBySerialNumber() throws Exception {
         Validator<Student> studentValidator = new StudentValidator();
-        Repository<Long, Student> studentRepository = new InMemoryRepository<>(studentValidator);
+        Repository<Long, Student> studentRepository = new InMemoryRepository<>();
         StudentService studentService = new StudentService(studentRepository);
 
         Student s = new Student("sn1", "s1", 1);
@@ -114,7 +114,7 @@ public class StudentServiceTest {
     @Test
     public void testDeleteStudent() throws Exception {
         Validator<Student> studentValidator = new StudentValidator();
-        Repository<Long, Student> studentRepository = new InMemoryRepository<>(studentValidator);
+        Repository<Long, Student> studentRepository = new InMemoryRepository<>();
         StudentService studentService = new StudentService(studentRepository);
 
         Student s = new Student("sn1", "s1", 1);
@@ -134,7 +134,7 @@ public class StudentServiceTest {
     @Test
     public void testUpdateStudent() throws Exception {
         Validator<Student> studentValidator = new StudentValidator();
-        Repository<Long, Student> studentRepository = new InMemoryRepository<>(studentValidator);
+        Repository<Long, Student> studentRepository = new InMemoryRepository<>();
         StudentService studentService = new StudentService(studentRepository);
 
         Student s = new Student("sn1", "s1", 1);

@@ -21,9 +21,7 @@ public class StudentFileRepository extends InMemoryRepository<Long, Student> {
     private String fileName;
 
     public StudentFileRepository(Validator<Student> validator, String fileName) {
-        super(validator);
         this.fileName = fileName;
-
         loadData();
     }
 

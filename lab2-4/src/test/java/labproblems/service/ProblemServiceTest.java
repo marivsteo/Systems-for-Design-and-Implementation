@@ -28,7 +28,7 @@ public class ProblemServiceTest {
     @Test
     public void testAddProblem() throws ValidatorException {
         ProblemValidator problemValidator = new ProblemValidator();
-        Repository<Long, Problem> repository = new InMemoryRepository<>(problemValidator);
+        Repository<Long, Problem> repository = new InMemoryRepository<>();
         ProblemService problemService = new ProblemService(repository);
 
         Problem p = new Problem(1, "Write a C program");
@@ -47,7 +47,7 @@ public class ProblemServiceTest {
     @Test(expected = ValidatorException.class)
     public void testAddException() throws Exception {
         Validator<Problem> problemValidator = new ProblemValidator();
-        Repository<Long, Problem> problemRepository = new InMemoryRepository<>(problemValidator);
+        Repository<Long, Problem> problemRepository = new InMemoryRepository<>();
         ProblemService problemService = new ProblemService(problemRepository);
 
         problemService.addProblem(1L, 1, "");
@@ -56,7 +56,7 @@ public class ProblemServiceTest {
     @Test
     public void testGetAll() throws Exception {
         Validator<Problem> problemValidator = new ProblemValidator();
-        Repository<Long, Problem> problemRepository = new InMemoryRepository<>(problemValidator);
+        Repository<Long, Problem> problemRepository = new InMemoryRepository<>();
         ProblemService problemService = new ProblemService(problemRepository);
 
         Problem p = new Problem(1, "Write a C program");
@@ -76,7 +76,7 @@ public class ProblemServiceTest {
     @Test
     public void testFilterProblemsByText() throws Exception {
         Validator<Problem> problemValidator = new ProblemValidator();
-        Repository<Long, Problem> problemRepository = new InMemoryRepository<>(problemValidator);
+        Repository<Long, Problem> problemRepository = new InMemoryRepository<>();
         ProblemService problemService = new ProblemService(problemRepository);
 
         Problem p = new Problem(1, "Write a C program");
@@ -96,7 +96,7 @@ public class ProblemServiceTest {
     @Test
     public void testDeleteProblem() throws Exception {
         Validator<Problem> problemValidator = new ProblemValidator();
-        Repository<Long, Problem> problemRepository = new InMemoryRepository<>(problemValidator);
+        Repository<Long, Problem> problemRepository = new InMemoryRepository<>();
         ProblemService problemService = new ProblemService(problemRepository);
 
         Problem p = new Problem(1, "Write a C program");
@@ -115,7 +115,7 @@ public class ProblemServiceTest {
     @Test
     public void testUpdateProblem() throws Exception {
         Validator<Problem> problemValidator = new ProblemValidator();
-        Repository<Long, Problem> problemRepository = new InMemoryRepository<>(problemValidator);
+        Repository<Long, Problem> problemRepository = new InMemoryRepository<>();
         ProblemService problemService = new ProblemService(problemRepository);
 
         Problem p = new Problem(1, "Write a C program");

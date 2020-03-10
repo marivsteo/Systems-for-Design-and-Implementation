@@ -104,4 +104,13 @@ public class ProblemService {
         }
     }
 
+    /**
+     * This method returns the problem with the id equal to the given id.
+     * @param id the id of the problem that is looked for
+     * @return an Optional. the problem if it exists, null if not
+     */
+    public Optional<Problem> findProblem(Long id){
+        return this.repository.findOne(id);
+    }
+
 }

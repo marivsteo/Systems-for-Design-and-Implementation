@@ -17,10 +17,25 @@ import java.util.stream.StreamSupport;
 
 public class AssignmentService {
     private Repository<Long, Assignment> repository;
+    private AssignmentValidator assignmentValidator;
+    private StudentService studentService;
+    private ProblemService problemService;
 
-    public AssignmentService(Repository<Long, Assignment> repository) {
+    public AssignmentService(Repository<Long, Assignment> repository, AssignmentValidator assignmentValidator,
+                             StudentService studentService, ProblemService problemService) {
         this.repository = repository;
+        this.assignmentValidator = assignmentValidator;
+        this.studentService = studentService;
+        this.problemService = problemService;
     }
+
+    public void validateIds(Long studentId, Long problemId) throws ValidatorException{
+        if( !this.studentService.findStudent(studentId).isPresent()
+                ||  !this.problemService.findProblem(problemId).isPresent()){
+            throw new ValidatorException("The given ids for the student or/and problem is/are not valid.");
+        }
+    }
+
 
     /**
      * The method adds an assignment with the given attributes.
@@ -34,11 +49,11 @@ public class AssignmentService {
     public void addAssignment(Long _id, String _name, Long _student, Long _problem, float _grade) throws ValidatorException {
         try {
             // Create an assignment
+            validateIds(_student,_problem);
             Assignment assignment = new Assignment(_name, _student, _problem, _grade);
             assignment.setId(_id);
             // Validate the assignment
-            AssignmentValidator validator = new AssignmentValidator();
-            validator.validate(assignment);
+            this.assignmentValidator.validate(assignment);
             // If it is valid, save it
             repository.save(assignment);
         } catch(ValidatorException exception){
@@ -110,10 +125,9 @@ public class AssignmentService {
     public void updateAssignment(Long _id, String _newName, Long _newStudent, Long _newProblem, float _newGrade) throws Exception {
         Assignment assignment = new Assignment(_newName, _newStudent, _newProblem, _newGrade);
         assignment.setId(_id);
-        AssignmentValidator assignmentValidator = new AssignmentValidator();
 
         try {
-            assignmentValidator.validate(assignment);
+            this.assignmentValidator.validate(assignment);
         } catch (ValidatorException exception) {
             throw exception;
         }

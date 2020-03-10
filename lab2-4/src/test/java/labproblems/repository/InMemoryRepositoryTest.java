@@ -24,7 +24,7 @@ public class InMemoryRepositoryTest {
     @Test
     public void testFindOne() throws Exception {
         Validator<Student> studentValidator = new StudentValidator();
-        Repository<Long, Student> studentRepository = new InMemoryRepository<>(studentValidator);
+        Repository<Long, Student> studentRepository = new InMemoryRepository<>();
 
         Student s = new Student("sn1", "s1", 1);
         s.setId(1L);
@@ -44,7 +44,7 @@ public class InMemoryRepositoryTest {
     @Test
     public void testFindAll() throws Exception {
         Validator<Student> studentValidator = new StudentValidator();
-        Repository<Long, Student> studentRepository = new InMemoryRepository<>(studentValidator);
+        Repository<Long, Student> studentRepository = new InMemoryRepository<>();
 
         Student s = new Student("sn1", "s1", 1);
         s.setId(1L);
@@ -69,7 +69,7 @@ public class InMemoryRepositoryTest {
     @Test
     public void testSave() throws Exception {
         Validator<Student> studentValidator = new StudentValidator();
-        Repository<Long, Student> studentRepository = new InMemoryRepository<>(studentValidator);
+        Repository<Long, Student> studentRepository = new InMemoryRepository<>();
 
         Student s = new Student("sn1", "s1", 1);
         s.setId(1L);
@@ -95,34 +95,12 @@ public class InMemoryRepositoryTest {
         catch (IllegalArgumentException e) {
             // Expected, do nothing.
         }
-
-        try {
-            studentRepository.save(s4);
-            fail("Adding " + s4.toString() + " should have thrown a ValidatorException");
-        }
-        catch (ValidatorException e) {
-            // Expected, do nothing.
-        }
-    }
-
-    @Test(expected = ValidatorException.class)
-    public void testSaveException() throws Exception {
-        Validator<Student> studentValidator = new StudentValidator();
-        Repository<Long, Student> studentRepository = new InMemoryRepository<>(studentValidator);
-
-        Student s = new Student(null, "s1", 1);
-        s.setId(1L);
-        Student s2 = new Student("sn2", null, 2);
-        s2.setId(2L);
-
-        studentRepository.save(s);
-        studentRepository.save(s2);
     }
 
     @Test
     public void testDelete() throws Exception {
         Validator<Student> studentValidator = new StudentValidator();
-        Repository<Long, Student> studentRepository = new InMemoryRepository<>(studentValidator);
+        Repository<Long, Student> studentRepository = new InMemoryRepository<>();
 
         Student s = new Student("sn1", "s1", 1);
         s.setId(1L);
@@ -152,7 +130,7 @@ public class InMemoryRepositoryTest {
     @Test
     public void testUpdate() throws Exception {
         Validator<Student> studentValidator = new StudentValidator();
-        Repository<Long, Student> studentRepository = new InMemoryRepository<>(studentValidator);
+        Repository<Long, Student> studentRepository = new InMemoryRepository<>();
 
         Student s = new Student("sn1", "s1", 1);
         s.setId(1L);
@@ -184,23 +162,4 @@ public class InMemoryRepositoryTest {
         }
     }
 
-    @Test(expected = ValidatorException.class)
-    public void testUpdateException() throws Exception {
-        Validator<Student> studentValidator = new StudentValidator();
-        Repository<Long, Student> studentRepository = new InMemoryRepository<>(studentValidator);
-
-        Student s = new Student("sn1", "s1", 1);
-        s.setId(1L);
-        Student s2 = new Student("sn2", null, 2);
-        s2.setId(2L);
-
-        studentRepository.save(s);
-        studentRepository.save(s2);
-
-        studentRepository.update(s2);
-
-        //It is obvious that this will throw an exception because we can not even save an invalid student in the
-        //repository, so we should not even have this test method
-        //i.e. The program does not even get to studentRepository.update(s2);
-    }
 }

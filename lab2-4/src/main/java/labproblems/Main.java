@@ -44,13 +44,13 @@ public class Main {
         //in-memory repo
          Validator<Student> studentValidator = new StudentValidator();
          Validator<Problem> problemValidator = new ProblemValidator();
-         Validator<Assignment> assignmentValidator = new AssignmentValidator();
-         Repository<Long, Student> studentRepository = new InMemoryRepository<>(studentValidator);
-         Repository<Long, Problem> problemRepository = new InMemoryRepository<>(problemValidator);
-         Repository<Long, Assignment> assignmentRepository = new InMemoryRepository<>(assignmentValidator);
+         AssignmentValidator assignmentValidator = new AssignmentValidator();
+         Repository<Long, Student> studentRepository = new InMemoryRepository<>();
+         Repository<Long, Problem> problemRepository = new InMemoryRepository<>();
+         Repository<Long, Assignment> assignmentRepository = new InMemoryRepository<>();
          StudentService studentService = new StudentService(studentRepository);
          ProblemService problemService = new ProblemService(problemRepository);
-         AssignmentService assignmentService = new AssignmentService(assignmentRepository);
+         AssignmentService assignmentService = new AssignmentService(assignmentRepository,assignmentValidator,studentService,problemService);
          Console console = new Console(studentService,problemService,assignmentService);
          console.runConsole();
     }

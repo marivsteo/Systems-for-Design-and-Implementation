@@ -11,6 +11,7 @@ import labproblems.repository.InMemoryRepository;
 import labproblems.repository.Repository;
 import org.junit.Test;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 
@@ -21,9 +22,17 @@ public class AssignmentServiceTest {
     
     @Test
     public void testAddAssignment() throws ValidatorException {
+        Repository<Long, Student> studentRepository = new InMemoryRepository<>();
+        Repository<Long, Problem> problemRepository = new InMemoryRepository<>();
+        StudentService studentService = new StudentService(studentRepository);
+        ProblemService problemService = new ProblemService(problemRepository);
+        studentService.addStudent(1L,"SN1","N1",1);
+        studentService.addStudent(2L,"SN2","N2",2);
+        problemService.addProblem(1L,1,"text");
+        problemService.addProblem(2L,2,"text");
         AssignmentValidator assignmentValidator = new AssignmentValidator();
-        Repository<Long, Assignment> repository = new InMemoryRepository<>(assignmentValidator);
-        AssignmentService assignmentService = new AssignmentService(repository);
+        Repository<Long, Assignment> repository = new InMemoryRepository<>();
+        AssignmentService assignmentService = new AssignmentService(repository,assignmentValidator,studentService,problemService);
 
         Assignment a = new Assignment("a1", 1L, 1L, 0);
         a.setId(1L);
@@ -39,11 +48,15 @@ public class AssignmentServiceTest {
     }
 
 
-    @Test(expected = ValidatorException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testAddException() throws Exception {
-        Validator<Assignment> assignmentValidator = new AssignmentValidator();
-        Repository<Long, Assignment> assignmentRepository = new InMemoryRepository<>(assignmentValidator);
-        AssignmentService assignmentService = new AssignmentService(assignmentRepository);
+        Repository<Long, Student> studentRepository = new InMemoryRepository<>();
+        Repository<Long, Problem> problemRepository = new InMemoryRepository<>();
+        StudentService studentService = new StudentService(studentRepository);
+        ProblemService problemService = new ProblemService(problemRepository);
+        AssignmentValidator assignmentValidator = new AssignmentValidator();
+        Repository<Long, Assignment> repository = new InMemoryRepository<>();
+        AssignmentService assignmentService = new AssignmentService(repository,assignmentValidator,studentService,problemService);
 
         assignmentService.addAssignment(1L, "a1", null, null, 0);
     }
@@ -51,9 +64,17 @@ public class AssignmentServiceTest {
 
     @Test
     public void testGetAll() throws Exception {
-        Validator<Assignment> assignmentValidator = new AssignmentValidator();
-        Repository<Long, Assignment> assignmentRepository = new InMemoryRepository<>(assignmentValidator);
-        AssignmentService assignmentService = new AssignmentService(assignmentRepository);
+        Repository<Long, Student> studentRepository = new InMemoryRepository<>();
+        Repository<Long, Problem> problemRepository = new InMemoryRepository<>();
+        StudentService studentService = new StudentService(studentRepository);
+        ProblemService problemService = new ProblemService(problemRepository);
+        studentService.addStudent(1L,"SN1","N1",1);
+        studentService.addStudent(2L,"SN2","N2",2);
+        problemService.addProblem(1L,1,"text");
+        problemService.addProblem(2L,2,"text");
+        AssignmentValidator assignmentValidator = new AssignmentValidator();
+        Repository<Long, Assignment> repository = new InMemoryRepository<>();
+        AssignmentService assignmentService = new AssignmentService(repository,assignmentValidator,studentService,problemService);
 
         Assignment a = new Assignment("a1", 1L, 1L, 0);
         a.setId(1L);
@@ -71,9 +92,17 @@ public class AssignmentServiceTest {
 
     @Test
     public void testFilterAssignmentsByStudent() throws Exception {
-        Validator<Assignment> assignmentValidator = new AssignmentValidator();
-        Repository<Long, Assignment> assignmentRepository = new InMemoryRepository<>(assignmentValidator);
-        AssignmentService assignmentService = new AssignmentService(assignmentRepository);
+        Repository<Long, Student> studentRepository = new InMemoryRepository<>();
+        Repository<Long, Problem> problemRepository = new InMemoryRepository<>();
+        StudentService studentService = new StudentService(studentRepository);
+        ProblemService problemService = new ProblemService(problemRepository);
+        studentService.addStudent(1L,"SN1","N1",1);
+        studentService.addStudent(2L,"SN2","N2",2);
+        problemService.addProblem(1L,1,"text");
+        problemService.addProblem(2L,2,"text");
+        AssignmentValidator assignmentValidator = new AssignmentValidator();
+        Repository<Long, Assignment> repository = new InMemoryRepository<>();
+        AssignmentService assignmentService = new AssignmentService(repository,assignmentValidator,studentService,problemService);
 
         Assignment a = new Assignment("a1", 1L, 1L, 0);
         a.setId(1L);
@@ -91,9 +120,17 @@ public class AssignmentServiceTest {
 
     @Test
     public void testFilterAssignmentsByName() throws Exception {
-        Validator<Assignment> assignmentValidator = new AssignmentValidator();
-        Repository<Long, Assignment> assignmentRepository = new InMemoryRepository<>(assignmentValidator);
-        AssignmentService assignmentService = new AssignmentService(assignmentRepository);
+        Repository<Long, Student> studentRepository = new InMemoryRepository<>();
+        Repository<Long, Problem> problemRepository = new InMemoryRepository<>();
+        StudentService studentService = new StudentService(studentRepository);
+        ProblemService problemService = new ProblemService(problemRepository);
+        studentService.addStudent(1L,"SN1","N1",1);
+        studentService.addStudent(2L,"SN2","N2",2);
+        problemService.addProblem(1L,1,"text");
+        problemService.addProblem(2L,2,"text");
+        AssignmentValidator assignmentValidator = new AssignmentValidator();
+        Repository<Long, Assignment> repository = new InMemoryRepository<>();
+        AssignmentService assignmentService = new AssignmentService(repository,assignmentValidator,studentService,problemService);
 
         Assignment a = new Assignment("a1", 1L, 1L, 0);
         a.setId(1L);
@@ -111,9 +148,17 @@ public class AssignmentServiceTest {
 
     @Test
     public void testDeleteAssignment() throws Exception {
-        Validator<Assignment> assignmentValidator = new AssignmentValidator();
-        Repository<Long, Assignment> assignmentRepository = new InMemoryRepository<>(assignmentValidator);
-        AssignmentService assignmentService = new AssignmentService(assignmentRepository);
+        Repository<Long, Student> studentRepository = new InMemoryRepository<>();
+        Repository<Long, Problem> problemRepository = new InMemoryRepository<>();
+        StudentService studentService = new StudentService(studentRepository);
+        ProblemService problemService = new ProblemService(problemRepository);
+        studentService.addStudent(1L,"SN1","N1",1);
+        studentService.addStudent(2L,"SN2","N2",2);
+        problemService.addProblem(1L,1,"text");
+        problemService.addProblem(2L,2,"text");
+        AssignmentValidator assignmentValidator = new AssignmentValidator();
+        Repository<Long, Assignment> repository = new InMemoryRepository<>();
+        AssignmentService assignmentService = new AssignmentService(repository,assignmentValidator,studentService,problemService);
 
         Assignment a = new Assignment("a1", 1L, 1L, 0);
         a.setId(1L);
@@ -125,16 +170,26 @@ public class AssignmentServiceTest {
 
         assignmentService.removeAssignment(1L);
 
-        assertEquals("The repo should not contain a assignment with the ID 1L", Optional.empty(), assignmentRepository.findOne(1L));
+        assertEquals("The repo should not contain a assignment with the ID 1L", Optional.empty(), repository.findOne(1L));
         //assertFalse("The set should not contain s2", assignments.contains(s2));
     }
 
 
     @Test
     public void testUpdateAssignment() throws Exception {
-        Validator<Assignment> assignmentValidator = new AssignmentValidator();
-        Repository<Long, Assignment> assignmentRepository = new InMemoryRepository<>(assignmentValidator);
-        AssignmentService assignmentService = new AssignmentService(assignmentRepository);
+        Repository<Long, Student> studentRepository = new InMemoryRepository<>();
+        Repository<Long, Problem> problemRepository = new InMemoryRepository<>();
+        StudentService studentService = new StudentService(studentRepository);
+        ProblemService problemService = new ProblemService(problemRepository);
+        studentService.addStudent(1L,"SN1","N1",1);
+        studentService.addStudent(2L,"SN2","N2",2);
+        studentService.addStudent(3L,"SN3","N3",3);
+        problemService.addProblem(1L,1,"text");
+        problemService.addProblem(2L,2,"text");
+        problemService.addProblem(3L,3,"text");
+        AssignmentValidator assignmentValidator = new AssignmentValidator();
+        Repository<Long, Assignment> repository = new InMemoryRepository<>();
+        AssignmentService assignmentService = new AssignmentService(repository,assignmentValidator,studentService,problemService);
 
         Assignment a = new Assignment("a1", 1L, 1L, 0);
         a.setId(1L);
@@ -149,7 +204,7 @@ public class AssignmentServiceTest {
 
         assignmentService.updateAssignment(1L, "a3", 3L, 3L, 9);
 
-        assertEquals("The repo should have a assignment with name a3", "a3", assignmentRepository.findOne(1L).get().getName());
+        assertEquals("The repo should have a assignment with name a3", "a3", repository.findOne(1L).get().getName());
     }
 
 }
