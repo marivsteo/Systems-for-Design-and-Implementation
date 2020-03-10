@@ -72,4 +72,15 @@ public class StudentFileRepository extends InMemoryRepository<Long, Student> {
             e.printStackTrace();
         }
     }
+
+    public Optional<Student> delete(Long id) {
+        Optional<Student> optional = super.delete(id);
+        if( optional.isPresent())
+            return optional;
+        return optional;
+
+
+        //saveToFile();
+        //return Optional.ofNullable(entities.remove(id));
+    }
 }
