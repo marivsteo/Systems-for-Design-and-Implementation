@@ -49,6 +49,10 @@ public class InMemoryRepository<ID, T extends BaseEntity<ID>> implements Reposit
         return allEntities;
     }
 
+    public Map<ID, T> getEntities() {
+        return entities;
+    }
+
     /**
      * Saves an student
      * @param entity must not be null.

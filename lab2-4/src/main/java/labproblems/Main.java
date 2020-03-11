@@ -8,6 +8,7 @@ import labproblems.domain.validators.ProblemValidator;
 import labproblems.domain.validators.StudentValidator;
 import labproblems.domain.validators.Validator;
 import labproblems.repository.InMemoryRepository;
+import labproblems.repository.ProblemFileRepository;
 import labproblems.repository.Repository;
 import labproblems.repository.StudentFileRepository;
 import labproblems.service.AssignmentService;
@@ -53,7 +54,7 @@ public class Main {
         //in file repo
         Validator<Problem> problemValidator = new ProblemValidator();
         AssignmentValidator assignmentValidator = new AssignmentValidator();
-        Repository<Long, Problem> problemRepository = new InMemoryRepository<>();
+        Repository<Long, Problem> problemRepository = new ProblemFileRepository("./data/problems");
         Repository<Long, Assignment> assignmentRepository = new InMemoryRepository<>();
         ProblemService problemService = new ProblemService(problemRepository);
         Validator<Student> studentValidator = new StudentValidator();

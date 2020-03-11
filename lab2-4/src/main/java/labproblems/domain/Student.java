@@ -67,4 +67,8 @@ public class Student extends BaseEntity<Long> {
                 ", group=" + group +
                 '}' + super.toString();
     }
+
+    public String toFileString(){
+        return "" + this.getId() + "," + this.getSerialNumber() + "," + this.getName() + "," + this.getGroup() + '\n';
+    }
 }

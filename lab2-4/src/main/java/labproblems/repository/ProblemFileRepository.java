@@ -1,5 +1,6 @@
 package labproblems.repository;
 
+import labproblems.domain.Problem;
 import labproblems.domain.Student;
 import labproblems.domain.validators.ValidatorException;
 
@@ -11,15 +12,11 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
 
-/**
- * @author radu.
- */
-public class StudentFileRepository extends InMemoryRepository<Long, Student> {
+public class ProblemFileRepository extends InMemoryRepository<Long,Problem> {
     private String fileName;
 
-    public StudentFileRepository( String fileName) {
-        this.fileName = fileName;
-
+    public ProblemFileRepository(String _fileName){
+        this.fileName = _fileName;
         loadData();
     }
 
@@ -31,16 +28,15 @@ public class StudentFileRepository extends InMemoryRepository<Long, Student> {
                 List<String> items = Arrays.asList(line.split(","));
 
                 Long id = Long.valueOf(items.get(0));
-                String serialNumber = items.get(1);
-                String name = items.get((2));
-                int group = Integer.parseInt(items.get(3));
+                int number = Integer.parseInt(items.get(1));
+                String text = items.get(2);
 
-                //TODO Delete print of every student loaded from file
-                Student student = new Student(serialNumber, name, group);
-                student.setId(id);
-                System.out.println(student);
+                Problem problem = new Problem(number,text);
+                problem.setId(id);
+                System.out.println(problem);
+                //TODO Delete print of every problem loaded from file
                 try {
-                    super.save(student);
+                    super.save(problem);
                 } catch (ValidatorException e) {
                     e.printStackTrace();
                 }
@@ -50,9 +46,8 @@ public class StudentFileRepository extends InMemoryRepository<Long, Student> {
         }
     }
 
-    @Override
-    public Optional<Student> save(Student entity) throws ValidatorException {
-        Optional<Student> optional = super.save(entity);
+    public Optional<Problem> save(Problem entity) throws ValidatorException {
+        Optional<Problem> optional = super.save(entity);
         if (optional.isPresent()) {
             return optional;
         }
@@ -60,12 +55,12 @@ public class StudentFileRepository extends InMemoryRepository<Long, Student> {
         return Optional.empty();
     }
 
-    private void saveToFile(Student entity) {
+    private void saveToFile(Problem entity) {
         Path path = Paths.get(fileName);
 
         try (BufferedWriter bufferedWriter = Files.newBufferedWriter(path, StandardOpenOption.APPEND)) {
             bufferedWriter.write(
-                    entity.getId() + "," + entity.getSerialNumber() + "," + entity.getName() + "," + entity.getGroup());
+                    entity.getId() + "," + entity.getNumber() + "," + entity.getText());
             bufferedWriter.newLine();
         } catch (IOException e) {
             e.printStackTrace();
@@ -83,36 +78,36 @@ public class StudentFileRepository extends InMemoryRepository<Long, Student> {
     }
 
     public void updateFile(){
-        Iterable<Student> allEntities = (Set<Student>) super.findAll();
-        String allStudents = "";
-        for(Student student: allEntities){
-            allStudents += student.toFileString();
+        Iterable<Problem> allEntities = (Set<Problem>) super.findAll();
+        String allProblems = "";
+        for(Problem problem: allEntities){
+            allProblems += problem.toFileString();
         }
 
         flushFile();
         Path path = Paths.get(this.fileName);
         try (BufferedWriter bufferedWriter = Files.newBufferedWriter(path, StandardOpenOption.APPEND)){
-            bufferedWriter.write(allStudents);
+            bufferedWriter.write(allProblems);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public Optional<Student> delete(Long id) {
-        Optional<Student> optional = super.delete(id);
+    public Optional<Problem> delete(Long id) {
+        Optional<Problem> optional = super.delete(id);
         updateFile();
         if( optional.isPresent())
             return optional;
         return optional;
     }
 
-    public Optional<Student> update(Student entity) throws IllegalArgumentException {
+    public Optional<Problem> update(Problem entity) throws IllegalArgumentException {
 
         if (entity == null) {
             throw new IllegalArgumentException("InMemoryRepository > update: The entity must not be null.");
         }
 
-        Map<Long,Student> entities = super.getEntities();
+        Map<Long,Problem> entities = super.getEntities();
 
         if(entities.containsKey(entity.getId())) {
             entities.computeIfPresent(entity.getId(), (k, v) -> entity);

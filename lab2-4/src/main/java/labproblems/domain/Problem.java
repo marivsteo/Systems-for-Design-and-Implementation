@@ -51,4 +51,8 @@ public class Problem extends BaseEntity<Long> {
                 ", text='" + text + '\'' +
                 '}' + super.toString();
     }
+
+    public String toFileString(){
+        return this.getId() + "," + this.getNumber() + "," + this.getText() + "\n";
+    }
 }
