@@ -43,7 +43,7 @@ public class Console {
                     "4.Add problem\n5.Show all problems\n6.Show filtered problems by text\n7.Delete student\n8.Update student" +
                     "\n9.Delete problem\n10.Update problem\n11.Show filtered student by serial number\n12.Add assignment" +
                     "\n13.Show all assignments\n14.Update assignment\n15.Delete assignment\n16.Show the students who failed an assignment" +
-                    "\n17.Show the student along with their average\n18.Show most assigned problem" );
+                    "\n17.Show the student along with their total points\n18.Show most assigned problem" );
             String choice = keyboard.nextLine();
             switch(choice) {
                 case "1":
@@ -95,7 +95,7 @@ public class Console {
                     showStudentsWhoFailed();
                     break;
                 case "17":
-                    showStudentWithAverage();
+                    showStudentWithTotalPoints();
                     break;
                 case "18":
                     getMostAssignedProblems();
@@ -111,8 +111,9 @@ public class Console {
         }
     }
 
-    private void showStudentWithAverage(){
-        this.assignmentService.getStudentsWithTheirAverage();
+    private void showStudentWithTotalPoints(){
+        //this.assignmentService.getStudentsWithTheirAverage();
+        this.assignmentService.getStudentWithTotalPoints();
     }
 
     private void showStudentsWhoFailed(){

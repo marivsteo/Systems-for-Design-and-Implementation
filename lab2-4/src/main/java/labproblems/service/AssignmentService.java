@@ -84,27 +84,37 @@ public class AssignmentService {
         return Problem.get().getKey();
     }
 
-    public void getStudentsWithTheirAverage(){
-        //TODO this method does not work for the first student
+    public void getStudentWithTotalPoints() {
         Set<Assignment> assignments = (Set<Assignment>) repository.findAll();
-        Map<Long, ArrayList<Float>> students = new HashMap<Long, ArrayList<Float>>();
-        ArrayList<Float> values = new ArrayList<Float>();
-        for( Assignment assignment: assignments){
-            if( students.containsKey(assignment.getStudent())) {
-                values = students.get(assignment.getStudent());
-                values.add(assignment.getGrade());
-                students.put(assignment.getStudent(),values);
-            }
-            else{
-                values.clear();
-                values.add(assignment.getGrade());
-                students.put(assignment.getStudent(),new ArrayList<Float>(values));
-            }
-        }
-        for(Map.Entry<Long,ArrayList<Float>> student:students.entrySet()){
-            System.out.println(student.getKey() + "," + student.getValue());
-        }
+        Map<Long, Double> studentsGrade = assignments.stream()
+                .collect(Collectors.groupingBy(Assignment::getStudent,
+                        Collectors.summingDouble(Assignment::getGrade)));
+
+        studentsGrade.forEach((key, value) -> System.out.println(studentService.findStudent(key).get() + " Total Points: " + value));
+
     }
+
+//    public void getStudentsWithTheirAverage(){
+//        //TODO this method does not work for the first student
+//        Set<Assignment> assignments = (Set<Assignment>) repository.findAll();
+//        Map<Long, ArrayList<Float>> students = new HashMap<Long, ArrayList<Float>>();
+//        ArrayList<Float> values = new ArrayList<Float>();
+//        for( Assignment assignment: assignments){
+//            if( students.containsKey(assignment.getStudent())) {
+//                values = students.get(assignment.getStudent());
+//                values.add(assignment.getGrade());
+//                students.put(assignment.getStudent(),values);
+//            }
+//            else{
+//                values.clear();
+//                values.add(assignment.getGrade());
+//                students.put(assignment.getStudent(),new ArrayList<Float>(values));
+//            }
+//        }
+//        for(Map.Entry<Long,ArrayList<Float>> student:students.entrySet()){
+//            System.out.println(student.getKey() + "," + student.getValue());
+//        }
+//    }
 
     /**
      * The method collects all the assignments in a Set.
