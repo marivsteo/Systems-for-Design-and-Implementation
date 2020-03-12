@@ -1,5 +1,6 @@
 package labproblems.service;
 
+import jdk.internal.net.http.common.Pair;
 import labproblems.domain.Assignment;
 import labproblems.domain.Problem;
 import labproblems.domain.Student;
@@ -8,10 +9,7 @@ import labproblems.domain.validators.StudentValidator;
 import labproblems.domain.validators.ValidatorException;
 import labproblems.repository.Repository;
 
-import java.util.HashSet;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -58,6 +56,39 @@ public class AssignmentService {
             repository.save(assignment);
         } catch(ValidatorException exception){
             throw exception;
+        }
+    }
+
+    /**
+     * This method determines which are the students who did not fail any assignments.
+     * @return a Set containing all student ids who did not fail any assignments.
+     */
+    public Set<Long> getStudentsWhoFailed(){
+        Set<Assignment> assignments = (Set<Assignment>) repository.findAll();
+        assignments.removeIf(assignment -> assignment.getGrade() >= 5);
+        return assignments.stream().map(Assignment::getStudent).collect(Collectors.toSet());
+    }
+
+    public void getStudentsWithTheirAverage(){
+        //TODO this method does not work
+        Set<Assignment> assignments = (Set<Assignment>) repository.findAll();
+        Map<Long, ArrayList<Float>> students = new HashMap<Long, ArrayList<Float>>();
+        ArrayList<Float> values = null;
+        for( Assignment assignment: assignments){
+            System.out.println("x");
+            if( students.containsKey(assignment.getStudent())) {
+                values = students.get(assignment.getStudent());
+                values.add(assignment.getGrade());
+                students.put(assignment.getStudent(),values);
+            }
+            else{
+                values.clear();
+                values.add(assignment.getGrade());
+                students.put(assignment.getStudent(),new ArrayList<Float>(values));
+            }
+        }
+        for(Map.Entry<Long,ArrayList<Float>> student:students.entrySet()){
+            System.out.println(student.getKey() + "," + student.getValue());
         }
     }
 

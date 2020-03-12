@@ -1,5 +1,6 @@
 package labproblems.ui;
 
+import jdk.internal.net.http.common.Pair;
 import labproblems.domain.Assignment;
 import labproblems.domain.Problem;
 import labproblems.domain.Student;
@@ -41,7 +42,8 @@ public class Console {
             System.out.println("Enter a choice:\n0.Exit\n1.Add student\n2.Show all students\n3.Show filtered students by name\n" +
                     "4.Add problem\n5.Show all problems\n6.Show filtered problems by text\n7.Delete student\n8.Update student" +
                     "\n9.Delete problem\n10.Update problem\n11.Show filtered student by serial number\n12.Add assignment" +
-                    "\n13.Show all assignments\n14.Update assignment\n15.Delete assignment");
+                    "\n13.Show all assignments\n14.Update assignment\n15.Delete assignment\n16.Show the students who failed an assignment" +
+                    "\n17.Show the student along with their average");
             String choice = keyboard.nextLine();
             switch(choice) {
                 case "1":
@@ -89,6 +91,12 @@ public class Console {
                 case "15":
                     deleteAssignment();
                     break;
+                case "16":
+                    showStudentsWhoFailed();
+                    break;
+                case "17":
+                    showStudentWithAverage();
+                    break;
                 case "99":
                     studentService.addStudent(1L,"sn1","n1",1);
                     problemService.addProblem(1L,1,"pb1");
@@ -97,6 +105,18 @@ public class Console {
                 case "0":
                     System.exit(0);
             }
+        }
+    }
+
+    private void showStudentWithAverage(){
+        this.assignmentService.getStudentsWithTheirAverage();
+    }
+
+    private void showStudentsWhoFailed(){
+        Set<Long> students = this.assignmentService.getStudentsWhoFailed();
+        System.out.println("The students who failed at least one assignment are:");
+        for(Long student: students){
+            System.out.println("Student with studentId = " + student.toString());
         }
     }
 
