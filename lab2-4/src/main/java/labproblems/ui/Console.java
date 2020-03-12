@@ -43,7 +43,7 @@ public class Console {
                     "4.Add problem\n5.Show all problems\n6.Show filtered problems by text\n7.Delete student\n8.Update student" +
                     "\n9.Delete problem\n10.Update problem\n11.Show filtered student by serial number\n12.Add assignment" +
                     "\n13.Show all assignments\n14.Update assignment\n15.Delete assignment\n16.Show the students who failed an assignment" +
-                    "\n17.Show the student along with their average");
+                    "\n17.Show the student along with their average\n18.Show most assigned problem" );
             String choice = keyboard.nextLine();
             switch(choice) {
                 case "1":
@@ -97,6 +97,9 @@ public class Console {
                 case "17":
                     showStudentWithAverage();
                     break;
+                case "18":
+                    getMostAssignedProblems();
+                    break;
                 case "99":
                     studentService.addStudent(1L,"sn1","n1",1);
                     problemService.addProblem(1L,1,"pb1");
@@ -118,6 +121,12 @@ public class Console {
         for(Long student: students){
             System.out.println("Student with studentId = " + student.toString());
         }
+    }
+
+    private void getMostAssignedProblems() {
+        Long problemID = this.assignmentService.getProblemAssignedMostTimes();
+        Problem problem = this.problemService.findProblem(problemID).get();
+        System.out.println(problem);
     }
 
     private void filterStudentsByName() {

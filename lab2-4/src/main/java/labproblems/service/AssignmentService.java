@@ -69,6 +69,21 @@ public class AssignmentService {
         return assignments.stream().map(Assignment::getStudent).collect(Collectors.toSet());
     }
 
+    public Long getProblemAssignedMostTimes() {
+        Set<Assignment> assignments = (Set<Assignment>) repository.findAll();
+        Map<Long, Long> countForId = assignments.stream()
+                .collect(Collectors.groupingBy(Assignment::getProblem, Collectors.counting()));
+        Map<Long, Long> sortedByValue = countForId.entrySet()
+                .stream()
+                .sorted(Map.Entry.<Long, Long>comparingByValue().reversed())
+                .collect(Collectors.toMap(Map.Entry::getKey,
+                        Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+//        sortedByValue.entrySet().forEach(entry->{
+//            System.out.println(entry.getKey() + " " + entry.getValue());});
+        Optional<Map.Entry<Long, Long>> Problem = sortedByValue.entrySet().stream().findFirst();
+        return Problem.get().getKey();
+    }
+
     public void getStudentsWithTheirAverage(){
         //TODO this method does not work for the first student
         Set<Assignment> assignments = (Set<Assignment>) repository.findAll();
