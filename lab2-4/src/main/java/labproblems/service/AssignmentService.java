@@ -70,12 +70,11 @@ public class AssignmentService {
     }
 
     public void getStudentsWithTheirAverage(){
-        //TODO this method does not work
+        //TODO this method does not work for the first student
         Set<Assignment> assignments = (Set<Assignment>) repository.findAll();
         Map<Long, ArrayList<Float>> students = new HashMap<Long, ArrayList<Float>>();
-        ArrayList<Float> values = null;
+        ArrayList<Float> values = new ArrayList<Float>();
         for( Assignment assignment: assignments){
-            System.out.println("x");
             if( students.containsKey(assignment.getStudent())) {
                 values = students.get(assignment.getStudent());
                 values.add(assignment.getGrade());
