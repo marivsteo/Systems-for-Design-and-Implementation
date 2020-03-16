@@ -15,6 +15,7 @@ import labproblems.ui.Console;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by Marius
@@ -43,23 +44,23 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String args[]) {
-         try {
+        try {
             System.out.println(new File(".").getCanonicalPath());
         } catch (IOException e) {
             e.printStackTrace();
         }
         //in file repo
-        Validator<Problem> problemValidator = new ProblemValidator();
-        AssignmentValidator assignmentValidator = new AssignmentValidator();
-        Repository<Long, Problem> problemRepository = new ProblemFileRepository("./data/problems");
-        Repository<Long, Assignment> assignmentRepository = new AssignmentFileRepository("./data/assignments");
-        ProblemService problemService = new ProblemService(problemRepository);
-        Validator<Student> studentValidator = new StudentValidator();
-        Repository<Long, Student> studentRepository = new StudentFileRepository("./data/students");
-        StudentService studentService = new StudentService(studentRepository);
-        AssignmentService assignmentService = new AssignmentService(assignmentRepository,assignmentValidator,studentService,problemService);
-        Console console = new Console(studentService,problemService,assignmentService);
-        console.runConsole();
+//        Validator<Problem> problemValidator = new ProblemValidator();
+//        AssignmentValidator assignmentValidator = new AssignmentValidator();
+//        Repository<Long, Problem> problemRepository = new ProblemFileRepository("./data/problems");
+//        Repository<Long, Assignment> assignmentRepository = new AssignmentFileRepository("./data/assignments");
+//        ProblemService problemService = new ProblemService(problemRepository);
+//        Validator<Student> studentValidator = new StudentValidator();
+//        Repository<Long, Student> studentRepository = new StudentFileRepository("./data/students");
+//        StudentService studentService = new StudentService(studentRepository);
+//        AssignmentService assignmentService = new AssignmentService(assignmentRepository,assignmentValidator,studentService,problemService);
+//        Console console = new Console(studentService,problemService,assignmentService);
+//        console.runConsole();
          /*
          /in-memory repo
          Validator<Student> studentValidator = new StudentValidator();
@@ -74,5 +75,21 @@ public class Main {
          Console console = new Console(studentService,problemService,assignmentService);
          console.runConsole();
           */
+
+        //xml repo
+//        Validator<Problem> problemValidator = new ProblemValidator();
+//        AssignmentValidator assignmentValidator = new AssignmentValidator();
+        Repository<Long, Problem> problemRepository = new ProblemXMLRepository("./data/problems.xml");
+        Repository<Long, Assignment> assignmentRepository = new AssignmentXMLRepository("./data/assignments.xml");
+//        ProblemService problemService = new ProblemService(problemRepository);
+//        Validator<Student> studentValidator = new StudentValidator();
+        Repository<Long, Student> studentRepository = new StudentXMLRepository("./data/students.xml");
+//        StudentService studentService = new StudentService(studentRepository);
+//        AssignmentService assignmentService = new AssignmentService(assignmentRepository, assignmentValidator, studentService, problemService);
+//        Console console = new Console(studentService,problemService,assignmentService);
+//        console.runConsole();
+        ((StudentXMLRepository) studentRepository).Test();
+        ((ProblemXMLRepository) problemRepository).Test();
+        ((AssignmentXMLRepository) assignmentRepository).Test();
     }
 }

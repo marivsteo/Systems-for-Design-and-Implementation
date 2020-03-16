@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><problems>
+    <problem>
+        <id>1</id>
+        <number>1</number>
+        <text>text1</text>
+    </problem>
+    <problem>
+        <id>2</id>
+        <number>2</number>
+        <text>text2</text>
+    </problem>
+    <problem>
+        <id>3</id>
+        <number>3</number>
+        <text>text3</text>
+    </problem>
+<problem><id>4</id><number>4</number><text>problem number 4</text></problem></problems>
