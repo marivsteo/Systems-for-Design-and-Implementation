@@ -77,19 +77,19 @@ public class Main {
           */
 
         //xml repo
-//        Validator<Problem> problemValidator = new ProblemValidator();
-//        AssignmentValidator assignmentValidator = new AssignmentValidator();
+        Validator<Problem> problemValidator = new ProblemValidator();
+       AssignmentValidator assignmentValidator = new AssignmentValidator();
         Repository<Long, Problem> problemRepository = new ProblemXMLRepository("./data/problems.xml");
         Repository<Long, Assignment> assignmentRepository = new AssignmentXMLRepository("./data/assignments.xml");
-//        ProblemService problemService = new ProblemService(problemRepository);
-//        Validator<Student> studentValidator = new StudentValidator();
+        ProblemService problemService = new ProblemService(problemRepository);
+        Validator<Student> studentValidator = new StudentValidator();
         Repository<Long, Student> studentRepository = new StudentXMLRepository("./data/students.xml");
-//        StudentService studentService = new StudentService(studentRepository);
-//        AssignmentService assignmentService = new AssignmentService(assignmentRepository, assignmentValidator, studentService, problemService);
-//        Console console = new Console(studentService,problemService,assignmentService);
-//        console.runConsole();
-        ((StudentXMLRepository) studentRepository).Test();
-        ((ProblemXMLRepository) problemRepository).Test();
-        ((AssignmentXMLRepository) assignmentRepository).Test();
+        StudentService studentService = new StudentService(studentRepository);
+       AssignmentService assignmentService = new AssignmentService(assignmentRepository, assignmentValidator, studentService, problemService);
+        Console console = new Console(studentService,problemService,assignmentService);
+        console.runConsole();
+        //((StudentXMLRepository) studentRepository).Test();
+        //((ProblemXMLRepository) problemRepository).Test();
+        //((AssignmentXMLRepository) assignmentRepository).Test();
     }
 }

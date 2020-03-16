@@ -259,6 +259,7 @@ public class Console {
         }
         try{
             studentService.removeStudent(id);
+            assignmentService.synchronizeStudentsInAssignments(id);
         }catch (NoSuchElementException exception){
             System.out.println(exception.toString());
         }
@@ -275,6 +276,7 @@ public class Console {
         }
         try{
             problemService.removeProblem(id);
+            assignmentService.synchronizeProblemsInAssignments(id);
         }catch (NoSuchElementException exception){
             System.out.println(exception.toString());
         }

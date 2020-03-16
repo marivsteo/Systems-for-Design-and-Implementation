@@ -59,6 +59,31 @@ public class AssignmentService {
         }
     }
 
+    public void synchronizeStudentsInAssignments(Long _id){
+        Set<Assignment> assignments = (Set<Assignment>) this.repository.findAll();
+        Set<Long> assignmentsIds= assignments.stream().filter(assignment -> assignment.getStudent().equals(_id))
+                .map(Assignment::getId)
+                .collect(Collectors.toSet());
+
+        //TODO maybe replace this loop
+        for(Long assignmentId: assignmentsIds){
+            this.repository.delete(assignmentId);
+        }
+    }
+
+    public void synchronizeProblemsInAssignments(Long _id){
+        Set<Assignment> assignments = (Set<Assignment>) this.repository.findAll();
+        Set<Long> assignmentsIds= assignments.stream().filter(assignment -> assignment.getProblem().equals(_id))
+                .map(Assignment::getId)
+                .collect(Collectors.toSet());
+
+        //TODO maybe replace this loop
+        for(Long assignmentId: assignmentsIds){
+            System.out.println(assignmentId);
+            this.repository.delete(assignmentId);
+        }
+    }
+
     /**
      * This method determines which are the students who did not fail any assignments.
      * @return a Set containing all student ids who did not fail any assignments.

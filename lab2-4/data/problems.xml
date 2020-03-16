@@ -14,4 +14,4 @@
         <number>3</number>
         <text>text3</text>
     </problem>
-<problem><id>4</id><number>4</number><text>problem number 4</text></problem></problems>
+<problem><id>4</id><number>4</number><text>problem number 4</text></problem><problem><id>4</id><number>4</number><text>problem number 4</text></problem></problems>
