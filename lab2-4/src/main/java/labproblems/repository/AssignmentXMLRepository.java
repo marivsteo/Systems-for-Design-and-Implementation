@@ -1,6 +1,7 @@
 package labproblems.repository;
 
 import labproblems.domain.Assignment;
+import labproblems.domain.Problem;
 import labproblems.domain.Student;
 import labproblems.domain.validators.ValidatorException;
 import org.w3c.dom.Document;
@@ -12,6 +13,7 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -22,6 +24,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -33,18 +37,6 @@ public class AssignmentXMLRepository extends InMemoryRepository<Long, Assignment
         this.filename = fileName;
 
         loadData();
-    }
-
-    public void Test() {
-        loadData();
-
-        try {
-            Assignment a = new Assignment("lab whatever", 3L, 3L, 3);
-            a.setId(4L);
-            saveAssignment(a);
-        } catch (ParserConfigurationException | IOException | SAXException | TransformerException e) {
-            e.printStackTrace();
-        }
     }
 
     private void loadData() {
@@ -117,6 +109,19 @@ public class AssignmentXMLRepository extends InMemoryRepository<Long, Assignment
         return assignmentElement;
     }
 
+    public Optional<Assignment> save(Assignment assignment_) {
+        Optional<Assignment> optional = super.save(assignment_);
+        if (optional.isPresent()) {
+            return optional;
+        }
+        try {
+            saveAssignment(assignment_);
+        } catch (ParserConfigurationException | TransformerException | SAXException | IOException e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
+    }
+    
     public static void saveAssignment(Assignment assignment) throws ParserConfigurationException, IOException, SAXException, TransformerException, TransformerException {
         Document document = DocumentBuilderFactory
                 .newInstance()
@@ -132,5 +137,99 @@ public class AssignmentXMLRepository extends InMemoryRepository<Long, Assignment
                 .newTransformer();
         transformer.transform(new DOMSource(document),
                 new StreamResult("./data/assignments.xml"));
+    }
+
+    public Optional<Assignment> delete(Long id) {
+
+
+        Optional<Assignment> optional = super.delete(id);
+
+        Document document = null;
+        try {
+            document = DocumentBuilderFactory
+                    .newInstance()
+                    .newDocumentBuilder()
+                    .parse("./data/assignments.xml");
+        } catch (ParserConfigurationException | IOException | SAXException e) {
+            e.printStackTrace();
+        }
+
+        // <person>
+        NodeList nodes = document.getElementsByTagName("assignment");
+
+        for (int i = 0; i < nodes.getLength(); i++) {
+            Element assignment_ = (Element)nodes.item(i);
+            // <name>
+            Element id1 = (Element)assignment_.getElementsByTagName("id").item(0);
+            String id2 = id1.getTextContent();
+            Long id3 = Long.parseLong(id2);
+            if (id3.equals(id)) {
+                assignment_.getParentNode().removeChild(assignment_);
+            }
+        }
+
+        Transformer transformer = null;
+        try {
+            transformer = TransformerFactory
+                    .newInstance()
+                    .newTransformer();
+        } catch (TransformerConfigurationException e) {
+            e.printStackTrace();
+        }
+        try {
+            transformer.transform(new DOMSource(document),
+                    new StreamResult("./data/assignments.xml"));
+        } catch (TransformerException e) {
+            e.printStackTrace();
+        }
+
+
+        if( optional.isPresent())
+            return optional;
+        return optional;
+    }
+
+    public Optional<Assignment> update(Assignment assignment_) throws ParserConfigurationException, IOException, SAXException, TransformerException {
+
+        Document document = DocumentBuilderFactory
+                .newInstance()
+                .newDocumentBuilder()
+                .parse("./data/assignments.xml");
+
+        // <person>
+        NodeList nodes = document.getElementsByTagName("assignment");
+
+        Long id = assignment_.getId();
+
+        if (assignment_ == null) {
+            throw new IllegalArgumentException("InMemoryRepository > update: The assignment must not be null.");
+        }
+
+        Map<Long,Assignment> entities = super.getEntities();
+
+        if(entities.containsKey(assignment_.getId())) {
+            entities.computeIfPresent(assignment_.getId(), (k, v) -> assignment_);
+
+            for (int i = 0; i < nodes.getLength(); i++) {
+                Element assignment = (Element)nodes.item(i);
+                // <name>
+                Element id1 = (Element)assignment.getElementsByTagName("id").item(0);
+                String id2 = id1.getTextContent();
+                Long id3 = Long.parseLong(id2);
+                if (id3.equals(id)) {
+                    assignment.getParentNode().removeChild(assignment);
+                }
+            }
+
+            Transformer transformer = TransformerFactory
+                    .newInstance()
+                    .newTransformer();
+            transformer.transform(new DOMSource(document),
+                    new StreamResult("./data/assignments.xml"));
+
+            saveAssignment(assignment_);
+            return null;
+        }
+        return Optional.ofNullable(assignment_);
     }
 }

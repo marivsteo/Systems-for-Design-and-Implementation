@@ -12,6 +12,7 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -22,6 +23,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -33,18 +36,6 @@ public class ProblemXMLRepository extends InMemoryRepository<Long, Problem> {
         this.filename = fileName;
 
         loadData();
-    }
-
-    public void Test() {
-        loadData();
-
-        try {
-            Problem p = new Problem(4, "problem number 4");
-            p.setId(4L);
-            saveProblem(p);
-        } catch (ParserConfigurationException | IOException | SAXException | TransformerException e) {
-            e.printStackTrace();
-        }
     }
 
     private void loadData() {
@@ -113,6 +104,20 @@ public class ProblemXMLRepository extends InMemoryRepository<Long, Problem> {
         return problemElement;
     }
 
+
+    public Optional<Problem> save(Problem problem_) {
+        Optional<Problem> optional = super.save(problem_);
+        if (optional.isPresent()) {
+            return optional;
+        }
+        try {
+            saveProblem(problem_);
+        } catch (ParserConfigurationException | TransformerException | SAXException | IOException e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
+    }
+
     public static void saveProblem(Problem problem) throws ParserConfigurationException, IOException, SAXException, TransformerException, TransformerException {
         Document document = DocumentBuilderFactory
                 .newInstance()
@@ -128,5 +133,99 @@ public class ProblemXMLRepository extends InMemoryRepository<Long, Problem> {
                 .newTransformer();
         transformer.transform(new DOMSource(document),
                 new StreamResult("./data/problems.xml"));
+    }
+
+    public Optional<Problem> delete(Long id) {
+
+
+        Optional<Problem> optional = super.delete(id);
+
+        Document document = null;
+        try {
+            document = DocumentBuilderFactory
+                    .newInstance()
+                    .newDocumentBuilder()
+                    .parse("./data/problems.xml");
+        } catch (ParserConfigurationException | IOException | SAXException e) {
+            e.printStackTrace();
+        }
+
+        // <person>
+        NodeList nodes = document.getElementsByTagName("problem");
+
+        for (int i = 0; i < nodes.getLength(); i++) {
+            Element problem_ = (Element)nodes.item(i);
+            // <name>
+            Element id1 = (Element)problem_.getElementsByTagName("id").item(0);
+            String id2 = id1.getTextContent();
+            Long id3 = Long.parseLong(id2);
+            if (id3.equals(id)) {
+                problem_.getParentNode().removeChild(problem_);
+            }
+        }
+
+        Transformer transformer = null;
+        try {
+            transformer = TransformerFactory
+                    .newInstance()
+                    .newTransformer();
+        } catch (TransformerConfigurationException e) {
+            e.printStackTrace();
+        }
+        try {
+            transformer.transform(new DOMSource(document),
+                    new StreamResult("./data/problems.xml"));
+        } catch (TransformerException e) {
+            e.printStackTrace();
+        }
+
+
+        if( optional.isPresent())
+            return optional;
+        return optional;
+    }
+
+    public Optional<Problem> update(Problem problem_) throws ParserConfigurationException, IOException, SAXException, TransformerException {
+
+        Document document = DocumentBuilderFactory
+                .newInstance()
+                .newDocumentBuilder()
+                .parse("./data/problems.xml");
+
+        // <person>
+        NodeList nodes = document.getElementsByTagName("problem");
+
+        Long id = problem_.getId();
+
+        if (problem_ == null) {
+            throw new IllegalArgumentException("InMemoryRepository > update: The problem must not be null.");
+        }
+
+        Map<Long,Problem> entities = super.getEntities();
+
+        if(entities.containsKey(problem_.getId())) {
+            entities.computeIfPresent(problem_.getId(), (k, v) -> problem_);
+
+            for (int i = 0; i < nodes.getLength(); i++) {
+                Element problem = (Element)nodes.item(i);
+                // <name>
+                Element id1 = (Element)problem.getElementsByTagName("id").item(0);
+                String id2 = id1.getTextContent();
+                Long id3 = Long.parseLong(id2);
+                if (id3.equals(id)) {
+                    problem.getParentNode().removeChild(problem);
+                }
+            }
+
+            Transformer transformer = TransformerFactory
+                    .newInstance()
+                    .newTransformer();
+            transformer.transform(new DOMSource(document),
+                    new StreamResult("./data/problems.xml"));
+
+            saveProblem(problem_);
+            return null;
+        }
+        return Optional.ofNullable(problem_);
     }
 }

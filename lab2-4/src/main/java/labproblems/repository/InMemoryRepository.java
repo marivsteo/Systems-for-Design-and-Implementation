@@ -3,7 +3,12 @@ package labproblems.repository;
 import labproblems.domain.BaseEntity;
 import labproblems.domain.validators.Validator;
 import labproblems.domain.validators.ValidatorException;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -92,7 +97,7 @@ public class InMemoryRepository<ID, T extends BaseEntity<ID>> implements Reposit
      * @throws IllegalArgumentException if the entity is null
      */
     @Override
-    public Optional<T> update(T entity) throws IllegalArgumentException {
+    public Optional<T> update(T entity) throws IllegalArgumentException, ParserConfigurationException, IOException, SAXException, TransformerException {
 
         if (entity == null) {
             throw new IllegalArgumentException("InMemoryRepository > update: The entity must not be null.");

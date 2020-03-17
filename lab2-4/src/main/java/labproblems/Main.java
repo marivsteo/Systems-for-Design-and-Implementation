@@ -88,8 +88,5 @@ public class Main {
        AssignmentService assignmentService = new AssignmentService(assignmentRepository, assignmentValidator, studentService, problemService);
         Console console = new Console(studentService,problemService,assignmentService);
         console.runConsole();
-        //((StudentXMLRepository) studentRepository).Test();
-        //((ProblemXMLRepository) problemRepository).Test();
-        //((AssignmentXMLRepository) assignmentRepository).Test();
     }
 }

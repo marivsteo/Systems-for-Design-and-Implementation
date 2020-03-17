@@ -193,7 +193,8 @@ public class Console {
         try{
             studentService.updateStudent(id,serialNumber,name,group);
         } catch( Exception exception){
-            System.out.println(exception.toString());
+            exception.printStackTrace();
+            //System.out.println(exception.toString());
         }
     }
 

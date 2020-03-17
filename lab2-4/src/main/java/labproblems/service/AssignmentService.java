@@ -66,9 +66,11 @@ public class AssignmentService {
                 .collect(Collectors.toSet());
 
         //TODO maybe replace this loop
-        for(Long assignmentId: assignmentsIds){
-            this.repository.delete(assignmentId);
-        }
+//        for(Long assignmentId: assignmentsIds){
+//            this.repository.delete(assignmentId);
+//        }
+
+        assignmentsIds.forEach(this.repository::delete);
     }
 
     public void synchronizeProblemsInAssignments(Long _id){
@@ -78,10 +80,12 @@ public class AssignmentService {
                 .collect(Collectors.toSet());
 
         //TODO maybe replace this loop
-        for(Long assignmentId: assignmentsIds){
-            System.out.println(assignmentId);
-            this.repository.delete(assignmentId);
-        }
+//        for(Long assignmentId: assignmentsIds){
+//            System.out.println(assignmentId);
+//            this.repository.delete(assignmentId);
+//        }
+
+        assignmentsIds.forEach(this.repository::delete);
     }
 
     /**

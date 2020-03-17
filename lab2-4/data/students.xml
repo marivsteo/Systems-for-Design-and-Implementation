@@ -1,20 +1,2 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><students>
-    <student>
-        <id>1</id>
-        <serialNumber>sn1</serialNumber>
-        <name>n1</name>
-        <group>1</group>
-    </student>
-    <student>
-        <id>2</id>
-        <serialNumber>sn2</serialNumber>
-        <name>n2</name>
-        <group>3</group>
-    </student>
-    <student>
-        <id>3</id>
-        <serialNumber>sn3</serialNumber>
-        <name>n3</name>
-        <group>3</group>
-    </student>
-<student><id>4</id><serialNumber>sn4</serialNumber><name>n4</name><group>4</group></student><student><id>4</id><serialNumber>sn4</serialNumber><name>n4</name><group>4</group></student><student><id>4</id><serialNumber>sn4</serialNumber><name>n4</name><group>4</group></student></students>
+<student><id>1</id><serialNumber>sn99</serialNumber><name>s99</name><group>99</group></student><student><id>2</id><serialNumber>sn88</serialNumber><name>s88</name><group>88</group></student></students>
