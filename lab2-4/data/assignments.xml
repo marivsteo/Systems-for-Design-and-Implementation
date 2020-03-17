@@ -1,18 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><assignments>
-    <assignment>
-        <id>1</id>
-        <name>name1</name>
-        <student>1</student>
-        <problem>1</problem>
-        <grade>1</grade>
-    </assignment>
-    <assignment>
-        <id>2</id>
-        <name>name2</name>
-        <student>2</student>
-        <problem>2</problem>
-        <grade>2</grade>
-    </assignment>
+    
+    
     <assignment>
         <id>3</id>
         <name>name3</name>
@@ -20,4 +8,4 @@
         <problem>3</problem>
         <grade>3</grade>
     </assignment>
-<assignment><id>4</id><name>name5</name><student>2</student><problem>2</problem><grade>5.0</grade></assignment><assignment><id>5</id><name>asdasdas</name><student>2</student><problem>3</problem><grade>1.23</grade></assignment></assignments>
+</assignments>

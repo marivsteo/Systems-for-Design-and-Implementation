@@ -16,6 +16,7 @@ import labproblems.ui.Console;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * Created by Marius
@@ -49,44 +50,63 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //in file repo
-//        Validator<Problem> problemValidator = new ProblemValidator();
-//        AssignmentValidator assignmentValidator = new AssignmentValidator();
-//        Repository<Long, Problem> problemRepository = new ProblemFileRepository("./data/problems");
-//        Repository<Long, Assignment> assignmentRepository = new AssignmentFileRepository("./data/assignments");
-//        ProblemService problemService = new ProblemService(problemRepository);
-//        Validator<Student> studentValidator = new StudentValidator();
-//        Repository<Long, Student> studentRepository = new StudentFileRepository("./data/students");
-//        StudentService studentService = new StudentService(studentRepository);
-//        AssignmentService assignmentService = new AssignmentService(assignmentRepository,assignmentValidator,studentService,problemService);
-//        Console console = new Console(studentService,problemService,assignmentService);
-//        console.runConsole();
-         /*
-         /in-memory repo
-         Validator<Student> studentValidator = new StudentValidator();
-         Validator<Problem> problemValidator = new ProblemValidator();
-         AssignmentValidator assignmentValidator = new AssignmentValidator();
-         Repository<Long, Student> studentRepository = new InMemoryRepository<>();
-         Repository<Long, Problem> problemRepository = new InMemoryRepository<>();
-         Repository<Long, Assignment> assignmentRepository = new InMemoryRepository<>();
-         StudentService studentService = new StudentService(studentRepository);
-         ProblemService problemService = new ProblemService(problemRepository);
-         AssignmentService assignmentService = new AssignmentService(assignmentRepository,assignmentValidator,studentService,problemService);
-         Console console = new Console(studentService,problemService,assignmentService);
-         console.runConsole();
-          */
 
-        //xml repo
-        Validator<Problem> problemValidator = new ProblemValidator();
-       AssignmentValidator assignmentValidator = new AssignmentValidator();
-        Repository<Long, Problem> problemRepository = new ProblemXMLRepository("./data/problems.xml");
-        Repository<Long, Assignment> assignmentRepository = new AssignmentXMLRepository("./data/assignments.xml");
-        ProblemService problemService = new ProblemService(problemRepository);
-        Validator<Student> studentValidator = new StudentValidator();
-        Repository<Long, Student> studentRepository = new StudentXMLRepository("./data/students.xml");
-        StudentService studentService = new StudentService(studentRepository);
-       AssignmentService assignmentService = new AssignmentService(assignmentRepository, assignmentValidator, studentService, problemService);
-        Console console = new Console(studentService,problemService,assignmentService);
-        console.runConsole();
+        Scanner keyboard = new Scanner(System.in);
+        System.out.println("Enter a choice:\n 0.Exit\n 1.File repository\n 2.In-memory repository\n 3.XML repository\n");
+        String choice = keyboard.nextLine();
+        Validator<Problem> problemValidator;
+        AssignmentValidator assignmentValidator;
+        Repository<Long, Problem> problemRepository;
+        Repository<Long, Assignment> assignmentRepository;
+        ProblemService problemService;
+        Validator<Student> studentValidator;
+        Repository<Long, Student> studentRepository;
+        StudentService studentService;
+        AssignmentService assignmentService;
+        Console console;
+        switch(choice) {
+            case "1":
+                problemValidator = new ProblemValidator();
+                assignmentValidator = new AssignmentValidator();
+                problemRepository = new ProblemFileRepository("./data/problems");
+                assignmentRepository = new AssignmentFileRepository("./data/assignments");
+                problemService = new ProblemService(problemRepository);
+                studentValidator = new StudentValidator();
+                studentRepository = new StudentFileRepository("./data/students");
+                studentService = new StudentService(studentRepository);
+                assignmentService = new AssignmentService(assignmentRepository, assignmentValidator, studentService, problemService);
+                console = new Console(studentService, problemService, assignmentService);
+                console.runConsole();
+                break;
+
+            case "2":
+                 //in-memory repo
+                 studentValidator = new StudentValidator();
+                 problemValidator = new ProblemValidator();
+                 assignmentValidator = new AssignmentValidator();
+                 studentRepository = new InMemoryRepository<>();
+                 problemRepository = new InMemoryRepository<>();
+                 assignmentRepository = new InMemoryRepository<>();
+                 studentService = new StudentService(studentRepository);
+                 problemService = new ProblemService(problemRepository);
+                 assignmentService = new AssignmentService(assignmentRepository,assignmentValidator,studentService,problemService);
+                 console = new Console(studentService,problemService,assignmentService);
+                 console.runConsole();
+                 break;
+            case "3":
+                //xml repo
+                problemValidator = new ProblemValidator();
+                assignmentValidator = new AssignmentValidator();
+                problemRepository = new ProblemXMLRepository("./data/problems.xml");
+                assignmentRepository = new AssignmentXMLRepository("./data/assignments.xml");
+                problemService = new ProblemService(problemRepository);
+                studentValidator = new StudentValidator();
+                studentRepository = new StudentXMLRepository("./data/students.xml");
+                studentService = new StudentService(studentRepository);
+                assignmentService = new AssignmentService(assignmentRepository, assignmentValidator, studentService, problemService);
+                console = new Console(studentService,problemService,assignmentService);
+                console.runConsole();
+                break;
+        }
     }
 }
