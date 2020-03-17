@@ -20,4 +20,4 @@
         <problem>3</problem>
         <grade>3</grade>
     </assignment>
-<assignment><id>4</id><name>name5</name><student>2</student><problem>2</problem><grade>5.0</grade></assignment></assignments>
+<assignment><id>4</id><name>name5</name><student>2</student><problem>2</problem><grade>5.0</grade></assignment><assignment><id>5</id><name>asdasdas</name><student>2</student><problem>3</problem><grade>1.23</grade></assignment></assignments>

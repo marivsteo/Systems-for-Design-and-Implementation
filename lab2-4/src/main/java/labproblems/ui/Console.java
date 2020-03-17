@@ -39,11 +39,12 @@ public class Console {
     public void runConsole() {
         while(true) {
             Scanner keyboard = new Scanner(System.in);
-            System.out.println("Enter a choice:\n0.Exit\n1.Add student\n2.Show all students\n3.Show filtered students by name\n" +
-                    "4.Add problem\n5.Show all problems\n6.Show filtered problems by text\n7.Delete student\n8.Update student" +
-                    "\n9.Delete problem\n10.Update problem\n11.Show filtered student by serial number\n12.Add assignment" +
+            System.out.println("Enter a choice:\n 0.Exit\n 1.Add student\n 2.Show all students\n 3.Show filtered students by name\n" +
+                    " 4.Add problem\n 5.Show all problems\n 6.Show filtered problems by text\n 7.Delete student\n 8.Update student" +
+                    "\n 9.Delete problem\n10.Update problem\n11.Show filtered student by serial number\n12.Add assignment" +
                     "\n13.Show all assignments\n14.Update assignment\n15.Delete assignment\n16.Show the students who failed an assignment" +
-                    "\n17.Show the student along with their total points\n18.Show most assigned problem" );
+                    "\n17.Show the student along with their total points\n18.Show most assigned problem" +
+                    "\n19.Show all assignments for the given student and problem along with the weighted average" );
             String choice = keyboard.nextLine();
             switch(choice) {
                 case "1":
@@ -100,6 +101,9 @@ public class Console {
                 case "18":
                     getMostAssignedProblems();
                     break;
+                case "19":
+                    showAssignmentsfOfStudentWithProblem();
+                    break;
                 case "99":
                     studentService.addStudent(1L,"sn1","n1",1);
                     problemService.addProblem(1L,1,"pb1");
@@ -109,6 +113,23 @@ public class Console {
                     System.exit(0);
             }
         }
+    }
+
+    private void showAssignmentsfOfStudentWithProblem(){
+        BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
+        Long sid = 0L;
+        Long pid = 0L;
+        try {
+            System.out.println("Enter the student id (Long) >>");
+            sid = NumberUtils.toLong(bufferRead.readLine(), 0L);
+            System.out.println("Enter the problem id (Long) >>");
+            pid = NumberUtils.toLong(bufferRead.readLine(), 0L);
+        }catch(IOException exception){
+            System.out.println(exception.toString());
+        }
+        Set<Assignment> assignments = this.assignmentService.getAssignmentsfOfStudentWithProblem(sid,pid);
+        assignments.forEach(System.out::println);
+        System.out.println("The weighted average for these assignments is: " + this.assignmentService.getAvgGradeOfAssignmentsfOfStudentWithProblem(sid,pid));
     }
 
     private void showStudentWithTotalPoints(){

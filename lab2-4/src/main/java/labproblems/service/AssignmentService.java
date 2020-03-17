@@ -34,6 +34,23 @@ public class AssignmentService {
         }
     }
 
+    public float getAvgGradeOfAssignmentsfOfStudentWithProblem(Long _sid, Long _pid) {
+        Set<Assignment> assignments = (Set<Assignment>) this.repository.findAll();
+        Set<Assignment> assignmentSet = assignments.stream().filter(assignment -> assignment.getStudent().equals(_sid))
+                .filter(assignment -> assignment.getProblem().equals(_pid))
+                .collect(Collectors.toSet());
+        int nr = assignmentSet.size();
+        float sumOfGrades = assignmentSet.stream().map(assignment -> assignment.getGrade()).reduce((float) 0, (subtotal, assignment) -> subtotal + assignment);
+        return sumOfGrades/nr;
+    }
+
+    public Set<Assignment> getAssignmentsfOfStudentWithProblem(Long _sid, Long _pid){
+        Set<Assignment> assignments = (Set<Assignment>) this.repository.findAll();
+        return assignments.stream().filter(assignment -> assignment.getStudent().equals(_sid))
+                .filter(assignment -> assignment.getProblem().equals(_pid))
+                .collect(Collectors.toSet());
+    }
+
 
     /**
      * The method adds an assignment with the given attributes.
@@ -64,12 +81,6 @@ public class AssignmentService {
         Set<Long> assignmentsIds= assignments.stream().filter(assignment -> assignment.getStudent().equals(_id))
                 .map(Assignment::getId)
                 .collect(Collectors.toSet());
-
-        //TODO maybe replace this loop
-//        for(Long assignmentId: assignmentsIds){
-//            this.repository.delete(assignmentId);
-//        }
-
         assignmentsIds.forEach(this.repository::delete);
     }
 
@@ -78,13 +89,6 @@ public class AssignmentService {
         Set<Long> assignmentsIds= assignments.stream().filter(assignment -> assignment.getProblem().equals(_id))
                 .map(Assignment::getId)
                 .collect(Collectors.toSet());
-
-        //TODO maybe replace this loop
-//        for(Long assignmentId: assignmentsIds){
-//            System.out.println(assignmentId);
-//            this.repository.delete(assignmentId);
-//        }
-
         assignmentsIds.forEach(this.repository::delete);
     }
 
@@ -122,28 +126,6 @@ public class AssignmentService {
         studentsGrade.forEach((key, value) -> System.out.println(studentService.findStudent(key).get() + " Total Points: " + value));
 
     }
-
-//    public void getStudentsWithTheirAverage(){
-//        //TODO this method does not work for the first student
-//        Set<Assignment> assignments = (Set<Assignment>) repository.findAll();
-//        Map<Long, ArrayList<Float>> students = new HashMap<Long, ArrayList<Float>>();
-//        ArrayList<Float> values = new ArrayList<Float>();
-//        for( Assignment assignment: assignments){
-//            if( students.containsKey(assignment.getStudent())) {
-//                values = students.get(assignment.getStudent());
-//                values.add(assignment.getGrade());
-//                students.put(assignment.getStudent(),values);
-//            }
-//            else{
-//                values.clear();
-//                values.add(assignment.getGrade());
-//                students.put(assignment.getStudent(),new ArrayList<Float>(values));
-//            }
-//        }
-//        for(Map.Entry<Long,ArrayList<Float>> student:students.entrySet()){
-//            System.out.println(student.getKey() + "," + student.getValue());
-//        }
-//    }
 
     /**
      * The method collects all the assignments in a Set.
