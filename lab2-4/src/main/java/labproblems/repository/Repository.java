@@ -1,11 +1,10 @@
 package labproblems.repository;
 
-import labproblems.domain.BaseEntity;
-import labproblems.domain.validators.ValidatorException;
+import labproblems.domain.entities.BaseEntity;
+import labproblems.domain.exceptions.ValidatorException;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.IOException;
 import java.util.Optional;

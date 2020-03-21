@@ -1,17 +1,14 @@
 package labproblems.service;
 
-import labproblems.domain.Assignment;
-import labproblems.domain.Problem;
-import labproblems.domain.Student;
+import labproblems.domain.entities.Assignment;
+import labproblems.domain.entities.Problem;
+import labproblems.domain.entities.Student;
 import labproblems.domain.validators.AssignmentValidator;
-import labproblems.domain.validators.StudentValidator;
-import labproblems.domain.validators.Validator;
-import labproblems.domain.validators.ValidatorException;
-import labproblems.repository.InMemoryRepository;
+import labproblems.domain.exceptions.ValidatorException;
+import labproblems.repository.inMemoryRepository.InMemoryRepository;
 import labproblems.repository.Repository;
 import org.junit.Test;
 
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 

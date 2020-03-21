@@ -1,11 +1,10 @@
 package labproblems.repository;
 
-import labproblems.domain.Student;
+import labproblems.domain.entities.Student;
 import labproblems.domain.validators.StudentValidator;
 import labproblems.domain.validators.Validator;
-import org.junit.Ignore;
+import labproblems.repository.inMemoryRepository.InMemoryRepository;
 import org.junit.Test;
-import labproblems.domain.validators.ValidatorException;
 
 import java.util.List;
 import java.util.Optional;

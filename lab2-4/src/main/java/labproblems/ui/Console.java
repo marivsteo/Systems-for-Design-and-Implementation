@@ -1,10 +1,9 @@
 package labproblems.ui;
 
-import jdk.internal.net.http.common.Pair;
-import labproblems.domain.Assignment;
-import labproblems.domain.Problem;
-import labproblems.domain.Student;
-import labproblems.domain.validators.ValidatorException;
+import labproblems.domain.entities.Assignment;
+import labproblems.domain.entities.Problem;
+import labproblems.domain.entities.Student;
+import labproblems.domain.exceptions.ValidatorException;
 import labproblems.service.AssignmentService;
 import labproblems.service.ProblemService;
 import labproblems.service.StudentService;

@@ -1,8 +1,8 @@
-package labproblems.repository;
+package labproblems.repository.xmlRepositories;
 
-import labproblems.domain.Problem;
-import labproblems.domain.Student;
-import labproblems.domain.validators.ValidatorException;
+import labproblems.domain.entities.Problem;
+import labproblems.domain.exceptions.ValidatorException;
+import labproblems.repository.inMemoryRepository.InMemoryRepository;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -17,7 +17,6 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;

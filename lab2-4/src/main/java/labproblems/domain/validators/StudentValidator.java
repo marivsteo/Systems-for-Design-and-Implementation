@@ -1,6 +1,7 @@
 package labproblems.domain.validators;
 
-import labproblems.domain.Student;
+import labproblems.domain.entities.Student;
+import labproblems.domain.exceptions.ValidatorException;
 
 /**
  * @author Marius

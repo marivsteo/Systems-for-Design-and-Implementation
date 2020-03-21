@@ -1,5 +1,6 @@
 package labproblems.domain;
 
+import labproblems.domain.entities.Student;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

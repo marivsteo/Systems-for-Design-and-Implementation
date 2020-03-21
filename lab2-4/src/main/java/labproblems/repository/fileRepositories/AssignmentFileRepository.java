@@ -1,8 +1,8 @@
-package labproblems.repository;
+package labproblems.repository.fileRepositories;
 
-import labproblems.domain.Assignment;
-import labproblems.domain.Problem;
-import labproblems.domain.validators.ValidatorException;
+import labproblems.domain.entities.Assignment;
+import labproblems.domain.exceptions.ValidatorException;
+import labproblems.repository.inMemoryRepository.InMemoryRepository;
 
 import java.io.BufferedWriter;
 import java.io.IOException;

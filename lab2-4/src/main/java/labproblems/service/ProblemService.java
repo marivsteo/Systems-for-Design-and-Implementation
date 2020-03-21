@@ -1,8 +1,8 @@
 package labproblems.service;
 
-import labproblems.domain.Problem;
+import labproblems.domain.entities.Problem;
 import labproblems.domain.validators.ProblemValidator;
-import labproblems.domain.validators.ValidatorException;
+import labproblems.domain.exceptions.ValidatorException;
 import labproblems.repository.Repository;
 
 import java.util.HashSet;

@@ -1,7 +1,8 @@
-package labproblems.repository;
+package labproblems.repository.xmlRepositories;
 
-import labproblems.domain.Student;
-import labproblems.domain.validators.ValidatorException;
+import labproblems.domain.entities.Assignment;
+import labproblems.domain.exceptions.ValidatorException;
+import labproblems.repository.inMemoryRepository.InMemoryRepository;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -26,11 +27,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class StudentXMLRepository extends InMemoryRepository<Long, Student> {
+public class AssignmentXMLRepository extends InMemoryRepository<Long, Assignment> {
 
     private String filename;
 
-    public StudentXMLRepository( String fileName) {
+    public AssignmentXMLRepository( String fileName) {
         this.filename = fileName;
 
         loadData();
@@ -40,12 +41,12 @@ public class StudentXMLRepository extends InMemoryRepository<Long, Student> {
         Path path = Paths.get(filename);
 
         try {
-            List<Student> result = new ArrayList<>();
+            List<Assignment> result = new ArrayList<>();
 
             Document document = DocumentBuilderFactory
                     .newInstance()
                     .newDocumentBuilder()
-                    .parse("./data/students.xml");
+                    .parse("./data/assignments.xml");
 
             Element root = document.getDocumentElement();
 
@@ -55,14 +56,14 @@ public class StudentXMLRepository extends InMemoryRepository<Long, Student> {
                     .range(0, children.getLength())
                     .mapToObj(children::item)
                     .filter(node -> node instanceof Element)
-                    .map(node -> createStudentFromElement((Element) node))
+                    .map(node -> createAssignmentFromElement((Element) node))
                     .collect(Collectors.toList());
 
             try {
-                    result.forEach(super::save);
-                } catch (ValidatorException e) {
-                    e.printStackTrace();
-                }
+                result.forEach(super::save);
+            } catch (ValidatorException e) {
+                e.printStackTrace();
+            }
         } catch (IOException | ParserConfigurationException | SAXException ex) {
             ex.printStackTrace();
         }
@@ -73,15 +74,16 @@ public class StudentXMLRepository extends InMemoryRepository<Long, Student> {
         return node.getTextContent();
     }
 
-    private static Student createStudentFromElement(Element studentElement) {
-        Student student_ = new Student();
+    private static Assignment createAssignmentFromElement(Element assignmentElement) {
+        Assignment assignment = new Assignment();
 
-        student_.setId(Long.parseLong(getTextFromTagName(studentElement, "id")));
-        student_.setSerialNumber(getTextFromTagName(studentElement,"serialNumber"));
-        student_.setName(getTextFromTagName(studentElement,"name"));
-        student_.setGroup(Integer.parseInt(getTextFromTagName(studentElement,"group")));
+        assignment.setId(Long.parseLong(getTextFromTagName(assignmentElement, "id")));
+        assignment.setName(getTextFromTagName(assignmentElement,"name"));
+        assignment.setStudent(Long.parseLong(getTextFromTagName(assignmentElement,"student")));
+        assignment.setProblem(Long.parseLong(getTextFromTagName(assignmentElement,"problem")));
+        assignment.setGrade(Float.parseFloat(getTextFromTagName(assignmentElement, "grade")));
 
-        return student_;
+        return assignment;
     }
 
     private static void appendChildWithTextToNode(Document document,
@@ -93,87 +95,88 @@ public class StudentXMLRepository extends InMemoryRepository<Long, Student> {
         parentNode.appendChild(element);
     }
 
-    public static Node studentToNode(Student student_, Document document) {
-        Element studentElement = document.createElement("student");
+    public static Node assignmentToNode(Assignment assignment, Document document) {
+        Element assignmentElement = document.createElement("assignment");
 
-        appendChildWithTextToNode(document, studentElement, "id", String.valueOf(student_.getId()));
-        appendChildWithTextToNode(document, studentElement, "serialNumber", student_.getSerialNumber());
-        appendChildWithTextToNode(document, studentElement, "name", student_.getName());
-        appendChildWithTextToNode(document, studentElement, "group", String.valueOf(student_.getGroup()));
+        appendChildWithTextToNode(document, assignmentElement, "id", String.valueOf(assignment.getId()));
+        appendChildWithTextToNode(document, assignmentElement, "name", assignment.getName());
+        appendChildWithTextToNode(document, assignmentElement, "student", String.valueOf(assignment.getStudent()));
+        appendChildWithTextToNode(document, assignmentElement, "problem", String.valueOf(assignment.getProblem()));
+        appendChildWithTextToNode(document, assignmentElement, "grade", String.valueOf(assignment.getGrade()));
 
-        return studentElement;
+        return assignmentElement;
     }
 
-    public Optional<Student> save(Student student_) {
-        Optional<Student> optional = super.save(student_);
+    public Optional<Assignment> save(Assignment assignment_) {
+        Optional<Assignment> optional = super.save(assignment_);
         if (optional.isPresent()) {
             return optional;
         }
         try {
-            saveStudent(student_);
+            saveAssignment(assignment_);
         } catch (ParserConfigurationException | TransformerException | SAXException | IOException e) {
             e.printStackTrace();
         }
         return Optional.empty();
     }
-
-    public static void saveStudent(Student student_) throws ParserConfigurationException, IOException, SAXException, TransformerException, TransformerException {
+    
+    public static void saveAssignment(Assignment assignment) throws ParserConfigurationException, IOException, SAXException, TransformerException, TransformerException {
         Document document = DocumentBuilderFactory
                 .newInstance()
                 .newDocumentBuilder()
-                .parse("./data/students.xml");
+                .parse("./data/assignments.xml");
 
         Element root = document.getDocumentElement();
-        Node studentNode = studentToNode(student_, document);
-        root.appendChild(studentNode);
+        Node assignmentNode = assignmentToNode(assignment, document);
+        root.appendChild(assignmentNode);
 
         Transformer transformer = TransformerFactory
                 .newInstance()
                 .newTransformer();
         transformer.transform(new DOMSource(document),
-                new StreamResult("./data/students.xml"));
+                new StreamResult("./data/assignments.xml"));
     }
 
-    public Optional<Student> delete(Long id) {
+    public Optional<Assignment> delete(Long id) {
 
 
-        Optional<Student> optional = super.delete(id);
+        Optional<Assignment> optional = super.delete(id);
 
         Document document = null;
         try {
             document = DocumentBuilderFactory
-                        .newInstance()
-                        .newDocumentBuilder()
-                        .parse("./data/students.xml");
+                    .newInstance()
+                    .newDocumentBuilder()
+                    .parse("./data/assignments.xml");
         } catch (ParserConfigurationException | IOException | SAXException e) {
             e.printStackTrace();
         }
 
         // <person>
-        NodeList nodes = document.getElementsByTagName("student");
+        NodeList nodes = document.getElementsByTagName("assignment");
 
         for (int i = 0; i < nodes.getLength(); i++) {
-            Element student_ = (Element)nodes.item(i);
+            Element assignment_ = (Element)nodes.item(i);
             // <name>
-            Element id1 = (Element)student_.getElementsByTagName("id").item(0);
+            Element id1 = (Element)assignment_.getElementsByTagName("id").item(0);
             String id2 = id1.getTextContent();
             Long id3 = Long.parseLong(id2);
             if (id3.equals(id)) {
-                student_.getParentNode().removeChild(student_);
+                assignment_.getParentNode().removeChild(assignment_);
             }
         }
 
         Transformer transformer = null;
         try {
             transformer = TransformerFactory
-                                        .newInstance()
-                                        .newTransformer();
+                    .newInstance()
+                    .newTransformer();
         } catch (TransformerConfigurationException e) {
             e.printStackTrace();
         }
         try {
             transformer.transform(new DOMSource(document),
-                                        new StreamResult("./data/students.xml"));
+                    new StreamResult("./data/assignments.xml"));
         } catch (TransformerException e) {
             e.printStackTrace();
         }
@@ -184,35 +187,35 @@ public class StudentXMLRepository extends InMemoryRepository<Long, Student> {
         return optional;
     }
 
-    public Optional<Student> update(Student student_) throws ParserConfigurationException, IOException, SAXException, TransformerException {
+    public Optional<Assignment> update(Assignment assignment_) throws ParserConfigurationException, IOException, SAXException, TransformerException {
 
         Document document = DocumentBuilderFactory
                 .newInstance()
                 .newDocumentBuilder()
-                .parse("./data/students.xml");
+                .parse("./data/assignments.xml");
 
         // <person>
-        NodeList nodes = document.getElementsByTagName("student");
+        NodeList nodes = document.getElementsByTagName("assignment");
 
-        Long id = student_.getId();
+        Long id = assignment_.getId();
 
-        if (student_ == null) {
-            throw new IllegalArgumentException("InMemoryRepository > update: The student must not be null.");
+        if (assignment_ == null) {
+            throw new IllegalArgumentException("InMemoryRepository > update: The assignment must not be null.");
         }
 
-        Map<Long,Student> entities = super.getEntities();
+        Map<Long,Assignment> entities = super.getEntities();
 
-        if(entities.containsKey(student_.getId())) {
-            entities.computeIfPresent(student_.getId(), (k, v) -> student_);
+        if(entities.containsKey(assignment_.getId())) {
+            entities.computeIfPresent(assignment_.getId(), (k, v) -> assignment_);
 
             for (int i = 0; i < nodes.getLength(); i++) {
-                Element student = (Element)nodes.item(i);
+                Element assignment = (Element)nodes.item(i);
                 // <name>
-                Element id1 = (Element)student.getElementsByTagName("id").item(0);
+                Element id1 = (Element)assignment.getElementsByTagName("id").item(0);
                 String id2 = id1.getTextContent();
                 Long id3 = Long.parseLong(id2);
                 if (id3.equals(id)) {
-                    student.getParentNode().removeChild(student);
+                    assignment.getParentNode().removeChild(assignment);
                 }
             }
 
@@ -220,11 +223,11 @@ public class StudentXMLRepository extends InMemoryRepository<Long, Student> {
                     .newInstance()
                     .newTransformer();
             transformer.transform(new DOMSource(document),
-                    new StreamResult("./data/students.xml"));
+                    new StreamResult("./data/assignments.xml"));
 
-            saveStudent(student_);
+            saveAssignment(assignment_);
             return null;
         }
-        return Optional.ofNullable(student_);
+        return Optional.ofNullable(assignment_);
     }
 }

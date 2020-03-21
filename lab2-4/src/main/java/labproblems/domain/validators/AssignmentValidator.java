@@ -1,7 +1,7 @@
 package labproblems.domain.validators;
 
-import labproblems.domain.Assignment;
-import labproblems.domain.Student;
+import labproblems.domain.entities.Assignment;
+import labproblems.domain.exceptions.ValidatorException;
 
 public class AssignmentValidator implements Validator<Assignment> {
     /**

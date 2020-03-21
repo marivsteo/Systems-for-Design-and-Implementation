@@ -1,4 +1,4 @@
-package labproblems.domain;
+package labproblems.domain.entities;
 
 /**
  * @author Marius

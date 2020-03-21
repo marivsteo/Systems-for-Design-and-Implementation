@@ -1,13 +1,20 @@
 package labproblems;
 
-import labproblems.domain.Assignment;
-import labproblems.domain.Problem;
-import labproblems.domain.Student;
+import labproblems.domain.entities.Assignment;
+import labproblems.domain.entities.Problem;
+import labproblems.domain.entities.Student;
 import labproblems.domain.validators.AssignmentValidator;
 import labproblems.domain.validators.ProblemValidator;
 import labproblems.domain.validators.StudentValidator;
 import labproblems.domain.validators.Validator;
 import labproblems.repository.*;
+import labproblems.repository.fileRepositories.AssignmentFileRepository;
+import labproblems.repository.fileRepositories.ProblemFileRepository;
+import labproblems.repository.fileRepositories.StudentFileRepository;
+import labproblems.repository.inMemoryRepository.InMemoryRepository;
+import labproblems.repository.xmlRepositories.AssignmentXMLRepository;
+import labproblems.repository.xmlRepositories.ProblemXMLRepository;
+import labproblems.repository.xmlRepositories.StudentXMLRepository;
 import labproblems.service.AssignmentService;
 import labproblems.service.ProblemService;
 import labproblems.service.StudentService;
@@ -15,7 +22,6 @@ import labproblems.ui.Console;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.Scanner;
 
 /**

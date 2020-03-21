@@ -1,21 +1,15 @@
 package labproblems.service;
 
-import labproblems.domain.Problem;
-import labproblems.domain.Student;
+import labproblems.domain.entities.Problem;
 import labproblems.domain.validators.ProblemValidator;
-import labproblems.domain.validators.StudentValidator;
 import labproblems.domain.validators.Validator;
-import labproblems.domain.validators.ValidatorException;
-import labproblems.repository.InMemoryRepository;
+import labproblems.domain.exceptions.ValidatorException;
+import labproblems.repository.inMemoryRepository.InMemoryRepository;
 import labproblems.repository.Repository;
-import labproblems.service.StudentService;
 import org.junit.Test;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static org.junit.Assert.*;
 

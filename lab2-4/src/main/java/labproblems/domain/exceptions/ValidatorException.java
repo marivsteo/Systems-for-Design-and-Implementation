@@ -1,4 +1,4 @@
-package labproblems.domain.validators;
+package labproblems.domain.exceptions;
 
 /**
  * @author Marius

@@ -1,5 +1,7 @@
 package labproblems.domain.validators;
 
+import labproblems.domain.exceptions.ValidatorException;
+
 /**
  * @author Marius
  * Simple interface for a validator
