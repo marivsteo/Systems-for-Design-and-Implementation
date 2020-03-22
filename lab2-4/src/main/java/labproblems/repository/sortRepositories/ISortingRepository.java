@@ -1,6 +1,7 @@
 package labproblems.repository.sortRepositories;
 
 import labproblems.domain.entities.BaseEntity;
+import labproblems.repository.Repository;
 
 import java.io.Serializable;
 
@@ -9,7 +10,7 @@ import java.io.Serializable;
  */
 public interface ISortingRepository<ID extends Serializable,
         T extends BaseEntity<ID>>
-        extends CrudRepository<ID, T> {
+        extends Repository<ID, T> {
 
     Iterable<T> findAll(Sort sort);
 
