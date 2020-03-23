@@ -12,6 +12,8 @@ import labproblems.repository.fileRepositories.AssignmentFileRepository;
 import labproblems.repository.fileRepositories.ProblemFileRepository;
 import labproblems.repository.fileRepositories.StudentFileRepository;
 import labproblems.repository.inMemoryRepository.InMemoryRepository;
+import labproblems.repository.sortRepositories.DatabaseAssignmentsRepository;
+import labproblems.repository.sortRepositories.DatabaseProblemsRepository;
 import labproblems.repository.sortRepositories.DatabaseStudentsRepository;
 import labproblems.repository.xmlRepositories.AssignmentXMLRepository;
 import labproblems.repository.xmlRepositories.ProblemXMLRepository;
@@ -118,12 +120,25 @@ public class Main {
                 break;
             case "4":
                 // postgresql
+                problemValidator = new ProblemValidator();
+                assignmentValidator = new AssignmentValidator();
+                studentValidator = new StudentValidator();
+
                 try {
                     studentRepository = new DatabaseStudentsRepository();
+                    problemRepository = new DatabaseProblemsRepository();
+                    assignmentRepository = new DatabaseAssignmentsRepository();
+
+                    studentService = new StudentService(studentRepository);
+                    problemService = new ProblemService(problemRepository);
+                    assignmentService = new AssignmentService(assignmentRepository, assignmentValidator, studentService, problemService);
+
+                    console = new Console(studentService, problemService, assignmentService);
+                    console.runConsole();
                 } catch (Exception exception){
                     System.out.println(exception.toString());
                 }
-
+                break;
         }
     }
 }
