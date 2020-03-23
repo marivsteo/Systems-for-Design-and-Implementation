@@ -12,6 +12,7 @@ import labproblems.repository.fileRepositories.AssignmentFileRepository;
 import labproblems.repository.fileRepositories.ProblemFileRepository;
 import labproblems.repository.fileRepositories.StudentFileRepository;
 import labproblems.repository.inMemoryRepository.InMemoryRepository;
+import labproblems.repository.sortRepositories.DatabaseStudentsRepository;
 import labproblems.repository.xmlRepositories.AssignmentXMLRepository;
 import labproblems.repository.xmlRepositories.ProblemXMLRepository;
 import labproblems.repository.xmlRepositories.StudentXMLRepository;
@@ -22,6 +23,7 @@ import labproblems.ui.Console;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 /**
@@ -58,7 +60,8 @@ public class Main {
         }
 
         Scanner keyboard = new Scanner(System.in);
-        System.out.println("Enter a choice:\n 0.Exit\n 1.File repository\n 2.In-memory repository\n 3.XML repository\n");
+        System.out.println("Enter a choice:\n 0.Exit\n 1.File repository\n 2.In-memory repository\n 3.XML repository\n" +
+                " 4.Postgresql database");
         String choice = keyboard.nextLine();
         Validator<Problem> problemValidator;
         AssignmentValidator assignmentValidator;
@@ -113,6 +116,14 @@ public class Main {
                 console = new Console(studentService,problemService,assignmentService);
                 console.runConsole();
                 break;
+            case "4":
+                // postgresql
+                try {
+                    studentRepository = new DatabaseStudentsRepository();
+                } catch (Exception exception){
+                    System.out.println(exception.toString());
+                }
+
         }
     }
 }
