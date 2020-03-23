@@ -322,7 +322,7 @@ public class Console {
     private void printAllStudents() {
         System.out.println("Listing all the students:");
         Set<Student> students = studentService.getAllStudents();
-        students.stream().forEach(System.out::println);
+        students.forEach(System.out::println);
     }
 
     private void printAllProblems(){

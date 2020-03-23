@@ -74,7 +74,6 @@ public class DatabaseAssignmentsRepository implements ISortingRepository <Long,A
 
             preparedStatement.executeUpdate();
 
-            it.remove(); // avoids a ConcurrentModificationException
         }
 
     }

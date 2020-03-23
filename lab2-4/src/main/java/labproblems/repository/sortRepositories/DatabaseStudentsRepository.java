@@ -72,7 +72,7 @@ public class DatabaseStudentsRepository implements ISortingRepository <Long,Stud
 
             preparedStatement.executeUpdate();
 
-            it.remove(); // avoids a ConcurrentModificationException
+            //it.remove(); // avoids a ConcurrentModificationException
         }
 
     }

@@ -71,7 +71,6 @@ public class DatabaseProblemsRepository implements ISortingRepository <Long,Prob
 
             preparedStatement.executeUpdate();
 
-            it.remove(); // avoids a ConcurrentModificationException
         }
 
     }

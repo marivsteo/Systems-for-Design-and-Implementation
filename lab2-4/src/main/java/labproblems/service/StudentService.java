@@ -52,7 +52,7 @@ public class StudentService {
      */
     public Set<Student> getAllStudents() {
         Iterable<Student> students = repository.findAll();
-        return StreamSupport.stream(students.spliterator(), false).collect(Collectors.toSet());
+        return StreamSupport.stream(students.spliterator(), true).collect(Collectors.toSet());
     }
 
     /**
