@@ -327,14 +327,14 @@ public class Console {
 
     private void printAllProblems(){
         System.out.println("Listing all the problems:");
-        Set<Problem> problems = problemService.getAllProblems();
-        problems.stream().forEach(System.out::println);
+        Iterable<Problem> problems = problemService.getAllProblems();
+        problems.forEach(System.out::println);
     }
 
     private void printAllAssignments(){
         System.out.println("Listing all the assignments:");
-        Set<Assignment> assignments = assignmentService.getAllAssignments();
-        assignments.stream().forEach(System.out::println);
+        Iterable<Assignment> assignments = assignmentService.getAllAssignments();
+        assignments.forEach(System.out::println);
     }
 
     private void addStudent() {

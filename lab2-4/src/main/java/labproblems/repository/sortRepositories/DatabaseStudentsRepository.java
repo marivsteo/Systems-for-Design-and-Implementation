@@ -81,23 +81,7 @@ public class DatabaseStudentsRepository implements ISortingRepository <Long,Stud
     @Override
     public Iterable<Student> findAll(Sort sort) {
         List<Student> allEntities = this.studentMap.values().stream().collect(Collectors.toList());
-        //sort.sort(allEntities);
-        if( sort.contains("name")) {
-            if( sort.contains("DESC") )
-                allEntities = allEntities.stream().sorted(Comparator.comparing(Student::getName).reversed()).collect(Collectors.toList());
-            else allEntities = allEntities.stream().sorted(Comparator.comparing(Student::getName)).collect(Collectors.toList());
-        }
-        if( sort.contains("serialNr")) {
-            if( sort.contains("DESC") )
-                allEntities = allEntities.stream().sorted(Comparator.comparing(Student::getSerialNumber).reversed()).collect(Collectors.toList());
-            else allEntities = allEntities.stream().sorted(Comparator.comparing(Student::getSerialNumber)).collect(Collectors.toList());
-        }
-        if( sort.contains("group")) {
-            if( sort.contains("DESC") )
-                allEntities = allEntities.stream().sorted(Comparator.comparing(Student::getGroup).reversed()).collect(Collectors.toList());
-            allEntities = allEntities.stream().sorted(Comparator.comparing(Student::getGroup)).collect(Collectors.toList());
-        }
-        return allEntities;
+        return sort.sorts(allEntities);
     }
 
     @Override

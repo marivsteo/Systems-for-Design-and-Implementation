@@ -1,6 +1,7 @@
 package labproblems.repository.sortRepositories;
 
 import labproblems.domain.entities.Problem;
+import labproblems.domain.entities.Student;
 import labproblems.domain.exceptions.ValidatorException;
 import org.xml.sax.SAXException;
 
@@ -77,7 +78,8 @@ public class DatabaseProblemsRepository implements ISortingRepository <Long,Prob
 
     @Override
     public Iterable<Problem> findAll(Sort sort) {
-        return null;
+        List<Problem> allEntities = this.problemMap.values().stream().collect(Collectors.toList());
+        return sort.sortp(allEntities);
     }
 
     @Override

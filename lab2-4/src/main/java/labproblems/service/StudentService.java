@@ -56,7 +56,11 @@ public class StudentService {
     public Iterable<Student> getAllStudents() {
         Iterable<Student> students = this.repository.findAll();
         if( this.repository instanceof DatabaseStudentsRepository ){
-            students = ((DatabaseStudentsRepository) this.repository).findAll(new Sort("group","ASC"));
+            Sort sort1 = new Sort("Name");
+            Sort sort2 = new Sort("Name","DESC");
+            Sort sort3 = new Sort("Group","DESC");
+            Sort sort4 = new Sort("SerialNumber");
+            students = ((DatabaseStudentsRepository) this.repository).findAll(sort4);
         }
         return StreamSupport.stream(students.spliterator(), true).collect(Collectors.toList());
     }

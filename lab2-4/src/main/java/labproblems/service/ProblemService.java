@@ -4,6 +4,9 @@ import labproblems.domain.entities.Problem;
 import labproblems.domain.validators.ProblemValidator;
 import labproblems.domain.exceptions.ValidatorException;
 import labproblems.repository.Repository;
+import labproblems.repository.sortRepositories.DatabaseAssignmentsRepository;
+import labproblems.repository.sortRepositories.DatabaseProblemsRepository;
+import labproblems.repository.sortRepositories.Sort;
 
 import java.util.HashSet;
 import java.util.NoSuchElementException;
@@ -45,9 +48,17 @@ public class ProblemService {
      * The method collects all the problems in a Set.
      * @return a Set containing all problems in the repository
      */
-    public Set<Problem> getAllProblems(){
+    public Iterable<Problem> getAllProblems(){
         Iterable<Problem> problems = this.repository.findAll();
-        return StreamSupport.stream(problems.spliterator(),false).collect(Collectors.toSet());
+        if( this.repository instanceof DatabaseProblemsRepository){
+            Sort sort1 = new Sort("Text");
+            Sort sort2 = new Sort("Text","DESC");
+            Sort sort3 = new Sort("Number","DESC");
+            Sort sort4 = new Sort("Number");
+            Sort sort5 = new Sort();
+            problems = ((DatabaseProblemsRepository) this.repository).findAll(sort2);
+        }
+        return StreamSupport.stream(problems.spliterator(),false).collect(Collectors.toList());
     }
 
     /**

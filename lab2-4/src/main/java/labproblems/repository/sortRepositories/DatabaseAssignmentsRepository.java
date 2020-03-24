@@ -1,6 +1,7 @@
 package labproblems.repository.sortRepositories;
 
 import labproblems.domain.entities.Assignment;
+import labproblems.domain.entities.Student;
 import labproblems.domain.exceptions.ValidatorException;
 import org.xml.sax.SAXException;
 
@@ -80,7 +81,9 @@ public class DatabaseAssignmentsRepository implements ISortingRepository <Long,A
 
     @Override
     public Iterable<Assignment> findAll(Sort sort) {
-        return null;
+        List<Assignment> allEntities = this.assignmentMap.values().stream().collect(Collectors.toList());
+        allEntities = (List<Assignment>) sort.sorta(allEntities);
+        return allEntities;
     }
 
     @Override
@@ -96,6 +99,9 @@ public class DatabaseAssignmentsRepository implements ISortingRepository <Long,A
 
     @Override
     public Iterable<Assignment> findAll() {
+        try {
+            loadData();
+        } catch(Exception exception) {}
         Set<Assignment> allEntities = this.assignmentMap.values().stream().collect(Collectors.toSet());
         return allEntities;
     }

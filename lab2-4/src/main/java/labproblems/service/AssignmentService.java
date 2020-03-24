@@ -4,6 +4,9 @@ import labproblems.domain.entities.Assignment;
 import labproblems.domain.validators.AssignmentValidator;
 import labproblems.domain.exceptions.ValidatorException;
 import labproblems.repository.Repository;
+import labproblems.repository.sortRepositories.DatabaseAssignmentsRepository;
+import labproblems.repository.sortRepositories.DatabaseStudentsRepository;
+import labproblems.repository.sortRepositories.Sort;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -127,9 +130,23 @@ public class AssignmentService {
      * The method collects all the assignments in a Set.
      * @return a Set containing all assignments in the repository
      */
-    public Set<Assignment> getAllAssignments() {
+    public Iterable<Assignment> getAllAssignments() {
         Iterable<Assignment> assignments = repository.findAll();
-        return StreamSupport.stream(assignments.spliterator(), false).collect(Collectors.toSet());
+        if( this.repository instanceof DatabaseAssignmentsRepository){
+            Sort sort1 = new Sort("Name");
+            Sort sort2 = new Sort("Name","DESC");
+            Sort sort3 = new Sort("Student");
+            Sort sort4 = new Sort("Student","DESC");
+            Sort sort5 = new Sort("Problem");
+            Sort sort6 = new Sort("Problem","DESC");
+            Sort sort7 = new Sort("Grade");
+            Sort sort8 = new Sort("Grade","DESC");
+            Sort sort9 = new Sort();
+            Sort sort10 = new Sort("Grade","Name");
+            Sort sort11 = new Sort("Student","Grade","DESC");
+            assignments = ((DatabaseAssignmentsRepository) this.repository).findAll(sort7);
+        }
+        return StreamSupport.stream(assignments.spliterator(), false).collect(Collectors.toList());
     }
 
     /**
