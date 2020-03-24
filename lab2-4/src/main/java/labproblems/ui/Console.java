@@ -321,7 +321,7 @@ public class Console {
 
     private void printAllStudents() {
         System.out.println("Listing all the students:");
-        Set<Student> students = studentService.getAllStudents();
+        Iterable<Student> students = studentService.getAllStudents();
         students.forEach(System.out::println);
     }
 

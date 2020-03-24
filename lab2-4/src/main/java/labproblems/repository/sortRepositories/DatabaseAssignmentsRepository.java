@@ -45,7 +45,7 @@ public class DatabaseAssignmentsRepository implements ISortingRepository <Long,A
             Assignment assignment = new Assignment(name, studentId, problemId, grade);
             assignment.setId(id);
             this.assignmentMap.putIfAbsent(assignment.getId(),assignment);
-            System.out.println(assignment);
+            //System.out.println(assignment);
         }
     }
 
@@ -62,7 +62,7 @@ public class DatabaseAssignmentsRepository implements ISortingRepository <Long,A
             Assignment assignment = (Assignment) pair.getValue();
             String sql = "insert into Assignments (id, name, studentid, problemsid, grade) values(?,?,?,?,?)";
 
-            System.out.println("Assignment = " + assignment);
+            //System.out.println("Assignment = " + assignment);
 
             PreparedStatement preparedStatement =
                     connection.prepareStatement(sql);

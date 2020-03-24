@@ -4,6 +4,9 @@ import labproblems.domain.entities.Student;
 import labproblems.domain.validators.StudentValidator;
 import labproblems.domain.exceptions.ValidatorException;
 import labproblems.repository.Repository;
+import labproblems.repository.sortRepositories.DatabaseStudentsRepository;
+import labproblems.repository.sortRepositories.ISortingRepository;
+import labproblems.repository.sortRepositories.Sort;
 
 import java.util.HashSet;
 import java.util.NoSuchElementException;
@@ -50,9 +53,12 @@ public class StudentService {
      * The method collects all the students in a Set.
      * @return a Set containing all students in the repository
      */
-    public Set<Student> getAllStudents() {
-        Iterable<Student> students = repository.findAll();
-        return StreamSupport.stream(students.spliterator(), true).collect(Collectors.toSet());
+    public Iterable<Student> getAllStudents() {
+        Iterable<Student> students = this.repository.findAll();
+        if( this.repository instanceof DatabaseStudentsRepository ){
+            students = ((DatabaseStudentsRepository) this.repository).findAll(new Sort("group","ASC"));
+        }
+        return StreamSupport.stream(students.spliterator(), true).collect(Collectors.toList());
     }
 
     /**

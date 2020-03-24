@@ -12,9 +12,7 @@ import labproblems.repository.fileRepositories.AssignmentFileRepository;
 import labproblems.repository.fileRepositories.ProblemFileRepository;
 import labproblems.repository.fileRepositories.StudentFileRepository;
 import labproblems.repository.inMemoryRepository.InMemoryRepository;
-import labproblems.repository.sortRepositories.DatabaseAssignmentsRepository;
-import labproblems.repository.sortRepositories.DatabaseProblemsRepository;
-import labproblems.repository.sortRepositories.DatabaseStudentsRepository;
+import labproblems.repository.sortRepositories.*;
 import labproblems.repository.xmlRepositories.AssignmentXMLRepository;
 import labproblems.repository.xmlRepositories.ProblemXMLRepository;
 import labproblems.repository.xmlRepositories.StudentXMLRepository;
@@ -76,6 +74,7 @@ public class Main {
         AssignmentService assignmentService;
         Console console;
         switch(choice) {
+
             case "1":
                 problemValidator = new ProblemValidator();
                 assignmentValidator = new AssignmentValidator();
@@ -125,13 +124,13 @@ public class Main {
                 studentValidator = new StudentValidator();
 
                 try {
-                    studentRepository = new DatabaseStudentsRepository();
-                    problemRepository = new DatabaseProblemsRepository();
-                    assignmentRepository = new DatabaseAssignmentsRepository();
+                    ISortingRepository<Long,Student> studentRepository1 = new DatabaseStudentsRepository();
+                    ISortingRepository<Long,Problem> problemRepository1 = new DatabaseProblemsRepository();
+                    ISortingRepository<Long,Assignment> assignmentRepository1 = new DatabaseAssignmentsRepository();
 
-                    studentService = new StudentService(studentRepository);
-                    problemService = new ProblemService(problemRepository);
-                    assignmentService = new AssignmentService(assignmentRepository, assignmentValidator, studentService, problemService);
+                    studentService = new StudentService(studentRepository1);
+                    problemService = new ProblemService(problemRepository1);
+                    assignmentService = new AssignmentService(assignmentRepository1, assignmentValidator, studentService, problemService);
 
                     console = new Console(studentService, problemService, assignmentService);
                     console.runConsole();

@@ -2,6 +2,7 @@ package labproblems.repository.sortRepositories;
 
 import labproblems.domain.entities.Student;
 import labproblems.domain.exceptions.ValidatorException;
+import labproblems.repository.sortRepositories.Comparators.StudentComparators.StudentNameComparator;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -44,7 +45,7 @@ public class DatabaseStudentsRepository implements ISortingRepository <Long,Stud
             Student student = new Student(serialNumber,name,groupNumber);
             student.setId(id);
             this.studentMap.putIfAbsent(student.getId(),student);
-            System.out.println(student);
+            //System.out.println(student);
         }
     }
 
@@ -61,7 +62,7 @@ public class DatabaseStudentsRepository implements ISortingRepository <Long,Stud
             Student student = (Student) pair.getValue();
             String sql = "insert into Students (id, serialnr, name, groupnr) values(?,?,?,?)";
 
-            System.out.println("Student = " + student);
+            //System.out.println("Student = " + student);
 
             PreparedStatement preparedStatement =
                     connection.prepareStatement(sql);
@@ -79,7 +80,24 @@ public class DatabaseStudentsRepository implements ISortingRepository <Long,Stud
 
     @Override
     public Iterable<Student> findAll(Sort sort) {
-        return null;
+        List<Student> allEntities = this.studentMap.values().stream().collect(Collectors.toList());
+        //sort.sort(allEntities);
+        if( sort.contains("name")) {
+            if( sort.contains("DESC") )
+                allEntities = allEntities.stream().sorted(Comparator.comparing(Student::getName).reversed()).collect(Collectors.toList());
+            else allEntities = allEntities.stream().sorted(Comparator.comparing(Student::getName)).collect(Collectors.toList());
+        }
+        if( sort.contains("serialNr")) {
+            if( sort.contains("DESC") )
+                allEntities = allEntities.stream().sorted(Comparator.comparing(Student::getSerialNumber).reversed()).collect(Collectors.toList());
+            else allEntities = allEntities.stream().sorted(Comparator.comparing(Student::getSerialNumber)).collect(Collectors.toList());
+        }
+        if( sort.contains("group")) {
+            if( sort.contains("DESC") )
+                allEntities = allEntities.stream().sorted(Comparator.comparing(Student::getGroup).reversed()).collect(Collectors.toList());
+            allEntities = allEntities.stream().sorted(Comparator.comparing(Student::getGroup)).collect(Collectors.toList());
+        }
+        return allEntities;
     }
 
     @Override

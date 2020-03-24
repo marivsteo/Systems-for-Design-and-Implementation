@@ -44,7 +44,7 @@ public class DatabaseProblemsRepository implements ISortingRepository <Long,Prob
             Problem problem = new Problem(number,text);
             problem.setId(id);
             this.problemMap.putIfAbsent(problem.getId(),problem);
-            System.out.println(problem);
+            //System.out.println(problem);
         }
     }
 
@@ -61,7 +61,7 @@ public class DatabaseProblemsRepository implements ISortingRepository <Long,Prob
             Problem problem = (Problem) pair.getValue();
             String sql = "insert into Problems (id, number, text) values(?,?,?)";
 
-            System.out.println("Problem = " + problem);
+            //System.out.println("Problem = " + problem);
 
             PreparedStatement preparedStatement =
                     connection.prepareStatement(sql);
