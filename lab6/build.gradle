@@ -1,14 +1,21 @@
-plugins {
-    id 'java'
-}
+allprojects {
 
-group 'org.example'
-version '1.0-SNAPSHOT'
+//plugins {
+//    id 'java'
+//}
+    apply plugin: 'java'
 
-repositories {
-    mavenCentral()
-}
+    version '1.0-SNAPSHOT'
 
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    sourceCompatibility = JavaVersion.VERSION_13
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        testImplementation group: 'junit', name: 'junit', version: '4.12'
+
+        implementation 'org.apache.commons:commons-lang3:3.9'
+    }
 }
