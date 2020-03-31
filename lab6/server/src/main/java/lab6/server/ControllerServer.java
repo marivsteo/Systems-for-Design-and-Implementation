@@ -5,10 +5,10 @@ import lab6.common.Controller.IController;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
-public class ControllerService implements IController {
+public class ControllerServer implements IController {
     private ExecutorService executorService;
 
-    public ControllerService(ExecutorService _executorService){
+    public ControllerServer(ExecutorService _executorService){
         this.executorService = _executorService;
     }
 
@@ -18,7 +18,7 @@ public class ControllerService implements IController {
     }
 
     @Override
-    public Future<String> recieve(String name) {
+    public Future<String> receive(String name) {
         return null;
     }
 }
