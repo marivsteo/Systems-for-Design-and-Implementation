@@ -14,7 +14,7 @@ public class ControllerServer implements IController {
 
     @Override
     public Future<String> send(String name) {
-        return null;
+        return executorService.submit(() -> "Aaa" + name);
     }
 
     @Override

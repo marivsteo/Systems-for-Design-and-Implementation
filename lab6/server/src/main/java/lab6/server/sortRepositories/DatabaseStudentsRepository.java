@@ -25,6 +25,7 @@ public class DatabaseStudentsRepository implements ISortingRepository <Long, Stu
         try {
             Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (Exception exception){
+            exception.printStackTrace();
             throw new SQLException("DatabaseStudentsRepository > DatabaseStudentsRepository: Could not connect to db. (verify password)");
         }
         loadData();
