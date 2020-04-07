@@ -47,7 +47,7 @@ public class ServerApp {
                 ExecutorService executorService = Executors.newFixedThreadPool(
                         Runtime.getRuntime().availableProcessors()
                 );
-                Service helloService = new ServiceServer(executorService);
+                ServiceServer helloService = new ServiceServer(executorService);
 
                 TcpServer tcpServer = new TcpServer(executorService);
                 Controller controller = new Controller(assignmentService,studentService,problemService);

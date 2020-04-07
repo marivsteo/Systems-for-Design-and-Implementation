@@ -23,25 +23,25 @@ public class ServiceClient implements Service {
     }
 
     @Override
-    public Future<String> sendMessage(String name) {
-        return executorService.submit(() -> {
-            //create a request
-            //send request to server
-            //get response
-
-            Message request = new Message(Service.SEND_MESSAGE, name);
-            //System.out.println("sending request: "+request);
-            Message response = tcpClient.sendAndReceive(request);
-            //System.out.println("received response: "+response);
-
-            return response.getBody();
-        });
-
-//        return CompletableFuture.supplyAsync(() ->  {
-//            Message request = new Message(Service.SAY_HELLO, name);
+    public CompletableFuture<String> sendMessage(String name) {
+//        return executorService.submit(() -> {
+//            //create a request
+//            //send request to server
+//            //get response
+//
+//            Message request = new Message(Service.SEND_MESSAGE, name);
+//            //System.out.println("sending request: "+request);
 //            Message response = tcpClient.sendAndReceive(request);
+//            //System.out.println("received response: "+response);
 //
 //            return response.getBody();
 //        });
+
+        return CompletableFuture.supplyAsync(() ->  {
+            Message request = new Message(Service.SEND_MESSAGE, name);
+            Message response = tcpClient.sendAndReceive(request);
+
+            return response.getBody();
+        });
     }
 }

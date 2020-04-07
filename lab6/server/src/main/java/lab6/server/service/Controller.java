@@ -37,6 +37,9 @@ public class Controller {
         }
 
         if (parts[0].equals("2")) {
+            try {
+                Thread.sleep(10000);
+            } catch (Exception e) {}
             System.out.println("You will get all the students");
             Iterable<Student> students = studentService.getAllStudents();
 

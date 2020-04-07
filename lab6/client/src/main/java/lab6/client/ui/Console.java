@@ -3,6 +3,7 @@ package lab6.client.ui;
 import lab6.common.Socket.Service;
 
 import java.util.Scanner;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -110,16 +111,27 @@ public class Console {
                     System.exit(0);
                     break;
             }
-            Future<String> greetingFuture = helloService.sendMessage(name); //non-blocking
+            CompletableFuture<String> greetingFuture = helloService.sendMessage(name); //non-blocking
             try {
-                //greetingFuture.thenAcceptAsync(System.out::println);
-                String result = greetingFuture.get();
-                String[] parts = result.split(";");
-                for(String string: parts)
-                    System.out.println(string);
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-            }
+                greetingFuture.thenAcceptAsync((greeting) -> {
+                    try {
+                        String result = greetingFuture.get();
+                        String[] parts = result.split(";");
+                        for(String string: parts)
+                            System.out.println(string);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+                });
+//                String result = greetingFuture.get();
+//                String[] parts = result.split(";");
+//                for(String string: parts)
+//                    System.out.println(string);
+//            } catch (InterruptedException | ExecutionException e) {
+//                e.printStackTrace();
+            } catch (Exception e) {e.printStackTrace();}
         }
     }
 }

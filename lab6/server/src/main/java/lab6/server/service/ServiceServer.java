@@ -2,17 +2,18 @@ package lab6.server.service;
 
 import lab6.common.Socket.Service;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
-public class ServiceServer implements Service {
+public class ServiceServer {
     private ExecutorService executorService;
 
     public ServiceServer(ExecutorService executorService) {
         this.executorService = executorService;
     }
 
-    @Override
+
     public Future<String> sendMessage(String name) {
         return executorService.submit(() -> name);
     }
