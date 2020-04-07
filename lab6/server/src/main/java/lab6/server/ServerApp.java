@@ -52,12 +52,12 @@ public class ServerApp {
                 TcpServer tcpServer = new TcpServer(executorService);
                 Controller controller = new Controller(assignmentService,studentService,problemService);
 
-                tcpServer.addHandler(Service.SAY_HELLO, (request) -> {
+                tcpServer.addHandler(Service.SEND_MESSAGE, (request) -> {
                     String name = request.getBody();
 
                     String commandResult = controller.runCommand(name);
 
-                    Future<String> future = helloService.sayHello(commandResult);
+                    Future<String> future = helloService.sendMessage(commandResult);
                     try {
                         String result = future.get();
                         return new Message("ok", result); //fixme: hardcoded str

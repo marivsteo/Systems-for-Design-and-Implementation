@@ -13,7 +13,7 @@ public class ServiceServer implements Service {
     }
 
     @Override
-    public Future<String> sayHello(String name) {
+    public Future<String> sendMessage(String name) {
         return executorService.submit(() -> name);
     }
 

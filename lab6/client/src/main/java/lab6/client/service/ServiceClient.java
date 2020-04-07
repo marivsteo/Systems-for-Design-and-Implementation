@@ -5,6 +5,8 @@ import lab6.common.Socket.Message;
 import lab6.common.Socket.Service;
 
 import java.lang.reflect.Member;
+import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
@@ -21,18 +23,25 @@ public class ServiceClient implements Service {
     }
 
     @Override
-    public Future<String> sayHello(String name) {
+    public Future<String> sendMessage(String name) {
         return executorService.submit(() -> {
             //create a request
             //send request to server
             //get response
 
-            Message request = new Message(Service.SAY_HELLO, name);
+            Message request = new Message(Service.SEND_MESSAGE, name);
             //System.out.println("sending request: "+request);
             Message response = tcpClient.sendAndReceive(request);
             //System.out.println("received response: "+response);
 
             return response.getBody();
         });
+
+//        return CompletableFuture.supplyAsync(() ->  {
+//            Message request = new Message(Service.SAY_HELLO, name);
+//            Message response = tcpClient.sendAndReceive(request);
+//
+//            return response.getBody();
+//        });
     }
 }

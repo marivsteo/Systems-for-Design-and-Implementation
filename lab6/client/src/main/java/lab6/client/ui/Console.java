@@ -110,10 +110,10 @@ public class Console {
                     System.exit(0);
                     break;
             }
-            Future<String> greetingFuture = helloService.sayHello(name); //non-blocking
+            Future<String> greetingFuture = helloService.sendMessage(name); //non-blocking
             try {
-                String result = greetingFuture.get(); //blocking :(
-                //todo: client side operations should be non-blocking
+                //greetingFuture.thenAcceptAsync(System.out::println);
+                String result = greetingFuture.get();
                 String[] parts = result.split(";");
                 for(String string: parts)
                     System.out.println(string);
