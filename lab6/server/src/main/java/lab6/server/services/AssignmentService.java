@@ -1,4 +1,4 @@
-package lab6.server.service;
+package lab6.server.services;
 import lab6.common.Entities.Assignment;
 import lab6.common.exceptions.ValidatorException;
 import lab6.common.validators.AssignmentValidator;

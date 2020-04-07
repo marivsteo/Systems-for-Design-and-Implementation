@@ -1,8 +1,10 @@
 package lab6.client;
 
+import lab6.client.service.ServiceClient;
 import lab6.client.tcp.TcpClient;
 import lab6.client.ui.Console;
 import lab6.common.Controller.IController;
+import lab6.common.Socket.Service;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -12,8 +14,8 @@ public class ClientApp {
         ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
         TcpClient tcpClient = new TcpClient();
-        IController controller = new ControllerClient(executorService, tcpClient);
-        Console console = new Console(controller);
+        Service helloService = new ServiceClient(executorService, tcpClient);
+        Console console = new Console(helloService);
         console.runConsole();
 
         executorService.shutdown();

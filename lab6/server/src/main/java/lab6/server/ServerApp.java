@@ -4,13 +4,16 @@ import lab6.common.Entities.Assignment;
 import lab6.common.Entities.Problem;
 import lab6.common.Entities.Student;
 import lab6.common.Socket.Message;
+import lab6.common.Socket.Service;
 import lab6.common.validators.AssignmentValidator;
 import lab6.common.validators.ProblemValidator;
 import lab6.common.validators.StudentValidator;
 import lab6.server.TcpServer.TcpServer;
-import lab6.server.service.AssignmentService;
-import lab6.server.service.ProblemService;
-import lab6.server.service.StudentService;
+import lab6.server.service.Controller;
+import lab6.server.service.ServiceServer;
+import lab6.server.services.AssignmentService;
+import lab6.server.services.ProblemService;
+import lab6.server.services.StudentService;
 import lab6.server.sortRepositories.DatabaseAssignmentsRepository;
 import lab6.server.sortRepositories.DatabaseProblemsRepository;
 import lab6.server.sortRepositories.DatabaseStudentsRepository;
@@ -22,16 +25,15 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 public class ServerApp {
+
     public static void main(String[] args) {
-
-        System.out.println("Server started.");
-
-        // postgresql
-        ProblemValidator problemValidator = new ProblemValidator();
-        AssignmentValidator assignmentValidator = new AssignmentValidator();
-        StudentValidator studentValidator = new StudentValidator();
-
         try {
+            System.out.println("server started");
+
+            // postgresql
+            ProblemValidator problemValidator = new ProblemValidator();
+            AssignmentValidator assignmentValidator = new AssignmentValidator();
+            StudentValidator studentValidator = new StudentValidator();
 
             ISortingRepository<Long, Student> studentRepository1 = new DatabaseStudentsRepository();
             ISortingRepository<Long, Problem> problemRepository1 = new DatabaseProblemsRepository();
@@ -41,34 +43,51 @@ public class ServerApp {
             ProblemService problemService = new ProblemService(problemRepository1);
             AssignmentService assignmentService = new AssignmentService(assignmentRepository1, assignmentValidator, studentService, problemService);
 
-            ExecutorService executorService = Executors.newFixedThreadPool(
-                    Runtime.getRuntime().availableProcessors()
-            );
+            try {
+                ExecutorService executorService = Executors.newFixedThreadPool(
+                        Runtime.getRuntime().availableProcessors()
+                );
+                Service helloService = new ServiceServer(executorService);
 
-            ControllerServer controller = new ControllerServer(executorService);
-            //Controller controller = new Controller(studentService,problemService,assignmentService);
+                TcpServer tcpServer = new TcpServer(executorService);
+                Controller controller = new Controller(assignmentService,studentService,problemService);
 
-            TcpServer tcpServer = new TcpServer(executorService);
+                tcpServer.addHandler(Service.SAY_HELLO, (request) -> {
+                    String name = request.getBody();
 
-            tcpServer.addHandler(ControllerServer.SAY_HELLO, (request) -> {
-                String name = request.getBody();
-                Future<String> future = ControllerServer.send(name);
-                try {
-                    String result = future.get();
-                    return new Message("ok", result); //fixme: hardcoded str
-                } catch (InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
-                    return new Message("error", e.getMessage());//fixme: hardcoded str
-                }
+                    String commandResult = controller.runCommand(name);
 
-            });
+                    Future<String> future = helloService.sayHello(commandResult);
+                    try {
+                        String result = future.get();
+                        return new Message("ok", result); //fixme: hardcoded str
+                    } catch (InterruptedException | ExecutionException e) {
+                        e.printStackTrace();
+                        return new Message("error", e.getMessage());//fixme: hardcoded str
+                    }
 
-            tcpServer.startServer();
+                });
 
-            executorService.shutdown();
+//        tcpServer.addHandler(HelloService.SAY_BYE, (request) -> {
+//            String name = request.getBody();
+//            Future<String> future = helloService.sayBye(name);
+//            try {
+//                String result = future.get();
+//                return new Message("ok", result);
+//            } catch (InterruptedException | ExecutionException e) {
+//                e.printStackTrace();
+//                return new Message("error", e.getMessage());
+//            }
+//        });
 
-        } catch (Exception exception){
-            System.out.println(exception.toString());
+                tcpServer.startServer();
+
+                executorService.shutdown();
+            } catch (RuntimeException ex) {
+                ex.printStackTrace();
+            }
+        } catch(Exception exception){
+            exception.toString();
         }
     }
 }

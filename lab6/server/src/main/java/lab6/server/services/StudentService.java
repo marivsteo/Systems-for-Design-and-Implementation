@@ -1,4 +1,4 @@
-package lab6.server.service;
+package lab6.server.services;
 
 
 
