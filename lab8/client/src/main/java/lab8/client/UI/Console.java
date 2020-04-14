@@ -49,7 +49,7 @@ public class Console {
                     addStudent();
                     break;
                 case "2":
-                    this.studentService.getAllStudents().forEach(System.out::println);
+                    printAllStudents();
                     break;
                 case "3":
                     filterStudentsByName();
@@ -307,20 +307,35 @@ public class Console {
 
     private void printAllStudents() {
         System.out.println("Listing all the students:");
-        Iterable<Student> students = studentService.getAllStudents();
-        students.forEach(System.out::println);
+        CompletableFuture.supplyAsync(()-> {
+
+            //try {
+            //    Thread.sleep(10000);
+            //} catch (InterruptedException e) {}
+            return studentService.getAllStudents();
+        }).thenAcceptAsync(students -> students.forEach(System.out::println));
     }
 
     private void printAllProblems(){
         System.out.println("Listing all the problems:");
-        Iterable<Problem> problems = problemService.getAllProblems();
-        problems.forEach(System.out::println);
+        CompletableFuture.supplyAsync(()-> {
+            /*
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {}*/
+            return problemService.getAllProblems();
+        }).thenAcceptAsync(problems -> problems.forEach(System.out::println));
     }
 
     private void printAllAssignments(){
         System.out.println("Listing all the assignments:");
-        Iterable<Assignment> assignments = assignmentService.getAllAssignments();
-        assignments.forEach(System.out::println);
+        CompletableFuture.supplyAsync(()-> {
+            /*
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {}*/
+            return assignmentService.getAllAssignments();
+        }).thenAcceptAsync(assignments -> assignments.forEach(System.out::println));
     }
 
     private void addStudent() {

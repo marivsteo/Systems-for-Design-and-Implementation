@@ -58,6 +58,11 @@ public class StudentServiceImpl implements StudentService {
      * @return a Set containing all students in the repository
      */
     public Iterable<Student> getAllStudents() {
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+
+        }
         Iterable<Student> students = this.repository.findAll();
         if( this.repository instanceof DatabaseStudentsRepository){
             Sort sort1 = new Sort("Name");
