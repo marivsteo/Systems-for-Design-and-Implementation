@@ -102,6 +102,7 @@ public class DatabaseAssignmentsRepository implements ISortingRepository <Long, 
 
     @Override
     public Optional<Assignment> save(Assignment entity) throws ValidatorException {
+        System.out.println("xxxxxxxxx");
         try{
             assert (entity!=null);
         } catch(AssertionError error) {

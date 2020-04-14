@@ -18,8 +18,6 @@ public class AssignmentServiceImpl implements AssignmentService {
 
     @Autowired
     private DatabaseAssignmentsRepository repository;
-
-    private AssignmentValidator assignmentValidator;
     @Autowired
     private StudentServiceImpl studentService;
     @Autowired
@@ -67,7 +65,7 @@ public class AssignmentServiceImpl implements AssignmentService {
             Assignment assignment = new Assignment(_name, _student, _problem, _grade);
             assignment.setId(_id);
             // Validate the assignment
-            this.assignmentValidator.validate(assignment);
+//            this.assignmentValidator.validate(assignment);
             // If it is valid, save it
             repository.save(assignment);
         } catch(ValidatorException exception){
@@ -122,7 +120,7 @@ public class AssignmentServiceImpl implements AssignmentService {
                 .collect(Collectors.groupingBy(Assignment::getStudent,
                         Collectors.summingDouble(Assignment::getGrade)));
 
-        studentsGrade.forEach((key, value) -> System.out.println(studentService.findStudent(key).get() + " Total Points: " + value));
+        //studentsGrade.forEach((key, value) -> System.out.println(studentService.findStudent(key).get() + " Total Points: " + value));
 
     }
 
@@ -205,11 +203,12 @@ public class AssignmentServiceImpl implements AssignmentService {
         Assignment assignment = new Assignment(_newName, _newStudent, _newProblem, _newGrade);
         assignment.setId(_id);
 
+        /*
         try {
             this.assignmentValidator.validate(assignment);
         } catch (ValidatorException exception) {
             throw exception;
-        }
+        }*/
 
         try {
             if (repository.update(assignment) != null ) {
