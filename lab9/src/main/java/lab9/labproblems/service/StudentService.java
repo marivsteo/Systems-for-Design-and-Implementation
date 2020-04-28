@@ -2,7 +2,9 @@ package lab9.labproblems.service;
 
 import lab9.labproblems.model.entities.Student;
 import lombok.extern.slf4j.Slf4j;
+import net.bytebuddy.TypeCache;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import lab9.labproblems.repository.StudentRepository;
@@ -28,7 +30,9 @@ public class StudentService {
 
     public List<Student> getAllStudents() {
         log.trace("getAllStudents - method entered");
-        return studentRepository.findAll();
+        //return studentRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+        //return studentRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
+        return studentRepository.findAll(Sort.by(Sort.Direction.ASC, "serialNumber", "groupNumber"));
     }
 
     public void saveStudent(Student student) {
