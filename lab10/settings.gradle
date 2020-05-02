@@ -1,0 +1,5 @@
+rootProject.name = 'lab10'
+include 'catalog-web'
+include 'catalog-core'
+include 'catalog-client'
+
