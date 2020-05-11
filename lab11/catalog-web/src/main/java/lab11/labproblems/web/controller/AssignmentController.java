@@ -1,19 +1,19 @@
-package lab10.labproblems.web.controller;
+package lab11.labproblems.web.controller;
 
-import lab10.labproblems.core.model.exceptions.ValidatorException;
+import lab11.labproblems.web.converter.AssignmentConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import lab10.labproblems.core.model.entities.Assignment;
-import lab10.labproblems.core.service.AssignmentService;
-import lab10.labproblems.web.converter.AssignmentConverter;
-import lab10.labproblems.web.dto.AssignmentDto;
-import lab10.labproblems.web.dto.AssignmentsDto;
+import lab11.labproblems.core.model.entities.Assignment;
+import lab11.labproblems.core.service.AssignmentService;
+import lab11.labproblems.web.dto.AssignmentDto;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 public class AssignmentController {
@@ -27,10 +27,13 @@ public class AssignmentController {
 
 
     @RequestMapping(value = "/assignments", method = RequestMethod.GET)
-    AssignmentsDto getAssignments() {
+    List<AssignmentDto> getAssignments() {
+
         log.trace("getAllAssignments - method entered");
-        return new AssignmentsDto(assignmentConverter
-                .convertModelsToDtos(assignmentService.getAllAssignments()));
+
+        List<Assignment> assignments = assignmentService.getAllAssignments();
+
+        return new ArrayList<>(assignmentConverter.convertModelsToDtos(assignments));
 
     }
 
@@ -68,18 +71,20 @@ public class AssignmentController {
     }
 
     @RequestMapping(value = "/assignments/filterName/{filter}", method = RequestMethod.GET)
-    AssignmentsDto filterAssignmentsByName(@PathVariable String filter) {
+    List<AssignmentDto> filterAssignmentsByName(@PathVariable String filter) {
         log.trace("getAllAssignments - method entered");
 
-        return new AssignmentsDto(assignmentConverter
-                .convertModelsToDtos(assignmentService.filterAssignmentsByName(filter)));
+        Set<Assignment> assignments = assignmentService.filterAssignmentsByName(filter);
+
+        return new ArrayList<>(assignmentConverter.convertModelsToDtos(assignments));
     }
 
     @RequestMapping(value = "/assignments/filterStudent/{student}", method = RequestMethod.GET)
-    AssignmentsDto filterAssignmentsByStudent(@PathVariable Long student) {
+    List<AssignmentDto> filterAssignmentsByStudent(@PathVariable Long student) {
         log.trace("getAllAssignments - method entered");
 
-        return new AssignmentsDto(assignmentConverter
-                .convertModelsToDtos(assignmentService.filterAssignmentsByStudent(student)));
+        Set<Assignment> assignments = assignmentService.filterAssignmentsByStudent(student);
+
+        return new ArrayList<>(assignmentConverter.convertModelsToDtos(assignments));
     }
 }

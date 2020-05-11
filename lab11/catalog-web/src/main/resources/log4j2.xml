@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration>
     <Properties>
-        <Property name="filename">C:\Users\Marius\Desktop\university 2\SEM2\SDI\Assignments\laboratories\Systems-for-Design-and-Implementation\lab10\log\catalog.log</Property>
+        <Property name="filename">C:\Users\Marius\Desktop\university 2\SEM2\SDI\Assignments\laboratories\Systems-for-Design-and-Implementation\lab11\log\catalog.log</Property>
         <Property name="filenamePattern">log/catalog-%i.log</Property>
         <Property name="pattern">%d{ISO8601} %-5p [%t]: %-36.36c{1} - %m %n
         </Property>
@@ -34,7 +34,7 @@
         <Logger name="org.springframework.web" level="WARN"/>
         <Logger name="org.springframework.http.converter.json" level="WARN"/>
         <Logger name="com.fasterxml.jackson.databind" level="WARN"/>
-        <Logger name="lab10.labproblems" level="TRACE"/>
+        <Logger name="lab11.labproblems" level="TRACE"/>
 
         <!-- ROOT -->
         <Root level="WARN">

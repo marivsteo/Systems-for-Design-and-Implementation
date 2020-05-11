@@ -181,7 +181,9 @@ public class ClientApp {
 
     private static void printAllAssignments(RestTemplate restTemplate) {
         AssignmentsDto allAssignments = restTemplate.getForObject(URL + "assignments", AssignmentsDto.class);
-        System.out.println(allAssignments);
+        for (AssignmentDto a: allAssignments.getAssignments()) {
+            System.out.println(a);
+        }
     }
 
     private static void filterStudentBySerialNumber() {
@@ -316,7 +318,9 @@ public class ClientApp {
 
     private static void printAllProblems(RestTemplate restTemplate) {
         ProblemsDto allProblems = restTemplate.getForObject(URL + "problems", ProblemsDto.class);
-        System.out.println(allProblems);
+        for (ProblemDto p: allProblems.getProblems()) {
+            System.out.println(p);
+        }
     }
 
     private static void addProblem() {
@@ -390,6 +394,8 @@ public class ClientApp {
 
     private static void printAllStudents(RestTemplate restTemplate) {
         StudentsDto allStudents = restTemplate.getForObject(URL + "students", StudentsDto.class);
-        System.out.println(allStudents);
+        for (StudentDto s: allStudents.getStudents()) {
+            System.out.println(s);
+        }
     }
 }

@@ -1,8 +1,8 @@
-package lab10.labproblems.core.service;
+package lab11.labproblems.core.service;
 
-import lab10.labproblems.core.model.entities.Assignment;
-import lab10.labproblems.core.model.exceptions.ValidatorException;
-import lab10.labproblems.core.repository.AssignmentRepository;
+import lab11.labproblems.core.model.entities.Assignment;
+import lab11.labproblems.core.model.exceptions.ValidatorException;
+import lab11.labproblems.core.repository.AssignmentRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ public class AssignmentService {
     private AssignmentRepository assignmentRepository;
 
     @Autowired
-    private lab10.labproblems.core.service.StudentService studentService;
+    private StudentService studentService;
 
     @Autowired
     private ProblemService problemService;
